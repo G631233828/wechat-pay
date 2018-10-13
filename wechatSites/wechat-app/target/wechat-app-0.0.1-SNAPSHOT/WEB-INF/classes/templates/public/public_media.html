@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<link rel="stylesheet"
+	th:href="@{/}plugs/plupload-2.1.8/jquery.ui.plupload/css/jquery.ui.plupload.css"
+	type="text/css" />
+<script type="text/javascript"
+	src="@{/}plugs/plupload-2.1.8/plupload.full.min.js"></script>
+<script type="text/javascript"
+	src="@{/}plugs/plupload-2.1.8/jquery.ui.plupload/jquery.ui.plupload.js"></script>
+<script type="text/javascript"
+	src="@{/}plugs/plupload-2.1.8/i18n/zh_CN.js"></script>
+
+<body>
+
+
+	<div th:fragment="public_media">
+	<script type="text/javascript">
+$(function() {
+	var url='/media/upload';
+	var uploader = $("#uploader").plupload({
+		runtimes : 'html5,flash,silverlight,html4',
+		url : url,
+		max_file_count : 10,
+		// Resize images on clientside if we can
+		/* 	resize : {
+				width : 200, 
+				height : 200, 
+				quality : 90,
+				crop: true // crop to exact dimensions
+			},
+		 */
+		filters : {
+			// Maximum file size
+			max_file_size : '2g',
+		},
+
+		// Rename files by clicking on their titles
+		rename : true,
+		// Sort files
+		sortable : true,
+
+		// Enable ability to drag'n'drop files onto the widget (currently only HTML5 supports that)
+		dragdrop : false,
+
+		// Views to activate
+		views : {
+			list : true,
+			/* thumbs: true,  */// Show thumbs
+			active : 'thumbs'
+		},
+		// Flash settings
+		flash_swf_url : '../../js/Moxie.swf',
+		// Silverlight settings
+		silverlight_xap_url : '../../js/Moxie.xap',
+		
+		    // PreInit events, bound before any internal events
+	        preinit : {
+	            Init: function(up, info) {
+	            },
+	            UploadFile: function(up, file) {
+	                // You can override settings before the file is uploaded
+	                // up.setOption('url', 'upload.php?id=' + file.id);
+	                 up.setOption('multipart_params', {"uid": file.id});
+	            }
+	        },
+	 
+	        // Post init events, bound after the internal events
+	        init : {
+	            Refresh: function(up) {
+	            },
+	  
+	            StateChanged: function(up) {
+	                
+	            },
+	  
+	            QueueChanged: function(up) {
+	               
+	            },
+	 
+	            OptionChanged: function(up, name, value, oldValue) {
+	             
+	            },
+	 
+	            BeforeUpload: function(up, file) {
+	            },
+	  
+	            UploadProgress: function(up, file) {
+	               
+	            },
+	 
+	            FileFiltered: function(up, file) {
+	            
+	            },
+	  
+	            FilesAdded: function(up, files) {
+	            	
+
+	            },
+	  
+	            FilesRemoved: function(up, files) {
+	            	var currentfileId=null;
+	            	for(i=0;i<files.length;i++){
+	            		currentfileId=files[i].id;
+	            	}
+	            	$.post("/media/remove",{"uid":currentfileId},function(data){
+	            		if(data.returnCode=="success"){
+	            			console.info(data.returnMsg)
+	            		}
+	            	})
+	                 
+	            },
+	  
+	            FileUploaded: function(up, file, info) {
+	            
+	         
+	            },
+	  
+	            ChunkUploaded: function(up, file, info) {
+	                
+	            },
+	 
+	            UploadComplete: function(up, files) {
+	              
+	            },
+	 
+	            Destroy: function(up) {
+	            	
+	            },
+	  
+	            Error: function(up, args) {
+	             
+	            }
+	        }
+		
+	});
+	$("#submit-resources").click(function(){
+		$.post("${ctx}/resources/find-myfiles",{},function(data){
+			if(data.returnCode=="success"){
+				$("#validate-form").submit();
+			}else{
+				alert("请选至少上传一个文件，或者请点击上传");
+			}
+			
+		});
+		
+	});
+
+})
+
+
+</script>
+	</div>
+
+
+
+</body>
+
+</html>

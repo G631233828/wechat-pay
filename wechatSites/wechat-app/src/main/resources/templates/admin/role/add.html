@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="public/public_css::pub_css"></head>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style type="text/css">
+canvas#canvas4 {
+	position: relative;
+	top: 20px;
+}
+</style>
+<link rel="shortcut icon" th:href="@{/assets/ico/minus.png}">
+<link th:href="@{/plugs/bootstrap-fileinput/css/fileinput.css}"
+	media="all" rel="stylesheet" type="text/css" />
+ <link th:href="@{/assets/css/icons-style.css}" rel="stylesheet">
+</head>
+
+<body>
+	<!-- Preloader -->
+	<div id="preloader">
+		<div id="status">&nbsp;</div>
+	</div>
+	<!-- TOP NAVBAR -->
+	<div th:replace="public/public::top"></div>
+	<!-- /END OF TOP NAVBAR -->
+
+	<!-- SIDE MENU -->
+	<div th:replace="public/public::left(activeUri='system')"></div>
+	<!-- END OF SIDE MENU -->
+
+	<!--  PAPER WRAP -->
+	<div class="wrap-fluid">
+		<div class="container-fluid paper-wrap bevel tlbr">
+
+
+			<!-- CONTENT -->
+			<!--TITLE -->
+			<div th:replace="public/public::title"></div>
+			<!--/ TITLE -->
+
+			<!-- BREADCRUMB -->
+			<div th:replace="public/public::menu"></div>
+			<!-- END OF BREADCRUMB -->
+
+			<div class="content-wrap">
+				<div class="row">
+
+
+					<div class="col-sm-12">
+						<!-- BLANK PAGE-->
+
+						<div style="margin: -20px 15px;" class="nest" id="Blank_PageClose">
+							<div class="title-alt">
+								<h6>资源信息</h6>
+								<div class="titleClose">
+									<a class="gone" href="#Blank_PageClose"> <span
+										class="entypo-cancel"></span>
+									</a>
+								</div>
+								<div class="titleToggle">
+									<a class="nav-toggle-alt" href="#Blank_Page_Content"> <span
+										class="entypo-up-open"></span>
+									</a>
+								</div>
+
+							</div>
+
+
+							<div class="body-nest" id="Blank_Page_Content">
+								<div class="row">
+									<!-- edit form column -->
+									<div class="col-md-12 personal-info">
+										<form class="form-horizontal" enctype="multipart/form-data"
+											id="roleForm" th:action="@{/role}" method="post">
+											<input type="hidden" name="_method" value="put" th:if="${role!=null}" />
+											 <input type="hidden" name="id" th:if="${role!=null}" th:value="${role.id}">
+
+											<div class="form-group">
+												<label class="col-lg-1 control-label">角色：</label>
+												<div class="col-lg-6">
+													<input class="form-control" id="roleName"
+														placeholder="角色名称" name="roleName"
+														th:value="${role!=null}?${role.roleName}"
+														required="required">
+												</div>
+											</div>
+											<input type="hidden" name="hidroleName"  id="hidroleName"	th:value="${role!=null}?${role.roleName}">
+
+											<div class="form-group">
+												<label class="col-lg-1 control-label">角色Key：</label>
+												<div class="col-lg-6">
+													<input class="form-control" id="roleKey"
+														placeholder="请输入角色Key" name="roleKey"
+														th:value="${role!=null}?${role.roleKey}">
+												</div>
+											</div>
+				
+
+											<div class="form-group">
+												<label class="col-lg-1 control-label">使用状态：</label>
+												<div class="col-lg-6">
+													<div class="ui-select">
+														<select name="isDisable" id="isDisable"
+															class="form-control" required>               
+															<option value="false" th:selected="${role!=null}?${role.isDisable eq false}">启用中</option>
+															<option value="true" th:selected="${role!=null}?${role.isDisable eq true}">禁用中</option>
+														</select>
+													</div>
+												</div>
+											</div>
+
+
+											<div class="form-group">
+												<label class="col-lg-1 control-label">描述：</label>
+												<div class="col-lg-6">
+
+													<textarea rows="5" id="description" class="col-lg-12"
+														name="description" placeholder="描述"
+														th:text="${role!=null}?${role.description }">
+													</textarea>
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label class="col-lg-1 control-label"></label>
+												<div class="col-md-8">
+													<button type="submit" class="btn btn-success"
+														th:text="${role!=null?'修改':'添加'}"></button>
+													<span></span> <input th:if="${role} eq null"
+														class="btn btn-default" value="重置" type="reset">
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- END OF BLANK PAGE -->
+
+				</div>
+			</div>
+
+			<!--/row-->
+		</div>
+	</div>
+	<!--  END OF PAPER WRAP -->
+	<!-- 右侧隐藏菜单start -->
+	<div th:replace="public/public::right"></div>
+	<!-- 右侧隐藏菜单end-->
+	<!-- 底部js -->
+	<div th:replace="public/public_js::pub_js"></div>
+	<div th:replace="public/public_js::public_script"></div>
+	<div th:replace="public/public::footer"></div>
+	<script th:src="@{/plugs/bootstrap-fileinput/js/fileinput.js}"
+		type="text/javascript"></script>
+	<!-- Jquery Validate -->
+	<script type="text/javascript"
+		th:src="@{/plugs/validate/jquery.validate.min.js}"></script>
+	<script type="text/javascript" 
+		th:src="@{/plugs/validate/messages_zh.min.js}"></script>
+
+	<script type="text/javascript"  th:inline="javascript"
+		th:src="@{/js/admin/role/role.js}"></script>
+
+</body>
+
+</html>

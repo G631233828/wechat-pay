@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<body>
+
+
+	<!-- 信息提示 -->
+	<div class="modal2 fade" th:fragment="wechatMenuAddModal"
+		id="wechatMenuAddModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+
+		<div class="modal-dialog " style="margin-top: 10%; height: 600px;">
+			<div class="modal-content ">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">×</button>
+					<h3 id="wechatMenuTitle"></h3>
+				</div>
+				<div class="row modal-body">
+
+					<form th:action="@{/wechatmenu}" method="post" id="wechatMenuForm">
+						<div class="body-nest" id="tableStatic">
+							<div class="form-group">
+								<label>菜单的名字</label> <input type="text" name="name" id="name"
+									class="form-control" required="required">
+							</div>
+
+							<input type="hidden" id="parentId" name="parentId">
+							<input type="hidden" id="id" name="id">
+							<div class="form-group">
+								<label>菜单类型</label>
+								<div class="ui-select">
+									<select name="type" id="type" class="form-control"
+										onchange="return selectType();" required="required">
+										<option value="">----选择菜单类型----</option>
+										<option value="click">click(发送消息)</option>
+										<option value="view">view(跳转视图)</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group" id="view" style="display: none;">
+								<label>跳转到网页</label> <input type="text" name="url" id="url" disabled="disabled"
+									class="form-control" required="required" >
+							</div>
+
+							<div class="form-group" id="click" style="display: none;">
+								<label>发送key</label> <input type="text" name="key" id="key" disabled="disabled"
+									class="form-control" required="required">
+							</div>
+							
+							<div class="form-group">
+								<label>排序</label> <input type="text" name="sort" id="sort"
+									class="form-control">
+							</div>
+
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-primary" >确定</button>
+						</div>
+					</form>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+
+</html>

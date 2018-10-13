@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head th:include="public/public_css::pub_css"></head>
+<head>
+<meta charset="utf-8">
+
+<link rel="stylesheet" th:href="@{/assets/js/nestable/nestable.css}"
+	type="text/css" />
+<link th:href="@{/plugs/sweetalert/sweetalert.css}" rel="stylesheet">
+
+</head>
+
+<body>
+	<!-- Preloader -->
+	<div id="preloader">
+		<div id="status">&nbsp;</div>
+	</div>
+	<!-- TOP NAVBAR -->
+	<div th:replace="public/public::top"></div>
+	<!-- /END OF TOP NAVBAR -->
+
+	<!-- SIDE MENU -->
+	<div th:replace="public/public::left(activeUri='wechat')"></div>
+	<!-- END OF SIDE MENU -->
+
+	<!--  PAPER WRAP -->
+	<div class="wrap-fluid">
+		<div class="container-fluid paper-wrap bevel tlbr">
+
+
+			<!-- CONTENT -->
+			<!--TITLE -->
+			<div th:replace="public/public::title"></div>
+			<!--/ TITLE -->
+
+			<!-- BREADCRUMB -->
+			<div th:replace="public/public::menu"></div>
+			<!-- END OF BREADCRUMB -->
+
+
+			<div class="content-wrap">
+				<div class="row">
+
+
+					<div class="col-sm-12">
+						<!-- BLANK PAGE-->
+
+						<div class="nest" id="Blank_PageClose">
+							<div class="title-alt">
+								<shiro:hasPermission name="wechatmenu:add">
+									<button class="btn btn-default btn-sm" th:if="${supMenuSize < 3}"
+										onclick="return add('0');">
+										<i class="glyphicon glyphicon-plus"> </i> 添加
+									</button>
+								</shiro:hasPermission>
+								
+								<shiro:hasPermission name="wechatmenu:release">
+									<button class="btn btn-primary btn-sm" 
+										onclick="return release();">
+										<i class="glyphicon glyphicon-plus"> </i>发布
+									</button>
+								</shiro:hasPermission>
+
+								<div class="titleClose">
+									<a class="gone" href="#Blank_PageClose"> <span
+										class="entypo-cancel"></span>
+									</a>
+								</div>
+								<div class="titleToggle">
+									<a class="nav-toggle-alt" href="#Blank_Page_Content"> <span
+										class="entypo-up-open"></span>
+									</a>
+								</div>
+
+							</div>
+
+							<div class="row m-b">
+
+								<div class="col-sm-4" th:each="menu:${wechatMenu}"
+									th:if="${menu.parentId == '0'}">
+									<div class="dd" id="nestable">
+
+										<ol class="dd-list">
+											<li class="dd-item" data-id="2">
+												<div class="dd-handle">
+													<div>
+														[[${menu.name}]] <a class="btn btn-link btn-danger "
+															th:onclick="|return del('@{/wechatmenu/}${menu.id}','');|"
+															style="float: right; margin-left: 2px; margin-top: -5px;">
+															<span class="fa fa-trash-o"></span>
+														</a> <a class=" btn btn-link"
+															th:onclick="|return edit('0','${menu.id}');|"
+															style="float: right; margin-left: 2px; margin-top: -5px;">
+															<span class="entypo-pencil"></span>
+														</a> <a class="btn btn-link"
+															th:onclick="|return add('${menu.id}');|"
+															style="float: right; margin-top: -5px;"> <span
+															class="entypo-plus-squared"></span>
+														</a>
+
+													</div>
+												</div>
+												<ol class="dd-list">
+													<li class="dd-item" data-id="3">
+														<div class="dd-handle" th:each="menusub:${wechatMenu}"
+															th:if="${menusub.parentId eq menu.id}">
+															[[${menusub.name}]]
+															<a class="btn btn-link btn-danger "
+															th:onclick="|return del('@{/wechatmenu/}${menusub.id}','');|"
+															style="float: right; margin-left: 2px; margin-top: -5px;">
+															<span class="fa fa-trash-o"></span>
+														</a>
+															 <a class="btn btn-link"
+																th:onclick="|return edit('1','${menusub.id}');|"
+																style="float: right; margin-top: -5px;"> <span
+																class="entypo-pencil"></span>
+															</a>
+														</div>
+													</li>
+
+												</ol>
+											</li>
+										</ol>
+									</div>
+								</div>
+								<form method="post" id="deleteForm">
+									<input name="_method" value="delete" type="hidden">
+								</form>
+
+
+							</div>
+						</div>
+					</div>
+					<!-- END OF BLANK PAGE -->
+				</div>
+			</div>
+
+			<div th:replace="public/public::myModal"></div>
+			<div th:replace="wechat/wechatMenu/add::wechatMenuAddModal"></div>
+
+		</div>
+	</div>
+	<!--  END OF PAPER WRAP -->
+	<!-- 右侧隐藏菜单start -->
+	<div th:replace="public/public::right"></div>
+	<!-- 右侧隐藏菜单end-->
+	<!-- 底部js -->
+	<div th:replace="public/public_js::pub_js"></div>
+	<div th:replace="public/public_js::public_script"></div>
+	<div th:replace="public/public::footer"></div>
+	<script th:src="@{/assets/js/nestable/jquery.nestable.js}"></script>
+	<script  th:src="@{/js/wechat/wechatMenu/wechatMenu.js}"></script>
+	<!-- Sweet alert -->
+	<script th:src="@{/plugs/sweetalert/sweetalert.min.js}"></script>
+
+
+</body>
+
+</html>

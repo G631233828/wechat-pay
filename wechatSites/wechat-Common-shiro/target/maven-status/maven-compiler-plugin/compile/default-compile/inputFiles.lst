@@ -1,0 +1,4 @@
+/project/wx/wechatSites/wechat-Common-shiro/src/main/java/zhongchiedu/shiro/config/MongoDBRealm.java
+/project/wx/wechatSites/wechat-Common-shiro/src/main/java/zhongchiedu/shiro/errorException/MyAuthorizationException.java
+/project/wx/wechatSites/wechat-Common-shiro/src/main/java/zhongchiedu/shiro/config/ShiroConfig.java
+/project/wx/wechatSites/wechat-Common-shiro/src/main/java/zhongchiedu/shiro/utils/ShiroFilterUtils.java

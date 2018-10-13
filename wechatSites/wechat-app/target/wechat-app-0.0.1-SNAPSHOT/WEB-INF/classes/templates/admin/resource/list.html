@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head th:include="public/public_css::pub_css"></head>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/js/progress-bar/number-pb.css}">
+<link th:href="@{/plugs/sweetalert/sweetalert.css}" rel="stylesheet">
+
+<style type="text/css">
+canvas#canvas4 {
+	position: relative;
+	top: 20px;
+}
+</style>
+<link rel="shortcut icon" href="@{/assets/ico/minus.png}">
+</head>
+
+<body>
+	<!-- Preloader -->
+	<div id="preloader">
+		<div id="status">&nbsp;</div>
+	</div>
+	<!-- TOP NAVBAR -->
+	<div th:replace="public/public::top"></div>
+	<!-- /END OF TOP NAVBAR -->
+
+	<!-- SIDE MENU -->
+	<div th:replace="public/public::left(activeUri='system')"></div>
+	<!-- END OF SIDE MENU -->
+
+	<!--  PAPER WRAP -->
+	<div class="wrap-fluid">
+		<div class="container-fluid paper-wrap bevel tlbr">
+
+
+			<!-- CONTENT -->
+			<!--TITLE -->
+			<div th:replace="public/public::title"></div>
+			<!--/ TITLE -->
+
+			<!-- BREADCRUMB -->
+			<div th:replace="public/public::menu"></div>
+			<!-- END OF BREADCRUMB -->
+
+
+			<div class="content-wrap">
+				<div class="row">
+
+
+					<div class="col-sm-12">
+
+						<div class="nest" id="tableStaticClose">
+							<div class="title-alt">
+								<div>
+									<shiro:hasPermission name="resource:add">
+										<button class="btn btn-default btn-sm"
+											th:onclick="|window.location.href='@{/resource}'|">
+											<i class="glyphicon glyphicon-plus"> </i> 添加
+										</button>
+									</shiro:hasPermission>
+
+									<shiro:hasPermission name="resource:edit">
+										<button class="btn btn-primary btn-sm"
+											onclick="return toeditPage('','resource')">
+											<i class="fa fa-edit"> </i>编辑
+										</button>
+									</shiro:hasPermission>
+
+									<shiro:hasPermission name="resource:delete">
+										<button class="btn btn-danger btn-sm"
+											th:onclick="|return del('','@{/resource/}')|">
+											<i class="fa fa-trash-o"> </i>删除
+										</button>
+									</shiro:hasPermission>
+
+								</div>
+
+								<div class="titleClose">
+									<a class="gone" href="#tableStaticClose"> <span
+										class="entypo-cancel"></span>
+									</a>
+								</div>
+								<div class="titleToggle">
+									<a class="nav-toggle-alt" href="#tableStatic"> <span
+										class="entypo-up-open"></span>
+									</a>
+								</div>
+
+							</div>
+
+							<div class="body-nest" id="tableStatic">
+
+								<section id="flip-scroll">
+
+									<table class="table table-bordered table-striped cf">
+										<thead class="cf">
+											<tr>
+												<th class="numeric" style="width: 20px;">
+													<div class="checkbox checkbox-inline"
+														style="margin-top: 0px;">
+														<input type="checkbox" id="checkall" name="checkall" /> <label
+															for="checkall"></label>
+													</div>
+												</th>
+												<th class="numeric">菜单名称</th>
+												<th class="numeric">菜单key</th>
+												<th class="numeric">菜单url</th>
+												<th class="numeric">类别</th>
+												<th class="numeric">图标</th>
+												<th class="numeric">使用状态</th>
+												<th class="numeric">描述</th>
+												<th class="numeric">操作</th>
+											</tr>
+										</thead>
+										<tbody>
+											<!-- 目录 -->
+											<th:block th:each="res:${pageList.datas}"
+												th:if="${res.parentId eq '0'}">
+												<tr th:if="${res.parentId eq '0'}">
+													<td class="numeric">
+														<div class="checkbox checkbox-inline"
+															style="margin-top: 0px;">
+															<input type="checkbox" name="ids" th:id="${res.id}"
+																class="numeric" th:value="${res.id}"> <label
+																th:for="${res.id}"></label>
+														</div>
+													</td>
+													<td class="numeric">[[${res.name }]]</td>
+													<td class="numeric">[[${res.resKey }]]</td>
+													<td class="numeric"
+														th:text="${res.type eq 0}  ?'目录':${res.type eq 1?'菜单':'按钮'}"></td>
+													<td class="numeric">[[${res.resUrl }]]</td>
+
+													<td class="numeric"><i th:class="${res.icon}"></i></td>
+													<td class="numeric" th:id="disBtn+${res.id}"
+														th:utext="${res.isDisable eq true }?|<button type='button' onclick=toDisable('${res.id}','resource') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${res.id}','resource') class='btn btn-success'>启用</button>|"></td>
+													<td class="numeric">[[${res.description }]]</td>
+													<td class="numeric"><shiro:hasPermission
+															name="resource:edit">
+															<button class="btn btn-primary btn-xs"
+																th:onclick="|return toeditPage('${res.id}','resource')|">
+																<i class="fa fa-edit"> </i>编辑
+															</button>
+
+														</shiro:hasPermission> <shiro:hasPermission name="resource:delete">
+															<button class="btn btn-danger btn-xs"
+																th:onclick="|return del('@{/resource/}${res.id}','')|">
+																<i class="fa fa-trash-o"> </i>删除
+															</button>
+														</shiro:hasPermission></td>
+												</tr>
+												<!-- 菜单 -->
+												<th:block th:each="res2:${pageList.datas}"
+													th:if="${res2.parentId eq  res.id}">
+													<tr th:if="${res2.type eq 1}">
+														<td class="numeric">
+															<div th:class="|checkbox checkbox-inline ${res.id}|"
+																style="margin-top: 0px; margin-left: 10px;">
+																<input type="checkbox" name="ids" th:id="${res2.id}"
+																	class="numeric" th:value="${res2.id}"> <label
+																	th:for="${res2.id}"></label>
+															</div>
+														</td>
+														<td class="numeric">[[${res2.name }]]</td>
+														<td class="numeric">[[${res2.resKey }]]</td>
+														<td class="numeric"
+															th:text="${res2.type eq 0}  ?'目录':${res2.type eq 1?'菜单':'按钮'}"></td>
+														<td class="numeric">[[${res2.resUrl }]]</td>
+
+														<td class="numeric"><i th:class="${res2.icon}"></i></td>
+														<td class="numeric" th:id="disBtn+${res2.id}"
+															th:utext="${res2.isDisable eq true }?|<button type='button' onclick=toDisable('${res2.id}','resource') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${res2.id}','resource') class='btn btn-success'>启用</button>|"></td>
+														<td class="numeric">[[${res2.description }]]</td>
+														<td class="numeric"><shiro:hasPermission
+																name="resource:edit">
+																<button class="btn btn-primary btn-xs"
+																	th:onclick="|return toeditPage('${res2.id}','resource')|">
+																	<i class="fa fa-edit"> </i>编辑
+																</button>
+
+															</shiro:hasPermission> <shiro:hasPermission name="resource:delete">
+																<button class="btn btn-danger btn-xs"
+																	th:onclick="|return del('@{/resource/}${res2.id}','')|">
+																	<i class="fa fa-trash-o"> </i>删除
+																</button>
+															</shiro:hasPermission></td>
+													</tr>
+													<!-- 按钮 -->
+													<th:block th:each="res3:${pageList.datas}"
+														th:if="${res3.parentId eq  res2.id}">
+														<tr th:if="${res3.type eq 2}">
+															<td class="numeric">
+																<div
+																	th:class="|checkbox checkbox-inline ${res2.id} ${res.id}|"
+																	style="margin-top: 0px; margin-left: 20px;">
+																	<input type="checkbox" name="ids" th:id="${res3.id}"
+																		th:class="numeric" th:value="${res3.id}"> <label
+																		th:for="${res3.id}"></label>
+																</div>
+															</td>
+															<td class="numeric">[[${res3.name }]]</td>
+															<td class="numeric">[[${res3.resKey }]]</td>
+															<td class="numeric"
+																th:text="${res3.type eq 0}  ?'目录':${res3.type eq 1?'菜单':'按钮'}"></td>
+															<td class="numeric">[[${res3.resUrl }]]</td>
+
+															<td class="numeric"><i th:class="${res3.icon}"></i></td>
+															<td class="numeric" th:id="disBtn+${res3.id}"
+																th:utext="${res3.isDisable eq true }?|<button type='button' onclick=toDisable('${res3.id}','resource') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${res3.id}','resource') class='btn btn-success'>启用</button>|"></td>
+															<td class="numeric">[[${res3.description }]]</td>
+															<td class="numeric"><shiro:hasPermission
+																	name="resource:edit">
+																	<button class="btn btn-primary btn-xs"
+																		th:onclick="|return toeditPage('${res3.id}','resource')|">
+																		<i class="fa fa-edit"> </i>编辑
+																	</button>
+																</shiro:hasPermission> <shiro:hasPermission name="resource:delete">
+																	<button class="btn btn-danger btn-xs"
+																		th:onclick="|return del('@{/resource/}${res3.id}','')|">
+																		<i class="fa fa-trash-o"> </i>删除
+																	</button>
+																</shiro:hasPermission></td>
+														</tr>
+													</th:block>
+												</th:block>
+											</th:block>
+
+
+										</tbody>
+									</table>
+
+									<form method="post" id="deleteForm">
+										<input name="_method" value="delete" type="hidden">
+									</form>
+
+
+									<!-- <div class="row">
+
+										<div class="col-md-12">
+											<div class="col-md-6">
+												<div class="dataTables_info hidden-xs"
+													style="margin-top: 0px;" role="status" aria-live="polite"
+													th:text="|每页显示${pageList.pageSize}行
+										－ 当前页${pageList.pageNo}页 － 共${pageList.totalPage}页|"></div>
+											</div>
+											<div class="col-md-6">
+												<ul class="pagination pagination-split pull-right"
+													style="margin-top: 0px;">
+													<li th:class="${pageList.pageNo } eq 1 ?disabled:''"><a
+														th:href="${pageList.pageNo} eq 1?'javascript:void(0);':@{/resources?pageNo=}+${pageList.upPage}">上一页</a>
+													</li>
+													<li th:each="page:${pageList.navigatepageNums}"
+														th:class="${page  == pageList.pageNo}?active:''"><a
+														th:href="${page eq pageList.pageNo}?'javascript:void(0)':@{/resources?pageNo=}+${page}">[[${page}]]</a>
+													</li>
+													<li
+														th:class="${pageList.pageNo eq pageList.totalPage}?disabled:''">
+														<a
+														th:href="${pageList.pageNo eq pageList.totalPage}?'javascript:void(0);':@{/resourcess?pageNo=}+${pageList.nextPage}">下一页</a>
+													</li>
+												</ul>
+											</div>
+										</div>
+
+										分页结束
+									</div> -->
+
+								</section>
+
+							</div>
+
+						</div>
+
+
+					</div>
+
+				</div>
+			</div>
+
+	<div th:replace="public/public::myModal"></div>
+		</div>
+	</div>
+	<!--  END OF PAPER WRAP -->
+	<!-- 右侧隐藏菜单start -->
+	<div th:replace="public/public::right"></div>
+	<!-- 右侧隐藏菜单end-->
+	<!-- 底部js -->
+	<div th:replace="public/public_js::pub_js"></div>
+	<div th:replace="public/public_js::public_script"></div>
+	<div th:replace="public/public::footer"></div>
+	<!-- Sweet alert -->
+	<script th:src="@{/plugs/sweetalert/sweetalert.min.js}"></script>
+
+
+
+
+</body>
+
+</html>

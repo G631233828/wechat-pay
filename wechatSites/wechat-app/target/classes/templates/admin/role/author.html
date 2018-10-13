@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- <style type="text/css">
+.iconModel { 
+    overflow-y: scroll; 
+    position: absolute; 
+    top: 55px; 
+    bottom: 65px; 
+    width: 100%; 
+} 
+</style> -->
+<body>
+
+
+	<!-- 信息提示 -->
+	<div class="modal2 fade" th:fragment="authorModal" id="authorModal"
+		tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+		aria-hidden="true">
+
+		<div class="modal-dialog " style="margin-top: 10%;height:600px; width: 1000px;">
+			<div class="modal-content ">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">×</button>
+					<h3>选择权限</h3>
+				</div>
+				<div class="row pre-scrollable modal-body" style="width: 1000px;">
+					<div class="body-nest" id="tableStatic">
+
+						<section id="flip-scroll">
+			<input type="hidden" value="" id="id">
+							<table class="table table-bordered table-striped cf">
+								<thead class="cf">
+									<tr>
+										<th class="numeric" style="width: 20px;">
+											<div class="checkbox checkbox-inline"
+												style="margin-top: 0px;">
+												<input type="checkbox" id="allAuthor" name="allAuthor" /> <label
+													for="allAuthor"></label>
+											</div>
+										</th>
+										<th class="numeric">目录名称</th>
+										<th class="numeric">菜单名称</th>
+										<th class="numeric">功能</th>
+									</tr>
+								</thead>
+								<tbody>
+									<!-- 获取type 为0 的menu  目录 -->
+									<th:block th:each="res:${listResource}">
+										<tr th:each="res2:${listResource}"
+											th:if="${res.type eq 0 && res.id eq res2.parentId}">
+											<td class="numeric"></td>
+
+											<td style="width: 20%;"><div
+													class="checkbox checkbox-inline" style="margin-top: 0px;">
+													<input type="checkbox" name="authorIds" th:id="${res.id}"
+														class="numeric" th:value="${res.id}"> <label
+														th:for="${res.id}"></label>
+												</div>[[${res.name}]]
+											</td>
+												
+												
+											<td style="width: 20%;"><div
+													class="checkbox checkbox-inline" style="margin-top: 0px;">
+													<input type="checkbox" name="authorIds" th:id="${res2.id}"
+														class="numeric" th:value="${res2.id}"> <label
+														th:for="${res2.id}"></label>
+												</div>[[${res2.name}]]</td>
+											<td>
+												<div th:each="res3:${listResource}"
+													th:if="${res2.id eq res3.parentId}">
+
+													<ul style="list-style-type:none;float: left;">
+														<li>
+															<div class="checkbox checkbox-inline"
+																style="margin-top: 0px;">
+																<input type="checkbox" name="authorIds"
+																	th:id="${res3.id}" class="numeric"
+																	th:value="${res3.id}"> <label
+																	th:for="${res3.id}"></label>
+															</div> [[${res3.name}]]
+														</li>
+													</ul>
+
+												</div>
+											</td>
+										</tr>
+									</th:block>
+
+								</tbody>
+							</table>
+						</section>
+
+					</div>
+
+					<div class="modal-footer">
+						<a href="#" onclick="return toAuthor();" class="btn btn-primary" data-dismiss="modal">确定</a>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+
+</html>

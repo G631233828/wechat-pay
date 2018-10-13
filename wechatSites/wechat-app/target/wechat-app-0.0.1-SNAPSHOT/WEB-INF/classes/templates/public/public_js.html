@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<body>
+	<div th:fragment="pub_js">
+		<script type="text/javascript" th:src="@{/assets/js/preloader.js}"></script>
+		<script type="text/javascript" th:src="@{/assets/js/bootstrap.js}"></script>
+		<script type="text/javascript" th:src="@{/assets/js/app.js}"></script>
+		<script type="text/javascript" th:src="@{/assets/js/load.js}"></script>
+		<script type="text/javascript" th:src="@{/assets/js/main.js}"></script>
+
+	</div>
+
+
+	<div th:fragment="public_script">
+		<script type="text/javascript">
+			// js获取项目根路径，如： http://localhost:80 83/uimcardprj
+			function getRootPath() {
+				// 获取当前网址，如： http://localhost:8083/uimcardprj/share/meun.jsp
+				var curWwwPath = window.document.location.href;
+				// 获取主机地址之后的目录，如： uimcardprj/share/meun.jsp
+				var pathName = window.document.location.pathname;
+				var pos = curWwwPath.indexOf(pathName);
+				// 获取主机地址，如： http://localhost:8083
+				var localhostPaht = curWwwPath.substring(0, pos);
+				// 获取带"/"的项目名，如：/uimcardprj
+				var projectName = pathName.substring(0, pathName.substr(1)
+						.indexOf('/') + 1);
+				return (localhostPaht + projectName);
+			}
+
+			$(function() {
+				$("#checkall").click(function() {
+					var flag = $("[name=checkall]:checkbox").is(':checked');
+					$("[name=ids]:checkbox").each(function() {
+						$(this).prop("checked", flag);
+					})
+				})
+
+				$("[name=ids]:checkbox").click(function() {
+					var check = "." + this.id + " ";
+					var flag = $(check + "[name=ids]:checkbox").is(':checked');
+					flag = flag == false ? true : false;
+					$(check + "[name=ids]:checkbox").each(function() {
+						$(check + "[name=ids]:checkbox").prop("checked", flag);
+					})
+				})
+
+				//获取icon
+				$(".entypo li").click(function() {
+					$("#icon").val($(this).attr('class'));
+				})
+
+			})
+
+			function toeditPage(id, path) {
+				if (id == '') {
+					//编辑为表格上方的按钮
+					var a = $("input[name='ids']:checked").length;
+					if (a == 1) {
+						var id = $("input[name='ids']:checked").val();
+						window.location.href = path + id;
+					} else if (a == 0) {
+						swal({
+							type : "warning",
+							title : "",
+							text : "请选择一条记录进行编辑!!",
+						});
+					} else {
+						swal({
+							type : "warning",
+							title : "",
+							text : "请不要同时选择多个进行编辑",
+						});
+					}
+				} else {
+					//	$("#editForm").attr("action", path + "/" + id);
+					//toedit();
+					window.location.href = path + id;
+				}
+
+			}
+
+			//删除提示
+			function del(o1, o2) {
+				if (o1 == "" || o1 == null) {
+					var a = $("input[name='ids']:checked").length;
+					if (a == 0) {
+						swal({
+							type : "warning",
+							title : "",
+							text : "请选择一条记录进行数据!!",
+						});
+					} else {
+						var delids = $("input[name='ids']:checked");
+						//获取所有的id执行删除操作，使用ajax
+						var str = "";
+						$(delids).each(function() {
+							str += this.value + ",";
+						});
+						if (str != "") {
+							var ids = str.substring(0, str.length - 1);
+							$("#deleteForm").attr("action", o2 + "/" + ids);
+							deleteSwal();
+						}
+
+					}
+				} else {
+
+					/* 	
+					$('#deleteModal').modal('show'); */
+					$("#deleteForm").attr("action", o1);
+					deleteSwal();
+
+				}
+
+			}
+
+			//显示删除的提示
+			function deleteSwal() {
+				swal({
+					title : "您确定要删除选中的信息吗",
+					text : "删除后将无法恢复，请谨慎操作！",
+					type : "warning",
+					showCancelButton : true,
+					confirmButtonColor : "#DD6B55",
+					confirmButtonText : "是的，我要删除！",
+					cancelButtonText : "让我再考虑一下…",
+					closeOnConfirm : false,
+					closeOnCancel : false
+				}, function(a) {
+					if (a) {
+						todelete();
+					} else {
+						swal("已取消", "您取消了删除操作！", "error")
+					}
+				})
+			}
+
+			//执行删除
+			function todelete() {
+				$("#deleteForm").submit();
+
+			}
+			//跳转编辑界面
+			function toedit() {
+				$("#editForm").submit();
+
+			}
+
+			//禁用按钮通用
+			function toDisable(id, path) {
+				// 需要通过ajax加载对应的菜单列表
+				$
+						.ajax({
+							type : 'POST',
+							url : getRootPath() + "/" + path + "/disable",
+							data : "id=" + id,
+							dataType : "json",
+							success : function(data) {
+
+								if (data.status == 200) {
+									var flag = data.data;
+									var btn;
+									if (flag == true) {
+										btn = "<button type='button'  onclick=toDisable('"
+												+ id
+												+ "','"
+												+ path
+												+ "') class='btn btn-danger'>禁用</button>"
+									} else {
+										btn = "<button type='button' onclick=toDisable('"
+												+ id
+												+ "','"
+												+ path
+												+ "') class='btn btn-success'>启用</button>"
+									}
+									$("#disBtn" + id).html(btn)
+								}
+								$("#modalbody").text(data.msg);
+								$("#myModal").modal('show');
+							}
+						});
+
+			}
+		</script>
+	</div>
+
+
+
+</body>
+
+</html>

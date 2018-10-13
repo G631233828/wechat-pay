@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+
+<div th:fragment="editor_js">
+	<!-- application script for wangEditor -->
+		<script src="wangeditor/wangEditor.min.js" th:src="@{/plugs/Editor/wangeditor/wangEditor.min.js}"></script>
+</div>		
+	
+		
+	<div th:fragment="createEditor">
+	   <script th:inline="javascript">
+	    var type=$(".createEditor").attr("id"); 
+	    //该type既是创建editor的id，又是消息类型
+	    var E = window.wangEditor
+        var editor = new E('#'+type)
+        // 或者 var editor = new E( document.getElementById('editor') )
+        var contentpath=[[@{/}]]; 
+        $msg=$("#msg");
+	    //$imgurls=$("#imgurls");
+	    $text=$("#text");
+        editor.customConfig.uploadFileName = 'uploadFile'//文件上传名字
+        editor.customConfig.uploadImgServer = contentpath+"api/uploadimg/"+type // 上传图片到服务器
+        editor.customConfig.showLinkImg = false//隐藏网络图片上传
+        editor.customConfig.debug = true//开启debug
+        editor.customConfig.uploadImgParamsWithUrl = true 
+        editor.customConfig.uploadImgHeaders = {'headerupload' : 'img' };
+        editor.customConfig.uploadImgHooks = {
+	        success: function (xhr, editor, result) {
+                // $imgurls.val(result.data)        
+	        },
+            };
+   
+	    editor.create();
+        var toast=[[${toast}]];
+        if(toast==null){
+        }else{
+        	editor.txt.html(toast.msg);
+        	
+        }	    
+        document.getElementById("btn1").addEventListener('click',function(){
+        	$text.val(editor.txt.text());
+        	$msg.val(editor.txt.html()) ;
+	    	$("#toastform").submit(function(e){
+             });
+	    },false)
+	    </script>
+       
+       
+       
+	</div>
+</body>
+</html>

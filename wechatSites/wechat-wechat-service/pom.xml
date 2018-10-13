@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>zhongchiedu.wechat</groupId>
+    <artifactId>wechatSites</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>wechat-wechat-service</artifactId>
+  
+  	<dependencies>
+			<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<scope>prsvided</scope>
+		</dependency>
+		<dependency>
+			<groupId>zhongchiedu.wechat</groupId>
+			<artifactId>wechat-Common-Utils</artifactId>
+			<version>${project.version}</version>
+				<scope>provided</scope>
+		</dependency>
+	<dependency>
+			<groupId>zhongchiedu.wechat</groupId>
+			<artifactId>wechat-wechat-Utils</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>zhongchiedu.wechat</groupId>
+			<artifactId>wechat-School-service</artifactId>
+			<version>${project.version}</version>
+				<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>zhongchiedu.wechat</groupId>
+			<artifactId>wechat-wechat-dao</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+	</dependencies>
+  	
+  
+  
+  
+  
+</project>
