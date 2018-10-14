@@ -21,35 +21,37 @@ $.validator.setDefaults({
 
 $().ready(function() {
 			var a = "<i class='fa fa-times-circle'></i> ";
-			$("#clazzForm").validate({
+			$("#teacherForm").validate({
 				rules : {
-					clazzYear : {
+					 name: {
 						required : true,
-						digits:true,
-						minlength:4,
-						maxlength:4,
+						minlength:2,
 					},	
-					clazzNum : {
+					contactsmobile : {
 						required : true,
-						digits:true,
+						isMobile : true,
 					},
 				},
 				messages : {
-					clazzYear : {
+					name : {
 						required : a + "请输入班级年份",
-						digits   : a + "请输入有效数字",
-						minlength: a + "请输入有效的年份",
-						maxlength: a + "请输入有效的年份",
+						minlength: a + "姓名至少是2个字符",
 					},
-					clazzNum : {
+					contactsmobile : {
 						required : a + "请输入班级号",
-						digits  : a + "请输入有效数字",
+						isMobile  : a + "请输入正确的手机号",
 					},
 
 				}
 			});
 
 		});
+
+jQuery.validator.addMethod("isMobile", function(value, element) {
+    var length = value.length;
+    var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
+    return this.optional(element) || (length == 11 && mobile.test(value));
+}, "手机号有问题");
 
 
 function batch(){
