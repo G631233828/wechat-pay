@@ -106,14 +106,14 @@ canvas#canvas4 {
 
 
 											<div class="form-group  ">
-												<label class="col-lg-1 control-label">证件类型：</label>
+												<label class="col-lg-1 control-label">证件类型:</label>
 												<div class="col-lg-6">
-												<select id="cardType" name="cardType" class="form-control">
+												<select id="cardType" name="cardType" class="form-control" required>
 															<option value="">---请选择证件类型---</option>
 															<option value="身份证"
-																th:selected="${user!=null}?${user.cardType =='身份证'}">身份证</option>
-															<option value="护照"
-																th:selected="${user!=null}?${user.cardType =='教师证'}">教师证</option>
+																th:selected="${teacher!=null}?${teacher.cardType =='身份证'}">身份证</option>
+															<option value="教师证"
+																th:selected="${teacher!=null}?${teacher.cardType =='教师证'}">教师证</option>
 															
 														</select>
 													</div>

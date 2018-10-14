@@ -20,6 +20,10 @@ $.validator.setDefaults({
 	});
 
 $().ready(function() {
+	
+	$("#file-pretty input[type='file']").prettyFile();
+	
+	
 			var a = "<i class='fa fa-times-circle'></i> ";
 			$("#teacherForm").validate({
 				rules : {
@@ -31,6 +35,17 @@ $().ready(function() {
 						required : true,
 						isMobile : true,
 					},
+					teacherEmail  :{
+						required : true,
+						email  : true,
+					},
+					cardType :{
+						required:true,
+					},
+					cardId:{
+						required:true,
+					}
+					
 				},
 				messages : {
 					name : {
@@ -41,6 +56,16 @@ $().ready(function() {
 						required : a + "请输入班级号",
 						isMobile  : a + "请输入正确的手机号",
 					},
+					teacherEmail  :{
+						required : a+ "请输入邮箱地址",
+						email   : a+"请输入正确的邮箱地址",
+					},
+					cardType:{
+						required: a+"请选择证件类型",
+					},
+					cardId:{
+						required: a+"请输入证件号码",
+					}
 
 				}
 			});
@@ -54,9 +79,15 @@ jQuery.validator.addMethod("isMobile", function(value, element) {
 }, "手机号有问题");
 
 
-function batch(){
+
+
+/**
+ * 批量导入
+ * @returns
+ */
+function batchImput(){
 	
-	$("#mybatch").modal('show');
+	$("#mybatchUpload").modal('show');
 	
 	
 }

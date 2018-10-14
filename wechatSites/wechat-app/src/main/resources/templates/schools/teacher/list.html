@@ -73,6 +73,13 @@ canvas#canvas4 {
 										</button>
 									</shiro:hasPermission>
 
+									<shiro:hasPermission name="teacher:batch">
+										<button class="btn btn-danger btn-sm"
+											onclick="return batchImput()">
+											<i class="fa fa-trash-o"> </i>批量导入
+										</button>
+									</shiro:hasPermission>
+
 
 								</div>
 
@@ -109,6 +116,7 @@ canvas#canvas4 {
 												<th class="numeric">证件类型</th>
 												<th class="numeric">证件号</th>
 												<th class="numeric">使用状态</th>
+												<th class="numeric">操作</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -122,18 +130,14 @@ canvas#canvas4 {
 															th:for="${teacher.id}"></label>
 													</div>
 												</td>
-												<td class="numeric"
-													th:text="${teacher.name}"></td>
-												<td class="numeric"
-													th:text="${teacher.namePinyin}"></td>
-												<td class="numeric"
-													th:text="${teacher.contactsmobile}"></td>
-												<td class="numeric"
-													th:text="${teacher.cardType}"></td>
-												<td class="numeric"
-													th:text="${teacher.cardId}"></td>
-													
-													
+												<td class="numeric" th:text="${teacher.name}"></td>
+												<td class="numeric" th:text="${teacher.namePinyin}"></td>
+												<td class="numeric" th:text="${teacher.contactsmobile}"></td>
+												<td class="numeric" th:text="${teacher.teacherEmail}"></td>
+												<td class="numeric" th:text="${teacher.cardType}"></td>
+												<td class="numeric" th:text="${teacher.cardId}"></td>
+
+
 												<td class="numeric" th:id="disBtn+${teacher.id}"
 													th:utext="${teacher.isDisable eq true }?|<button type='button' onclick=toDisable('${teacher.id}','teacher') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${teacher.id}','teacher') class='btn btn-success'>启用</button>|"></td>
 												<td class="numeric"><shiro:hasPermission
@@ -204,6 +208,7 @@ canvas#canvas4 {
 				</div>
 			</div>
 			<div th:replace="public/public::myModal"></div>
+			<div th:replace="schools/teacher/batch::mybatch"></div>
 		</div>
 	</div>
 	<!--  END OF PAPER WRAP -->
@@ -226,6 +231,8 @@ canvas#canvas4 {
 	<!-- 引入teacher.js -->
 	<script type="text/javascript" th:inline="javascript"
 		th:src="@{/js/schools/teacher/teacher.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/plugs/prettyfile/bootstrap-prettyfile.js}"></script>
 
 
 

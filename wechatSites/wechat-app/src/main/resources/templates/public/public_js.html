@@ -185,6 +185,34 @@
 						});
 
 			}
+			
+			
+			//判断上传文件后缀名
+			function checkfiletype(o) {
+				var file1 = $(o).val();
+				if (file1 != null) {
+					var file1type = file1.substring(file1.lastIndexOf('.') + 1);
+					if (file1type == "xls" || file1type == "xlsx") {
+						var size = (o.files[0].size / 1024).toFixed(2);
+						if (file1type == "xls" || file1type == "xlsx") {
+							if (size > 20480) {
+								alert("上传文件过大");
+								$(o).val("");
+								$("#submit").attr("disabled", true);
+								return;
+							} else {
+								$("#submit").attr("disabled", false);
+							}
+						}
+					} else {
+						alert("上传文件格式错误");
+						$(o).val("");
+						$("#submit").attr("disabled", true);
+						return;
+					}
+				}
+			}			
+			
 		</script>
 	</div>
 
