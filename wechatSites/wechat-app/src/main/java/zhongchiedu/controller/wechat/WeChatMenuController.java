@@ -37,8 +37,7 @@ public class WeChatMenuController {
 	@RequiresPermissions(value = "wechatmenu:list")
 	@SystemControllerLog(description = "查询微信菜单")
 	public String wechatmenus(Model model, HttpSession session) {
-		List<WechatMenu> list = this.wechatMenuService.findoneBySchoolId(session);
-
+		List<WechatMenu> list = this.wechatMenuService.findWeChatMenus();
 		model.addAttribute("wechatMenu", list);
 		if (Common.isNotEmpty(list)) {
 			int size = 0;
@@ -89,7 +88,7 @@ public class WeChatMenuController {
 	@ResponseBody
 	public BasicDataResult release(HttpSession session) {
 		
-		BasicDataResult result = this.wechatMenuService.release(session);
+		BasicDataResult result = this.wechatMenuService.release();
 		
 		return result;
 	}

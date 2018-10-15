@@ -13,8 +13,6 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import zhongchiedu.common.utils.Contents;
@@ -26,6 +24,7 @@ public class MongoDBRealm extends AuthorizingRealm {
 //	private static final Logger log = LoggerFactory.getLogger(MongoDBRealm.class);
 	@Autowired
 	private UserServiceImpl userService;
+	
 
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
@@ -43,9 +42,8 @@ public class MongoDBRealm extends AuthorizingRealm {
 					User u = this.userService.findUserById(user.getId());
 
 					// 学校的session
-//					School s = u.getSchool();
 //
-//					session.setAttribute(Contents.SCHOOL_SESSION, s);
+					//session.setAttribute(Contents.SCHOOL_SESSION, s);
 //					log.info("生成school session" + s);
 
 					// 获取所有角色的权限

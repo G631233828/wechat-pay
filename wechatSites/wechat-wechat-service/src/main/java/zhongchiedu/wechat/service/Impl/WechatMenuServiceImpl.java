@@ -9,6 +9,7 @@ import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -16,11 +17,11 @@ import org.springframework.stereotype.Repository;
 
 import zhongchiedu.common.utils.BasicDataResult;
 import zhongchiedu.common.utils.Common;
-import zhongchiedu.common.utils.Contents;
 import zhongchiedu.common.utils.Types.menuType;
 import zhongchiedu.framework.service.GeneralServiceImpl;
 import zhongchiedu.pojo.WechatMenu;
 import zhongchiedu.school.pojo.School;
+import zhongchiedu.service.SchoolService;
 import zhongchiedu.wechat.pojo.createMenu.Button;
 import zhongchiedu.wechat.pojo.createMenu.Menu;
 import zhongchiedu.wechat.util.WeixinUtil;
@@ -29,6 +30,10 @@ import zhongchiedu.wechat.util.accessToken.AccessToken;
 @Repository
 public class WechatMenuServiceImpl extends GeneralServiceImpl<WechatMenu> {
 	
+	
+	@Autowired
+	private SchoolService schoolService;
+	
 	private static final Logger log = LoggerFactory.getLogger(WechatMenuServiceImpl.class);
 	/**
 	 * 根据学校的session获取当前登录帐号绑定学校的微信菜单
@@ -36,16 +41,12 @@ public class WechatMenuServiceImpl extends GeneralServiceImpl<WechatMenu> {
 	 * @param session
 	 * @return
 	 */
-	public List<WechatMenu> findoneBySchoolId(HttpSession session) {
-		School school = (School) session.getAttribute(Contents.SCHOOL_SESSION);
-		if (Common.isNotEmpty(school)) {
+	public List<WechatMenu> findWeChatMenus() {
 			Query query = new Query();
-			query.addCriteria(Criteria.where("school.$id").is(new ObjectId(school.getId())))
-					.with(new Sort(Sort.Direction.ASC, "sort"));
+			query.with(new Sort(Sort.Direction.ASC, "sort"));
+			
 			List<WechatMenu> list = this.find(query, WechatMenu.class);
 			return list.size() > 0 ? list : null;
-		}
-		return null;
 	}
 
 	/**
@@ -149,10 +150,11 @@ public class WechatMenuServiceImpl extends GeneralServiceImpl<WechatMenu> {
 	 * @param session
 	 * @return
 	 */
-	public BasicDataResult release(HttpSession session) {
-		School school = (School) session.getAttribute(Contents.SCHOOL_SESSION);
+	public BasicDataResult release() {
 		
-		Menu menu = this.getMenu(school);
+		School school = this.schoolService.findOneByQuery(new Query(),School.class);
+		
+		Menu menu = this.getMenu();
 		
 		if(Common.isEmpty(menu)){
 			return BasicDataResult.build(203, "请先配置学校的微信菜单", null);
@@ -182,15 +184,13 @@ public class WechatMenuServiceImpl extends GeneralServiceImpl<WechatMenu> {
 	 * @param school
 	 * @return
 	 */
-	public Menu getMenu(School school){
+	public Menu getMenu(){
 		Menu menu = new Menu();
 		// 父按钮
 		List listfb = new ArrayList();
-		if (Common.isNotEmpty(school)) {
+	
 			Query query = new Query();
-			query.addCriteria(Criteria.where("parentId").is("0"))
-					.addCriteria(Criteria.where("school.$id").is(new ObjectId(school.getId())))
-					.with(new Sort(Sort.Direction.ASC, "sort"));
+			query.addCriteria(Criteria.where("parentId").is("0")).with(new Sort(Sort.Direction.ASC, "sort"));
 			List<WechatMenu> listmenu = this.find(query, WechatMenu.class);
 			for (WechatMenu wechat : listmenu) {
 				Button supB = new Button();
@@ -232,7 +232,7 @@ public class WechatMenuServiceImpl extends GeneralServiceImpl<WechatMenu> {
 				}
 			}
 			menu.setButton(listfb);
-		}
+		
 		return menu;
 	}
 	

@@ -526,16 +526,18 @@ public class WeixinUtil {
 	 * @param code
 	 * @return
 	 */
-	
+	// wx40d294a89bcd9fcb
+		// e48b8b33730cb8bf7ed2aa26e671549b
 	 public static NSNUserInfo baseWeChatLogin(String code) {
 	        try{
 	        	log.info("微信用户授权:" + code);
 	            String openId = "";
 	            if (!"authdeny".equals(code)) {
-	                WeixinOauth2Token weixinOauth2Token = WeixinUtil.getOauth2AccessToken(
+	                WeixinOauth2Token weixinOauth2Token = WeixinUtil.getOauth2AccessToken("wx40d294a89bcd9fcb","e48b8b33730cb8bf7ed2aa26e671549b", code);
+/*	                WeixinOauth2Token weixinOauth2Token = WeixinUtil.getOauth2AccessToken(
 	                		ReadProperties.getObjectProperties("config.properties","APPID" ),
 	                		ReadProperties.getObjectProperties("config.properties","APPSECRET" ), code);
-
+*/
 	                String accessToken = weixinOauth2Token.getAccessToken();
 	                openId = weixinOauth2Token.getOpenId();
 

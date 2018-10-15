@@ -1,6 +1,0 @@
-/project/wx/wechatSites/wechat-Common-log/src/main/java/zhongchiedu/log/annotation/SystemControllerLog.java
-/project/wx/wechatSites/wechat-Common-log/src/main/java/zhongchiedu/log/dao/LogDaoImpl.java
-/project/wx/wechatSites/wechat-Common-log/src/main/java/zhongchiedu/log/aspect/SystemLogAspect.java
-/project/wx/wechatSites/wechat-Common-log/src/main/java/zhongchiedu/log/dao/LogDao.java
-/project/wx/wechatSites/wechat-Common-log/src/main/java/zhongchiedu/log/annotation/SystemServiceLog.java
-/project/wx/wechatSites/wechat-Common-log/src/main/java/zhongchiedu/log/pojo/Log.java
