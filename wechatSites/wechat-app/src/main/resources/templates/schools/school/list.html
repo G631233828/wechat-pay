@@ -69,7 +69,7 @@ canvas#canvas4 {
 									</shiro:hasPermission>
 
 									<shiro:hasPermission name="school:delete">
-										<button class="btn btn-danger btn-sm" onclick="return del()">
+										<button class="btn btn-danger btn-sm" th:onclick="|return del('','@{/school/}')|">
 											<i class="fa fa-trash-o"> </i>删除
 										</button>
 									</shiro:hasPermission>

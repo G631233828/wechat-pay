@@ -68,25 +68,25 @@
 			},
 			messages : {
 				userName : {
-					required : a + "ÇëÊäÈëÄúµÄĞÕÃû",
-					minlength : a + "ÓÃ»§Ãû±ØĞëÁ½¸ö×Ö·ûÒÔÉÏ"
+					required : a + "è¯·è¾“å…¥æ‚¨çš„å§“å",
+					minlength : a + "ç”¨æˆ·åå¿…é¡»ä¸¤ä¸ªå­—ç¬¦ä»¥ä¸Š"
 				},
 				accountName : {
-					required : a + "ÇëÊäÈëÄúµÄÕÊºÅ",
-					minlength : a + "ÕÊºÅ±ØĞëÁ½¸ö×Ö·ûÒÔÉÏ",
-					remote : a + "¸ÃÕÊºÅÒÑ¾­±»×¢²á"
+					required : a + "è¯·è¾“å…¥æ‚¨çš„å¸å·",
+					minlength : a + "å¸å·å¿…é¡»ä¸¤ä¸ªå­—ç¬¦ä»¥ä¸Š",
+					remote : a + "è¯¥å¸å·å·²ç»è¢«æ³¨å†Œ"
 				},
 				passWord : {
-					required : a + "ÇëÊäÈëÄúµÄÃÜÂë",
-					minlength : a + "ÃÜÂë±ØĞë5¸ö×Ö·ûÒÔÉÏ",
+					required : a + "è¯·è¾“å…¥æ‚¨çš„å¯†ç ",
+					minlength : a + "å¯†ç å¿…é¡»5ä¸ªå­—ç¬¦ä»¥ä¸Š",
 				},
 				passWord2 : {
-					required : a + "ÇëÔÙ´ÎÊäÈëÃÜÂë",
-					minlength : a + "ÃÜÂë±ØĞë5¸ö×Ö·ûÒÔÉÏ",
-					equalTo : a + "Á½´ÎÊäÈëµÄÃÜÂë²»Ò»ÖÂ",
+					required : a + "è¯·å†æ¬¡è¾“å…¥å¯†ç ",
+					minlength : a + "å¯†ç å¿…é¡»5ä¸ªå­—ç¬¦ä»¥ä¸Š",
+					equalTo : a + "ä¸¤æ¬¡è¾“å…¥çš„å¯†ç ä¸ä¸€è‡´",
 				},
 				roleId : {
-					required : a + "ÇëÑ¡Ôñ·ÖÅä½ÇÉ«"
+					required : a + "è¯·é€‰æ‹©åˆ†é…è§’è‰²"
 				}
 			}
 		});
@@ -99,12 +99,12 @@
 		}) */
 	});
 
-	// ÊÖ»úºÅÂëÑéÖ¤
+	// æ‰‹æœºå·ç éªŒè¯
 	jQuery.validator.addMethod("isMobile", function(value, element) {
 	    var length = value.length;
 	    var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
 	    return this.optional(element) || (length == 11 && mobile.test(value));
-	}, "ÇëÕıÈ·ÌîĞ´ÄúµÄÊÖ»úºÅÂë");
+	}, "è¯·æ­£ç¡®å¡«å†™æ‚¨çš„æ‰‹æœºå·ç ");
 
 
 

@@ -53,10 +53,10 @@ public class WeChatTest {
 
 		if (Common.isEmpty(code)) {
 			log.info("未获取请用户的openId,请求微信授权");
-
+			// 注意：基于snsapi_base和snsapi_userinfo获取用户信息是不需要关注公众号。对于已关注公众号的用户，如果用户从公众号的会话或者自定义菜单进入本公众号的网页授权页，即使是scope为snsapi_userinfo，也是静默授权，用户无感知。
 			return new ModelAndView(new RedirectView("https://open.weixin.qq.com/connect/oauth2/authorize?"
-					+ "appid=wx40d294a89bcd9fcb&redirect_uri=http://zhongchiedu.com/wechat-app/wechat/weChatAuth"
-					+ "&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect"));
+					+ "appid=wx40d294a89bcd9fcb&redirect_uri=http://zhongchiedu.com/wechat-app/wechat/successPay"
+					+ "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"));
 		}
 		
 		//通过code获取用户信息
@@ -101,9 +101,16 @@ public class WeChatTest {
 	@RequestMapping("/successPay")
 	public ModelAndView successpay(HttpSession session, HttpServletRequest request) {
 
-		System.out.println(22);
-		System.out.println(22);
-		System.out.println(22);
+		System.out.println("successPay");
+		System.out.println("successPay");
+		System.out.println("successPay");
+		System.out.println("successPay");
+
+		String code = request.getParameter("code");
+		log.info("successPay Code" + code);
+		log.info("successPay Code" + code);
+		log.info("successPay Code" + code);
+		log.info("successPay Code" + code);
 		ModelAndView model = new ModelAndView();
 
 		model.setViewName("test/success");

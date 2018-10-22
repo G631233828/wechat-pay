@@ -21,7 +21,7 @@
 				</div>
 
 				<form role="form" class="form-horizontal m-t" id="signupForm"
-					action="${pageContext.request.contextPath}/adminCompany/upload"
+					th:action="@{/teacher/upload}"
 					enctype="multipart/form-data" method="post">
 					<div class="modal-body" >
 					<div id="file-pretty">
@@ -36,8 +36,8 @@
 							<label class="col-sm-2 control-label">模版下载</label>
 							<div class="col-sm-10" style="margin-top: 8px;">
 								<a
-									href="${pageContext.request.contextPath}/adminCompany/download"><font
-									color="blue">企业信息导入模版.xls</font></a>
+									th:href="@{/teacher/download}"><font
+									color="blue">老师信息导入模版.xls</font></a>
 							</div>
 						</div>
 
@@ -58,7 +58,7 @@
 
 
 					<div class="modal-footer" style="margin-top: 0px;">
-						<button type="submit" class="btn btn-primary">导入</button>
+						<button type="submit" id="submit" class="btn btn-primary">导入</button>
 					</div>
 
 				</form>

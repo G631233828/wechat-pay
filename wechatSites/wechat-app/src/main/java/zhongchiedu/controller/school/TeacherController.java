@@ -1,6 +1,12 @@
 package zhongchiedu.controller.school;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -20,14 +26,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import zhongchiedu.common.utils.BasicDataResult;
+import zhongchiedu.common.utils.Common;
+import zhongchiedu.common.utils.FileOperateUtil;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.log.annotation.SystemControllerLog;
-import zhongchiedu.school.pojo.Clazz;
 import zhongchiedu.school.pojo.Teacher;
-import zhongchiedu.service.ClazzService;
 import zhongchiedu.service.TeacherService;
+import zhongchiedu.service.Impl.TeacherServiceImpl;
 
 @Controller
 public class TeacherController {
@@ -35,14 +44,20 @@ public class TeacherController {
 	private static final Logger log = LoggerFactory.getLogger(TeacherController.class);
 
 	@Autowired
-	private TeacherService teacherService;
+	private TeacherServiceImpl teacherService;
 
 	@GetMapping("/teachers")
 	@RequiresPermissions(value = "teacher:list")
 	@SystemControllerLog(description = "查询所有教师")
 	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, Model model,
-			@RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize, HttpSession session) {
+			@RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize, HttpSession session,
+			@ModelAttribute("errorImport") String errorImport) {
 
+		if(Common.isNotEmpty(errorImport)){
+			
+			model.addAttribute("errorImport", errorImport);
+		}
+		
 		// 分页查询数据
 		Pagination<Teacher> pagination;
 		try {
@@ -117,6 +132,10 @@ public class TeacherController {
 		return "redirect:/teachers";
 	}
 
+	
+	
+	
+	
 	@RequestMapping(value = "/teacher/disable", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public BasicDataResult teacherDisable(@RequestParam(value = "id", defaultValue = "") String id) {
@@ -125,5 +144,109 @@ public class TeacherController {
 
 	}
 
+	
+	
+	
+	/**
+	 * 文件下载
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/teacher/download")
+	@SystemControllerLog(description = "下载老师信息导入模版")
+	public ModelAndView download(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String storeName = "teacher.xlsx";
+		String contentType = "application/octet-stream";
+		String UPLOAD = "Templates/";
+		FileOperateUtil.download(request, response, storeName, contentType, UPLOAD);
+
+		return null;
+	}
+	
+	
+	
+	
+	
+	/***
+	 * 文件上传
+	 * 
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings({ "static-access", "unused" })
+	@RequestMapping(value = "/teacher/upload")
+	@SystemControllerLog(description = "批量导入企业信息")
+	public ModelAndView upload(Teacher teacher, HttpServletRequest request, HttpSession session,
+			RedirectAttributes attr) {
+
+		log.info("开始上传文件");
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("redirect:/teachers");
+		String error = "";
+		try {
+			Map<String, Object> map = new HashMap<String, Object>();
+			// 别名
+			String upname =  File.separator + "FileUpload" + File.separator + "teacher";
+
+			// 可以上传的文件格式
+			log.info("准备上传企业单位数据");
+			String filetype[] = { "xls,xlsx" };
+			List<Map<String, Object>> result = FileOperateUtil.upload(request, upname, filetype);
+			log.info("上传文件成功");
+			boolean has = (Boolean) result.get(0).get("hassuffix");
+
+			if (has != false) {
+				// 获得上传的xls文件路径
+				String path = (String) result.get(0).get("savepath");
+				File file = new File(path);
+				// 知道导入返回导入结果
+				error = this.teacherService.BatchImport(file, 1, session);
+
+				attr.addFlashAttribute("errorImport", error);
+				// map.put("result", result);
+			}
+		} catch (Exception e) {
+			modelAndView.addObject("errorImport", e);
+			return modelAndView;
+
+		}
+
+		return modelAndView;
+
+	}
+
+	
+	/**
+	 * process 获取进度
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/teacher/uploadprocess")
+	@ResponseBody
+	public Object process(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		return this.teacherService.findproInfo(request);
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

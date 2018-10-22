@@ -49,6 +49,13 @@ canvas#canvas4 {
 
 
 					<div class="col-sm-12">
+						<div class="body-nest" id="alert" th:if="${errorImport!=''}">
+							<div class="alert alert-danger">
+								<button data-dismiss="alert" class="close" type="button">×</button>
+								<th:block th:utext="${errorImport}"> </th:block>
+							</div>
+
+						</div>
 
 						<div class="nest" id="tableStaticClose">
 							<div class="title-alt">
@@ -68,7 +75,7 @@ canvas#canvas4 {
 									</shiro:hasPermission>
 
 									<shiro:hasPermission name="teacher:delete">
-										<button class="btn btn-danger btn-sm" onclick="return del()">
+										<button class="btn btn-danger btn-sm" th:onclick="|return del('','@{/teacher/}')|">
 											<i class="fa fa-trash-o"> </i>删除
 										</button>
 									</shiro:hasPermission>
@@ -211,16 +218,7 @@ canvas#canvas4 {
 			<div th:replace="schools/teacher/batch::mybatch"></div>
 		</div>
 	</div>
-	<!--  END OF PAPER WRAP -->
-	<!-- 右侧隐藏菜单start -->
-	<div th:replace="public/public::right"></div>
-	<!-- 右侧隐藏菜单end-->
-	<!-- 底部js -->
-	s
-	<div th:replace="public/public_js::pub_js"></div>
-	<div th:replace="public/public_js::public_script"></div>
-	<div th:replace="public/public::deleteModal"></div>
-	<div th:replace="public/public::footer"></div>
+
 	<!-- Sweet alert -->
 	<script th:src="@{/plugs/sweetalert/sweetalert.min.js}"></script>
 	<!-- Jquery Validate -->
@@ -233,8 +231,15 @@ canvas#canvas4 {
 		th:src="@{/js/schools/teacher/teacher.js}"></script>
 	<script type="text/javascript"
 		th:src="@{/plugs/prettyfile/bootstrap-prettyfile.js}"></script>
-
-
+	<!--  END OF PAPER WRAP -->
+	<!-- 右侧隐藏菜单start -->
+	<div th:replace="public/public::right"></div>
+	<!-- 右侧隐藏菜单end-->
+	<!-- 底部js -->
+	<div th:replace="public/public_js::pub_js"></div>
+	<div th:replace="public/public_js::public_script"></div>
+	<div th:replace="public/public::deleteModal"></div>
+	<div th:replace="public/public::footer"></div>
 
 </body>
 

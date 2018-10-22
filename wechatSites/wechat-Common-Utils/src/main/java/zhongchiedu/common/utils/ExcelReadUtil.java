@@ -24,12 +24,14 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.stereotype.Repository;
 
 /**
  * Excle 表格的导入
  * @author mac
  *
  */
+@Repository
 public class ExcelReadUtil {
 
 	
