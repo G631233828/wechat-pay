@@ -57,12 +57,12 @@
     	  if(account!=""&&password!=""){
     		  alert(1)
     		  $.ajax({
-                  url:"http://localhost/wechat-app/wechat/toBinding",
+                  url:'toBinding',
                   type:"post",
                   data:"account="+account+"&password="+password,
                   success:function(data){
                 	  alert(2)
-                     	alert(data)
+                     	alert(data.msg)
                   },
               });
     	  }else{
