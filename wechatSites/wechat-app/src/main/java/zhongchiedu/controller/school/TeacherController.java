@@ -158,7 +158,7 @@ public class TeacherController {
 	@RequestMapping(value = "/teacher/download")
 	@SystemControllerLog(description = "下载老师信息导入模版")
 	public ModelAndView download(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String storeName = "teacher.xlsx";
+		String storeName = "老师信息导入模板.xlsx";
 		String contentType = "application/octet-stream";
 		String UPLOAD = "Templates/";
 		FileOperateUtil.download(request, response, storeName, contentType, UPLOAD);

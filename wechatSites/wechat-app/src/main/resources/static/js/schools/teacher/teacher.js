@@ -19,11 +19,12 @@ $.validator.setDefaults({
 		validClass : "help-block m-b-none"
 	});
 
+
+
+
+
+
 $().ready(function() {
-	
-	$("#file-pretty input[type='file']").prettyFile();
-	
-	
 			var a = "<i class='fa fa-times-circle'></i> ";
 			$("#teacherForm").validate({
 				rules : {
@@ -77,8 +78,6 @@ jQuery.validator.addMethod("isMobile", function(value, element) {
     var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
     return this.optional(element) || (length == 11 && mobile.test(value));
 }, "手机号有问题");
-
-
 
 
 /**
@@ -146,10 +145,6 @@ $(document)
 										eventFun, 100);
 							});
 		});
-
-
-
-
 
 
 

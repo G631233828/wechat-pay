@@ -12,5 +12,5 @@ public interface HomeWorkService {
 	 
 	 BasicDataResult getHomeWork(String username,String password);
 	
-
+	 HomeWork jsoupGetHomeWork(String page);
 }

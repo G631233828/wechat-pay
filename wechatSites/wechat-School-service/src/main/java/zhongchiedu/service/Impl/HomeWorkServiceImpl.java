@@ -65,7 +65,8 @@ public class HomeWorkServiceImpl implements HomeWorkService {
 		return null;
 
 	}
-
+	
+	@Override
 	public HomeWork jsoupGetHomeWork(String page) {
 		HomeWork homework = new HomeWork();
 		String URL = "http://www.fushanedu.cn";
@@ -75,11 +76,15 @@ public class HomeWorkServiceImpl implements HomeWorkService {
 		String gradeName = doc.getElementById("GradeName").text();
 		String classzz = doc.getElementById("ClassName").text();
 		String content = doc.getElementById("MyMSG").text();
+		String studentName =doc.getElementById("login_lblmsg").text();
+		
+		
 		homework.setSchoolName(schoolName);
 		homework.setGradeName(gradeName);
 		homework.setClasszz(classzz);
 		homework.setContent(content);
-		
+		homework.setStudentName(studentName.substring(0, studentName.indexOf("(")));
+		System.out.println(2222);
 		// 获得需要解析的节点
 		Element e = doc.select("form table tbody tr:eq(1) table:eq(3) tbody tr td:eq(1) table").first();
 		
@@ -95,7 +100,7 @@ public class HomeWorkServiceImpl implements HomeWorkService {
 			newdoc =newdoc.replace(oldLink, newLink);
 		}
 		//替换所有的<br>
-		Document doc2 = Jsoup.parse(newdoc.toString().replaceAll("<br>", "*/*"));
+		Document doc2 = Jsoup.parse(newdoc.toString());
 		
 		Map<String ,String> map = new HashMap<>();
 		
@@ -106,7 +111,7 @@ public class HomeWorkServiceImpl implements HomeWorkService {
 		for(int i=0;i<elements.size();i++){
 			for(int j=0;j<homeworks.length;j++){
 				if(elements.get(i).text().equals(homeworks[j])){
-					map.put(elements.get(i).text(), elements.get(i+1).text());
+					map.put(elements.get(i).text(), elements.get(i+1).html());
 				}
 			}
 		}
@@ -119,7 +124,7 @@ public class HomeWorkServiceImpl implements HomeWorkService {
 	
 	public static void main(String[] args) {
 		HomeWorkServiceImpl a = new HomeWorkServiceImpl();
-		a.getHomeWork("20160101","197905");
+		a.getHomeWork("20160101","1979015");
 	}
 	
 	

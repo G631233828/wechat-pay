@@ -22,7 +22,7 @@ import zhongchiedu.wechat.pay.WXPayConfig;
 import zhongchiedu.wechat.pay.WXPayUtil;
 import zhongchiedu.wechat.util.WeixinUtil;
 
-@RequestMapping("/wechat")
+
 @Controller
 public class WeChatTest {
 
@@ -38,7 +38,7 @@ public class WeChatTest {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("/weChatAuth")
+//	@RequestMapping("/weChatAuth")
 	public ModelAndView wechatAuth(HttpSession session, HttpServletRequest request) {
 		System.out.println(11);
 		System.out.println(11);
@@ -79,7 +79,7 @@ public class WeChatTest {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("/test")
+//	@RequestMapping("/test")
 	public ModelAndView test(HttpSession session, HttpServletRequest request) {
 
 		System.out.println(22);
@@ -98,7 +98,7 @@ public class WeChatTest {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("/successPay")
+//	@RequestMapping("/successPay")
 	public ModelAndView successpay(HttpSession session, HttpServletRequest request) {
 
 		System.out.println("successPay");
@@ -121,7 +121,7 @@ public class WeChatTest {
 	
 	
 	
-	@RequestMapping("/getopenId")
+//	@RequestMapping("/getopenId")
 	public ModelAndView getopenId(HttpSession session, HttpServletRequest request) throws Exception {
 	ModelAndView model = new ModelAndView();
 	model.setViewName("test/success");

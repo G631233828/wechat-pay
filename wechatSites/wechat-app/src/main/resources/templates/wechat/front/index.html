@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+</head>
+<head th:include="wechat/front/public/public_css::pub_css"></head>
+<body ontouchstart class="page-bg">
+
+	<div th:replace="wechat/front/public/public::top"></div>
+
+
+	<div class="weui_grids">
+
+		<a href="javascript:;" class="weui_grid js_grid">
+			<div class="weui_grid_icon">
+				<img th:src="@{/assets/weChatPage/images/icon_nav_button.png}" alt="">
+			</div>
+			<p class="weui_grid_label">通知</p>
+		</a> <a href="javascript:;" class="weui_grid js_grid">
+			<div class="weui_grid_icon">
+				<img th:src="@{/assets/weChatPage/images/icon_nav_button.png}" alt="">
+			</div>
+			<p class="weui_grid_label">作业</p>
+		</a> <a href="javascript:;" class="weui_grid js_grid">
+			<div class="weui_grid_icon">
+				<img th:src="@{/assets/weChatPage/images/icon_nav_button.png}" alt="">
+			</div>
+			<p class="weui_grid_label">请假</p>
+		</a>
+
+	</div>
+
+
+
+	<div th:replace="wechat/front/public/public::footer"></div>
+
+
+</body>
+</html>

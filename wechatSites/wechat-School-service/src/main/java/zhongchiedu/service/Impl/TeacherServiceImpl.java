@@ -139,6 +139,7 @@ public class TeacherServiceImpl extends GeneralServiceImpl<Teacher> implements T
 				if (teacher == null) {
 				
 					Teacher ed = new Teacher();
+					importTeacher.setNamePinyin(pinyinTool.toPinYin(importTeacher.getName()));
 					BeanUtils.copyProperties(importTeacher, ed);
 					this.insert(ed);
 				}

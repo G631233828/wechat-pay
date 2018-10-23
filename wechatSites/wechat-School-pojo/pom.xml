@@ -15,6 +15,16 @@
 			<artifactId>wechat-MongodbFramework</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		
+		
+		<dependency>
+			<groupId>zhongchiedu.wechat</groupId>
+			<artifactId>wechat-wechat-Utils</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		
 	</dependencies>
 
 
