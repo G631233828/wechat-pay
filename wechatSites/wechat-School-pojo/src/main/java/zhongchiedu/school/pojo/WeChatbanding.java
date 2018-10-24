@@ -25,7 +25,6 @@ public class WeChatbanding extends GeneralBean<WeChatbanding>{
 	private String studentClass;    //绑定学生班级
 	private String studentAccount;  //登录帐号
 	private String password;		//登录密码
-	@DBRef
 	private NSNUserInfo nsnUserInfo; //绑定微信用户信息
 	
 	

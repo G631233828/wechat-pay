@@ -53,15 +53,17 @@ public class HomeWorkServiceImpl implements HomeWorkService {
 
 	@Override
 	public BasicDataResult getHomeWork(String username, String password) {
-	
 		String msg = this.checkLogin(username, password);
-		if (msg.equals("error")) {
-			return BasicDataResult.build(400, "用户名或密码错误", null);
-		} else {
-			// 使用jsoup开始解析
-
-			System.out.println(this.jsoupGetHomeWork(msg));
-		}
+//		
+//		if (msg.equals("error")) {
+//			return BasicDataResult.build(400, "用户名或密码错误", null);
+//		} else {
+//			// 使用jsoup开始解析
+//
+//			System.out.println(this.jsoupGetHomeWork(msg));
+//		}
+		System.out.println(this.jsoupGetHomeWork(msg));
+		
 		return null;
 
 	}
@@ -74,17 +76,16 @@ public class HomeWorkServiceImpl implements HomeWorkService {
 
 		String schoolName = doc.getElementById("SchoolName").text();
 		String gradeName = doc.getElementById("GradeName").text();
-		String classzz = doc.getElementById("ClassName").text();
+		String className = doc.getElementById("ClassName").text();
 		String content = doc.getElementById("MyMSG").text();
 		String studentName =doc.getElementById("login_lblmsg").text();
 		
-		
 		homework.setSchoolName(schoolName);
 		homework.setGradeName(gradeName);
-		homework.setClasszz(classzz);
+		homework.setClassName(className);
 		homework.setContent(content);
+		homework.setDate(content.substring(content.indexOf("-")-4, content.lastIndexOf("-")+3));
 		homework.setStudentName(studentName.substring(0, studentName.indexOf("(")));
-		System.out.println(2222);
 		// 获得需要解析的节点
 		Element e = doc.select("form table tbody tr:eq(1) table:eq(3) tbody tr td:eq(1) table").first();
 		
@@ -124,7 +125,7 @@ public class HomeWorkServiceImpl implements HomeWorkService {
 	
 	public static void main(String[] args) {
 		HomeWorkServiceImpl a = new HomeWorkServiceImpl();
-		a.getHomeWork("20160101","1979015");
+		a.getHomeWork("20160101","197905");
 	}
 	
 	

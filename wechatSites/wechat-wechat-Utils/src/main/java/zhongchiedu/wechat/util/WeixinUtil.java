@@ -32,7 +32,6 @@ import org.springframework.stereotype.Repository;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
-import zhongchiedu.common.utils.ReadProperties;
 import zhongchiedu.wechat.oauto2.NSNUserInfo;
 import zhongchiedu.wechat.oauto2.WeixinOauth2Token;
 import zhongchiedu.wechat.pojo.createMenu.Menu;
@@ -48,6 +47,8 @@ import zhongchiedu.wechat.util.token.WeChatToken;
  */
 @Repository
 public class WeixinUtil {
+	
+	
 	private static Logger log = (Logger) LoggerFactory.getLogger(WeixinUtil.class);
 
 	// 获取access_token的接口地址（GET） 限200（次/天）
@@ -528,12 +529,12 @@ public class WeixinUtil {
 	 */
 	// wx40d294a89bcd9fcb
 		// e48b8b33730cb8bf7ed2aa26e671549b
-	 public static NSNUserInfo baseWeChatLogin(String code) {
+	 public static NSNUserInfo baseWeChatLogin(String appid ,String appSecret,String code) {
 	        try{
 	        	log.info("微信用户授权:" + code);
 	            String openId = "";
 	            if (!"authdeny".equals(code)) {
-	                WeixinOauth2Token weixinOauth2Token = WeixinUtil.getOauth2AccessToken("wx40d294a89bcd9fcb","e48b8b33730cb8bf7ed2aa26e671549b", code);
+	                WeixinOauth2Token weixinOauth2Token = WeixinUtil.getOauth2AccessToken(appid,appSecret, code);
 /*	                WeixinOauth2Token weixinOauth2Token = WeixinUtil.getOauth2AccessToken(
 	                		ReadProperties.getObjectProperties("config.properties","APPID" ),
 	                		ReadProperties.getObjectProperties("config.properties","APPSECRET" ), code);

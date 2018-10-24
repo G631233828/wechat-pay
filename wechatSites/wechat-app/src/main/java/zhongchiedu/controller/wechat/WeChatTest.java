@@ -60,12 +60,12 @@ public class WeChatTest {
 		}
 		
 		//通过code获取用户信息
-        NSNUserInfo nsn=WeixinUtil.baseWeChatLogin(code);
-        model.addObject("openId", nsn.getOpenid());
-         System.out.println(nsn.getOpenid());
-         System.out.println(nsn.getOpenid());
-         System.out.println(nsn.getOpenid());
-         System.out.println(nsn.getOpenid());
+     //   NSNUserInfo nsn=WeixinUtil.baseWeChatLogin(code);
+//        model.addObject("openId", nsn.getOpenid());
+//         System.out.println(nsn.getOpenid());
+//         System.out.println(nsn.getOpenid());
+//         System.out.println(nsn.getOpenid());
+//         System.out.println(nsn.getOpenid());
 
         
 		

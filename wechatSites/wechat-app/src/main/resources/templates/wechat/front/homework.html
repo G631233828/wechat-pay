@@ -9,22 +9,24 @@
 <div th:replace="/wechat/front/public/public::top"></div>
 
 	<div class="weui_panel weui_panel_access">
-            <div class="weui_panel_hd">2016年1班作业</div>
-            <div class="weui_panel_bd">
-             
-         
-			
+            <div class="weui_panel_hd" style="">[[${homeWork.date}]][[${homeWork.schoolName}]][[${homeWork.gradeName}]][[${homeWork.className}]]
+           	<br/> [[${homeWork.studentName}]]的家庭作业
+            </div>
+            
+            
+            <div class="weui_panel_bd" th:each="work:${homeWork.homework}">
                 <div  class="weui_media_box weui_media_appmsg">
                     <div class="weui_media_hd">
                         <img class="weui_media_appmsg_thumb" th:src="@{/assets/weChatPage/images/homework.png}" alt="">
                     </div>
                     <div class="weui_media_bd">
-                        <h4 class="weui_media_title">语文作业</h4>
-                       <p class="weui_panel_hd">1.朗诵<br/>2.日记<br/>3.<a href="http://www.fushanedu.cn/jxq/UpLoadFolder/OtherFile/10.22计算大礼包.doc">10.22计算大礼包.doc</a> </p>
+                        <h4 class="weui_media_title" th:each="entry:${work}" th:text="${entry.key}"></h4>
+                       <p class="weui_panel_hd" th:each="entry:${work}" th:utext="${entry.value}"> </p>
                     </div>
                 </div>
             </div>
-          <a class="weui_panel_ft" href="javascript:void(0);">查看更多</a>
+
+            
         </div>        
         
     <div th:replace="/wechat/front/public/public::footer"></div>  
