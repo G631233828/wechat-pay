@@ -124,7 +124,7 @@ public class StudentServiceImpl extends GeneralServiceImpl<zhongchiedu.school.po
 					clazzService.insert(clazz);
 				}
 				importStudent.setClazz(clazz);
-				query.addCriteria(Criteria.where("studentCode").is(resultexcel[i][j+2]));
+				query.addCriteria(Criteria.where("studentCode").is(importStudent.getStudentCode()));
 				String studentCode=importStudent.getStudentCode();
 				// 通过学籍号是否存在该信息
 				Student student = this.findOneByQuery(query, Student.class);
