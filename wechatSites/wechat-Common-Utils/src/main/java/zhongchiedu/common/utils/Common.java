@@ -20,6 +20,9 @@ import java.net.URLDecoder;
 import java.text.DateFormat;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -40,6 +43,7 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.xalan.xsltc.compiler.sym;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -204,6 +208,24 @@ public class Common {
 		String extension = fileName.substring(position);
 		return formatDate + random + extension;
 	}
+	
+	
+	/**
+	 * 传入日期 进行比较相差天数
+	 * @param date
+	 * @return
+	 */
+	public Integer plusDate(String date1,String date2){
+		
+		System.out.println(fromStringToDate("1997-9-9"));
+		
+		
+		
+		return 0;
+	}
+	
+	
+	
 
 	/**
 	 * 取得html网页内容 UTF8编码
@@ -904,7 +926,20 @@ public class Common {
     }
     
     
-    
+    /**
+     * 通过两个日期获取两个日期之间的差距
+     * @param date1
+     * @param date2
+     * @return
+     */
+    public static long getBetweenDays(String date1,String date2){
+    	DateTimeFormatter  formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    	LocalDate local = LocalDate.parse(date1, formatter);
+    	LocalDate local2 = LocalDate.parse(date2, formatter);
+    	LocalDate d = LocalDate.of(local.getYear(), local.getMonth(), local.getDayOfMonth());
+    	LocalDate d2 = LocalDate.of(local2.getYear(), local2.getMonth(), local2.getDayOfMonth());
+    	return  d2.toEpochDay() - d.toEpochDay();
+    }
     
     
     
@@ -912,7 +947,24 @@ public class Common {
 	
     
     public static void main(String[] args) {
-System.out.println(getHostIp());
+    	
+    	String date = "2018-07-07";
+    	String date2 = "2018-07-10";
+    	
+    	DateTimeFormatter  formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    	LocalDate local = LocalDate.parse(date, formatter);
+    	LocalDate local2 = LocalDate.parse(date2, formatter);
+    	
+    	LocalDate d = LocalDate.of(local.getYear(), local.getMonth(), local.getDayOfMonth());
+    	LocalDate d2 = LocalDate.of(local2.getYear(), local2.getMonth(), local2.getDayOfMonth());
+    	
+    	long dd = d2.toEpochDay() - d.toEpochDay();
+    	
+    	System.out.println(dd);
+    	
+    	
+
 	}
 	
 //	public static void main(String[] args) {

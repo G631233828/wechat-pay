@@ -6,12 +6,9 @@
 <head th:include="wechat/front/public/public_css::pub_css"></head>
 
 <body ontouchstart class="page-bg">
-	<div class="tcenter" style="overflow: hidden;">
-		<img class=" img-radius"
-			style="margin: 10px auto 0; width: 300px; height: 180px;"
-			th:src="@{/assets/weChatPage/favicon.png}">
-	</div>
 
+	<div th:replace="wechat/front/public/public::top"></div>
+	
 	<div class="page-hd">
 		<h1 class="page-hd-title">您的微信尚未绑定</h1>
 		<p class="page-hd-desc">
@@ -38,7 +35,7 @@
 					name="password" placeholder="密码">
 			</div>
 			<div class="weui-custom-ft">
-				<a href="javascript:hidemark();">取消</a> <a href="javascript:;"
+				<a href="javascript:hidemark();">取消</a> <a href="javascript:;" id="submit"
 					onclick="return formSubmit();">确定</a>
 			</div>
 		</div>
@@ -59,7 +56,8 @@
 
 		function formSubmit() {
 			var account = $("#account").val();
-			var password = $("#password").val()
+			var password = $("#password").val();
+			$("#submit").attr("readonly",true);
 			if (account != "" && password != "") {
 				$.ajax({
 					url : "toBinding",
@@ -68,12 +66,17 @@
 							+ "&code=" + getQueryString("code"),
 					success : function(data) {
 						if (data.status == 200) {
+							alert(data.msg)
 							window.location.href = "weChatAuth";
+						}else{
+							alert(data.msg);
+							$("#submit").attr("readonly",false);
 						}
 					},
 				});
 			} else {
 				alert("帐号，或密码不能为空");
+				$("#submit").attr("readonly",false);
 			}
 		}
 

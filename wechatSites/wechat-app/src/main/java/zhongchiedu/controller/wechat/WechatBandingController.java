@@ -48,7 +48,6 @@ public class WechatBandingController {
 	public ModelAndView wechatAuth(HttpSession session, HttpServletRequest request) {
 		// 1.用户访问获取code如果没有获取到code则重定向
 		String code = request.getParameter("code");
-		log.info("weChat Code: " + code);
 		School school = this.schoolService.findOneByQuery(new Query(), School.class);
 		String appid = school.getAppid(); // 获取appid
 		String url = school.getDoMainName();// 获取域名
@@ -69,7 +68,7 @@ public class WechatBandingController {
 				String account = weChatbinding.getStudentAccount();
 				String password = weChatbinding.getPassword();
 				// 使用帐号密码进行登录
-				String result = this.homeWorkService.checkLogin(account, password);
+				String result = this.homeWorkService.checkLogin(account, password,null);
 				if (result.equals("error")) {
 					// 登录失败，跳转到登录界面
 					String redirect_uri = url + "/wechat-app/wechat/toAuthor";
@@ -107,9 +106,19 @@ public class WechatBandingController {
 	@RequestMapping("/toAuthor")
 	public ModelAndView toAuthor(HttpSession session, HttpServletRequest request) {
 		String code = request.getParameter("code");
-		log.info("successPay Code" + code);
+		
+		School school = this.schoolService.findOneByQuery(new Query(), School.class);
+		String appid = school.getAppid(); // 获取appid
+		String url = school.getDoMainName();// 获取域名
+		
+		if(Common.isEmpty(code)){
+			String redirect_uri = url + "/wechat-app/wechat/toAuthor";
+			// 登录失败，用户名或者密码错误（已经发生了更改）
+			return new ModelAndView(new RedirectView("https://open.weixin.qq.com/connect/oauth2/authorize?"
+					+ "appid=" + appid + "&redirect_uri=" + redirect_uri
+					+ "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"));
+		}
 		ModelAndView model = new ModelAndView();
-		// model.addObject("code", code);
 		model.setViewName("wechat/front/login");
 		return model;
 	}
@@ -124,15 +133,20 @@ public class WechatBandingController {
 	@RequestMapping("/index")
 	public ModelAndView index(HttpSession session, HttpServletRequest request) {
 		String code = request.getParameter("code");
-		String openId = request.getParameter("state");
-		log.info("index Code:" + code);
-		log.info("index openId:" + openId);
 		//获取登录用户的信息
 		School school = this.schoolService.findOneByQuery(new Query(), School.class);
 		String appid = school.getAppid(); // 获取appid
 		String url = school.getDoMainName();// 获取域名
+		NSNUserInfo nsn = WeixinUtil.baseWeChatLogin(school.getAppid(), school.getAppSecret(), code);
+		String openId = nsn.getOpenid();
+		if(Common.isEmpty(code)){
+			String redirect_uri = url + "/wechat-app/wechat/toAuthor";
+			// 登录失败，用户名或者密码错误（已经发生了更改）
+			return new ModelAndView(new RedirectView("https://open.weixin.qq.com/connect/oauth2/authorize?"
+					+ "appid=" + appid + "&redirect_uri=" + redirect_uri
+					+ "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"));
+		}
 		ModelAndView model = new ModelAndView();
-		
 		WeChatbanding we = this.weChatbandingService.findWeChatbandingByOpenId(openId);
 		if(Common.isNotEmpty(we)){
 			model.addObject("wechatbinding", we);
@@ -141,7 +155,7 @@ public class WechatBandingController {
 			// 登录失败，用户名或者密码错误（已经发生了更改）
 			return new ModelAndView(new RedirectView("https://open.weixin.qq.com/connect/oauth2/authorize?"
 					+ "appid=" + appid + "&redirect_uri=" + redirect_uri
-					+ "&response_type=code&scope=snsapi_userinfo&state="+openId+"#wechat_redirect"));
+					+ "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"));
 		}
 		model.addObject("code", code);
 		model.setViewName("wechat/front/index");
@@ -158,17 +172,24 @@ public class WechatBandingController {
 	@RequestMapping("/homework")
 	public ModelAndView homework(HttpSession session, HttpServletRequest request) {
 		ModelAndView model = new ModelAndView();
+		String state = request.getParameter("state");
+		String date = Common.isNotEmpty(request.getParameter("date"))?request.getParameter("date"):null;
+		if(Common.isNotEmpty(state)&&!state.equals("STATE")){
+			date= state;
+		}
 		String code = request.getParameter("code");
-	
 		School school = this.schoolService.findOneByQuery(new Query(), School.class);
 		String appid = school.getAppid(); // 获取appid
 		String url = school.getDoMainName();// 获取域名
-		log.info("homework" + code);
 		if(Common.isEmpty(code)){
 			String redirect_uri = url + "/wechat-app/wechat/homework";
+			if(Common.isEmpty(date)){
+				date ="STATE";
+			}
+				
 			return new ModelAndView(new RedirectView("https://open.weixin.qq.com/connect/oauth2/authorize?"
 					+ "appid=" + appid + "&redirect_uri=" + redirect_uri
-					+ "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"));
+					+ "&response_type=code&scope=snsapi_userinfo&state="+date+"#wechat_redirect"));
 		}
 		// 2.通过用户code获取用户的信息，openId
 		NSNUserInfo nsn = WeixinUtil.baseWeChatLogin(school.getAppid(), school.getAppSecret(), code);
@@ -180,24 +201,32 @@ public class WechatBandingController {
 			String account = weChatbinding.getStudentAccount();
 			String password = weChatbinding.getPassword();
 			// 使用帐号密码进行登录
-			String result = this.homeWorkService.checkLogin(account, password);
+			String result = this.homeWorkService.checkLogin(account,password,date);
 			if (result.equals("error")) {
 				// 登录失败，跳转到登录界面
 				String redirect_uri = url + "/wechat-app/wechat/toAuthor";
 				// 登录失败，用户名或者密码错误（已经发生了更改）
 				return new ModelAndView(new RedirectView("https://open.weixin.qq.com/connect/oauth2/authorize?"
 						+ "appid=" + appid + "&redirect_uri=" + redirect_uri
-						+ "&response_type=code&scope=snsapi_userinfo&state="+openId+"#wechat_redirect"));
+						+ "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"));
 			}else{
 				//开始解析返回信息，然后返回到页面
 				HomeWork homeWork = this.homeWorkService.jsoupGetHomeWork(result);
 				model.addObject("homeWork", homeWork);
-				
+				model.addObject("date", date);
+				model.setViewName("wechat/front/homework");
+				return model;
 			}
+		}else{
+			// 登录失败，跳转到登录界面
+			String redirect_uri = url + "/wechat-app/wechat/toAuthor";
+			// 登录失败，用户名或者密码错误（已经发生了更改）
+			return new ModelAndView(new RedirectView("https://open.weixin.qq.com/connect/oauth2/authorize?"
+					+ "appid=" + appid + "&redirect_uri=" + redirect_uri
+					+ "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"));
+			
 		}
-		model.setViewName("wechat/front/homework");
-
-		return model;
+	
 	}
 
 	/**
@@ -208,17 +237,19 @@ public class WechatBandingController {
 	@RequestMapping("/toBinding")
 	@ResponseBody
 	public BasicDataResult toBinding(String account, String password, String code, HttpServletRequest request) {
-		log.info("toBinding code" + code);
 		School school = this.schoolService.findOneByQuery(new Query(), School.class);
 		// 验证输入的信息是否为空
-		if (Common.isNotEmpty(account) && Common.isNotEmpty(password)) {
+		if (Common.isNotEmpty(account) && Common.isNotEmpty(password)&&Common.isNotEmpty(code)) {
 			// 1.验证帐号密码是否是正确的，如果正确则对帐号进行登录然后解析
-			String result = this.homeWorkService.checkLogin(account, password);
+			String result = this.homeWorkService.checkLogin(account, password,null);
 			if (result.equals("error")) {
 				return BasicDataResult.build(400, "帐号或密码错误", null);
 			} else {
 				// 2.获取当前访问用户的code，并且通过code去获取用户的信息
 				NSNUserInfo nsn = WeixinUtil.baseWeChatLogin(school.getAppid(), school.getAppSecret(), code);
+				if(Common.isEmpty(nsn)){
+					return BasicDataResult.build(400, "正在进行绑定，请不要重复提交！", null);
+				}
 				WeChatbanding banding = new WeChatbanding();
 				HomeWork homeWork = this.homeWorkService.jsoupGetHomeWork(result);
 				banding.setNsnUserInfo(nsn);
@@ -232,7 +263,7 @@ public class WechatBandingController {
 				return BasicDataResult.build(200, "用户绑定成功", null);
 			}
 		}
-		return BasicDataResult.build(400, "帐号或密码有误", null);
+		return BasicDataResult.build(400, "绑定过程中出现未知异常，请联系管理员", null);
 	}
 
 	
@@ -250,8 +281,6 @@ public class WechatBandingController {
 		String appid = school.getAppid(); // 获取appid
 		String url = school.getDoMainName();// 获取域名
 		String code = request.getParameter("code");
-
-		log.info("unbinding Code" + code);
 		if(Common.isEmpty(code)){
 			String redirect_uri = url + "/wechat-app/wechat/unbinding";
 			return new ModelAndView(new RedirectView("https://open.weixin.qq.com/connect/oauth2/authorize?"
@@ -264,11 +293,11 @@ public class WechatBandingController {
 		if(Common.isNotEmpty(bd)){
 			this.weChatbandingService.remove(bd);
 		}
-		String redirect_uri = url + "/wechat-app/wechat/weChatAuth";
+		String redirect_uri = url + "/wechat-app/wechat/toAuthor";
 		// 登录成功
 		return new ModelAndView(new RedirectView("https://open.weixin.qq.com/connect/oauth2/authorize?"
 				+ "appid=" + appid + "&redirect_uri=" + redirect_uri
-				+ "&response_type=code&scope=snsapi_userinfo&state="+openId+"#wechat_redirect"));
+				+ "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"));
 	}
 	
 	
