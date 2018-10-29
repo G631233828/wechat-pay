@@ -12,6 +12,7 @@ import lombok.Setter;
 public class ZtreeNode {
 	public ZtreeNode() {
 		this.nocheck=false;
+		this.icon="person.png";
 	}
 	//自身id
 	@Getter
@@ -37,6 +38,10 @@ public class ZtreeNode {
     @Setter
     private boolean nocheck;
     
+    @Getter
+    @Setter
+    private String icon;
+    
     public boolean getIsParent() {
     	return isParent;
     }
@@ -48,5 +53,7 @@ public class ZtreeNode {
 	public void setpId(String pId) {
 		this.pId = pId;
 	}
+	
+	
     
 }

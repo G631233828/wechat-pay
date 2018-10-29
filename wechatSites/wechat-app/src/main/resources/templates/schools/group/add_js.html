@@ -25,7 +25,10 @@
 			}
 		};
 		var zc=[[${zNodes}]];
-		console.log(zc);
+		 var context = [[@{/}]];   
+		for(var z in zc){
+			zc[z].icon=context+"plugs/ztree/img/"+zc[z].icon
+		}
 		var zNodes =zc;
 
 		function beforeClick(treeId, treeNode) {
@@ -43,8 +46,8 @@
 				v += nodes[i].name + ",";
 				hideid += nodes[i].id + ",";
 			}
-			console.log(v);
-			console.log(hideid);
+			//console.log(v);
+			//console.log(hideid);
 			if (v.length > 0 ) v = v.substring(0, v.length-1);
 			if (hideid.length > 0 ) hideid = hideid.substring(0, hideid.length-1);
 			var cityObj = $("#citySel");
