@@ -5,75 +5,89 @@
 </head>
 <head th:include="wechat/front/public/public_css::pub_css"></head>
 
-<body ontouchstart  class="page-bg">
-<div class="tcenter" style="overflow:hidden; "><img class=" img-radius"  style="margin:10px auto 0;width:300px;height:180px;" th:src="@{/assets/weChatPage/favicon.png}"></div>
+<body ontouchstart class="page-bg">
 
-<div class="page-hd">
-        <h1 class="page-hd-title">
-           您的微信尚未绑定
-        </h1>
-        <p class="page-hd-desc">您需要先登录才能查看，请先进行绑定操作！<br/>（帐号密码与网页通用）</p>
-    </div>
-    
- <a href="javascript:showmark();"  class="weui_btn weui_btn_primary">登录绑定</a>
+	<div th:replace="wechat/front/public/public::top"></div>
+	
+	<div class="page-hd">
+		<h1 class="page-hd-title">您的微信尚未绑定</h1>
+		<p class="page-hd-desc">
+			您需要先登录才能查看，请先进行绑定操作！<br />（帐号密码与网页通用）
+		</p>
+	</div>
 
-  <form th:action="@{/wechat/toBinding}" id="regform" method="post">
-     <div class="weui-custom-pop">
-        <div class="close" onclick="hidemark()"><i class="icon icon-95 f25"></i></div>
-     	<div class="weui-custom-hd">福山外国语小学（家校桥）</div>
-     	<div class="weui-custom-bd">
-     		<input type="tel" class="weui_input" id="account" name="account" placeholder="帐号">
-     		
-     	</div>
-     		<div class="weui-custom-bd">
-     	<input type="password" class="weui_input" id="password" name="password" placeholder="密码">
-     	</div>
-     	<div class="weui-custom-ft">
-     		<a href="javascript:hidemark();">取消</a>
-     		<a href="javascript:;" onclick="return formSubmit();">确定</a>
-     	</div>
-     </div>
-      </form>
+	<a href="javascript:showmark();" class="weui_btn weui_btn_primary">登录绑定</a>
 
-<div th:replace="wechat/front/public/public::footer"></div>
+	<form th:action="@{/wechat/toBinding}" id="regform" method="post">
 
-		
-     <script>
-     function showmark(){
+		<div class="weui-custom-pop">
+			<div class="close" onclick="hidemark()">
+				<i class="icon icon-95 f25"></i>
+			</div>
+			<div class="weui-custom-hd">福山外国语小学（家校桥）</div>
+			<div class="weui-custom-bd">
+				<input type="tel" class="weui_input" id="account" name="account"
+					placeholder="帐号">
+
+			</div>
+			<div class="weui-custom-bd">
+				<input type="password" class="weui_input" id="password"
+					name="password" placeholder="密码">
+			</div>
+			<div class="weui-custom-ft">
+				<a href="javascript:hidemark();">取消</a> <a href="javascript:;" id="submit"
+					onclick="return formSubmit();">确定</a>
+			</div>
+		</div>
+	</form>
+
+	<div th:replace="wechat/front/public/public::footer"></div>
+
+
+	<script>
+		function showmark() {
 			$('.weui_mask').addClass('weui_mask_visible');
 			$('.weui-custom-pop').addClass('weui-dialog-visible');
-     }
-      function hidemark(){
-     	$('.weui_mask').removeClass('weui_mask_visible');
+		}
+		function hidemark() {
+			$('.weui_mask').removeClass('weui_mask_visible');
 			$('.weui-custom-pop').removeClass('weui-dialog-visible');
-     }
- 
-      function formSubmit(){
-    	  var account = $("#account").val();
-    	  var password = $("#password").val()
-	alert(account)
-	alert(password)
-	alert(3)
-    	  if(account!=""&&password!=""){
-    		  alert(1)
-    		  $.ajax({
-                  url:'toBinding',
-                  type:"post",
-                  data:"account="+account+"&password="+password,
-                  success:function(data){
-                	  alert(2)
-                     	alert(data.msg)
-                  },
-              });
-    	  }else{
-    		  alert("帐号，或密码不能为空");
-    	  }
-    	 
-    	  
-    	 // $("#regform").submit();
-      }
-      
-     </script>
-		
+		}
+
+		function formSubmit() {
+			var account = $("#account").val();
+			var password = $("#password").val();
+			$("#submit").attr("readonly",true);
+			if (account != "" && password != "") {
+				$.ajax({
+					url : "toBinding",
+					type : "post",
+					data : "account=" + account + "&password=" + password
+							+ "&code=" + getQueryString("code"),
+					success : function(data) {
+						if (data.status == 200) {
+							alert(data.msg)
+							window.location.href = "weChatAuth";
+						}else{
+							alert(data.msg);
+							$("#submit").attr("readonly",false);
+						}
+					},
+				});
+			} else {
+				alert("帐号，或密码不能为空");
+				$("#submit").attr("readonly",false);
+			}
+		}
+
+		function getQueryString(name) {
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+			var r = window.location.search.substr(1).match(reg);
+			if (r != null)
+				return unescape(r[2]);
+			return null;
+		}
+	</script>
+
 </body>
 </html>

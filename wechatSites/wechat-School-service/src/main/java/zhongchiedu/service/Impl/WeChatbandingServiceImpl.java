@@ -18,20 +18,21 @@ public class WeChatbandingServiceImpl extends GeneralServiceImpl<WeChatbanding> 
 	
 	private static final Logger log = LoggerFactory.getLogger(WeChatbandingServiceImpl.class);
 
+	/**
+	 * 通过用户的openId来查看是否已经存在
+	 */
 	@Override
 	public void SaveOrUpdateWeChatbanding(WeChatbanding weChatbanding) {
-		if (Common.isNotEmpty(weChatbanding)) {
-			if (weChatbanding.getId() != null) {
-				Query query = new Query();
-				query.addCriteria(Criteria.where("openId").is(weChatbanding.getOpenId()));
-				// 执行修改操作
-				WeChatbanding ed = this.findOneByQuery(query, WeChatbanding.class);
-				if (ed == null)
-					ed = new WeChatbanding();
-				weChatbanding.setIsDisable(false);
-				BeanUtils.copyProperties(weChatbanding, ed);
-				this.save(ed);
-			} else {
+		if(Common.isNotEmpty(weChatbanding)){
+			weChatbanding.setIsDisable(false);
+			//通过openId判断是否存在数据，如果存在则执行修改
+			Query query = new Query();
+			query.addCriteria(Criteria.where("openId").is(weChatbanding.getOpenId()));
+			WeChatbanding bd = this.findOneByQuery(query, WeChatbanding.class);
+			if(Common.isNotEmpty(bd)){
+				BeanUtils.copyProperties(weChatbanding, bd);
+				this.save(bd);
+			}else{
 				WeChatbanding ed = new WeChatbanding();
 				BeanUtils.copyProperties(weChatbanding, ed);
 				// 执行添加操作
