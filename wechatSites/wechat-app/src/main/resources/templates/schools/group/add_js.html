@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+    <div th:fragment="ztree_js">
+	<script th:inline="javascript">
+		var setting = {
+			check: {
+				enable: true,
+				chkboxType: {"Y":"ps", "N":"ps"}
+			},
+			view: {
+				dblClickExpand: false
+			},
+			data: {
+				simpleData: {
+					enable: true
+				}
+			},
+			callback: {
+				beforeClick: beforeClick,
+				onCheck: onCheck
+			}
+		};
+		var zc=[[${zNodes}]];
+		console.log(zc);
+		var zNodes =zc;
+
+		function beforeClick(treeId, treeNode) {
+			var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+			zTree.checkNode(treeNode, !treeNode.checked, null, true);
+			return false;
+		}
+		
+		function onCheck(e, treeId, treeNode) {
+			var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+			nodes = zTree.getCheckedNodes(true),
+			v = "";
+			hideid="";
+			for (var i=0, l=nodes.length; i<l; i++) {
+				v += nodes[i].name + ",";
+				hideid += nodes[i].id + ",";
+			}
+			console.log(v);
+			console.log(hideid);
+			if (v.length > 0 ) v = v.substring(0, v.length-1);
+			if (hideid.length > 0 ) hideid = hideid.substring(0, hideid.length-1);
+			var cityObj = $("#citySel");
+			var ids=$("#ids");
+			cityObj.val(v)
+			ids.attr("value",hideid)
+			//cityObj.attr("value", v);
+		}
+
+		function showMenu() {
+			var cityObj = $("#citySel");
+			var cityOffset = $("#citySel").offset();
+			$("#menuContent").css({left:(cityOffset.left+250) + "px", top:(cityOffset.top-500) + cityObj.outerHeight() + "px"}).slideDown("fast");
+
+			$("body").bind("mousedown", onBodyDown);
+		}
+		function hideMenu() {
+			$("#menuContent").fadeOut("fast");
+			$("body").unbind("mousedown", onBodyDown);
+		}
+		function onBodyDown(event) {
+			if (!(event.target.id == "menuBtn" || event.target.id == "citySel" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length>0)) {
+				hideMenu();
+			}
+		}
+
+		$(document).ready(function(){
+			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+		});
+		
+	</script>
+	</div>
+
+</body>
+</html>

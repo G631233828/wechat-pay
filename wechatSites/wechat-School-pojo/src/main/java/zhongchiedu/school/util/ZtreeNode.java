@@ -11,6 +11,7 @@ import lombok.Setter;
 
 public class ZtreeNode {
 	public ZtreeNode() {
+		this.nocheck=false;
 	}
 	//自身id
 	@Getter
@@ -25,15 +26,16 @@ public class ZtreeNode {
     //是否为父节点
 	@Setter
     private boolean isParent;
-	
-	//通知节点
-	@Getter
-	@Setter
-	private String  toastid;
+
     //是否选中
     @Getter
     @Setter
     private boolean checked;
+    
+    //是否有勾选框
+    @Getter
+    @Setter
+    private boolean nocheck;
     
     public boolean getIsParent() {
     	return isParent;
