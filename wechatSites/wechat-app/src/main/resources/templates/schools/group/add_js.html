@@ -57,7 +57,7 @@
 		function showMenu() {
 			var cityObj = $("#citySel");
 			var cityOffset = $("#citySel").offset();
-			$("#menuContent").css({left:(cityOffset.left+250) + "px", top:(cityOffset.top-500) + cityObj.outerHeight() + "px"}).slideDown("fast");
+			$("#menuContent").css({left:(cityOffset.left-310) + "px", top:(cityOffset.top-500) + cityObj.outerHeight() + "px"}).slideDown("fast");
 
 			$("body").bind("mousedown", onBodyDown);
 		}
@@ -77,6 +77,62 @@
 		
 	</script>
 	</div>
+	
+	    <div th:fragment="validate_js">
+	    <script type="text/javascript">
+	    $.validator.setDefaults({
+			highlight : function(a) {
+				$(a).closest(".form-group").removeClass("has-success")
+						.addClass("has-error")
+			},
+			success : function(a) {
+				a.closest(".form-group").removeClass("has-error").addClass(
+						"has-success")
+			},
+			errorElement : "span",
+			errorPlacement : function(a, b) {
+				if (b.is(":radio") || b.is(":checkbox")) {
+					a.appendTo(b.parent().parent().parent())
+				} else {
+					a.appendTo(b.parent())
+				}
+			},
+			errorClass : "help-block m-b-none",
+			validClass : "help-block m-b-none"
+		});
 
+	    
+	    
+$().ready(function() {
+			var a = "<i class='fa fa-times-circle'></i> ";
+			$("#groupForm").validate({
+				rules : {
+					 groupName: {
+						required : true,
+					},	
+					leaderId : {
+						required : true,
+					},
+					viceId  :{
+						required : true,
+					},
+				},
+				messages : {
+					groupName : {
+						required : a + "请输入组名",
+					},
+					leaderId : {
+						required : a + "请选择组长",
+					},
+					viceId  :{
+						required : a+ "请输入副组长",
+					},
+
+				}
+			});
+
+		});
+</script>
+</div>
 </body>
 </html>
