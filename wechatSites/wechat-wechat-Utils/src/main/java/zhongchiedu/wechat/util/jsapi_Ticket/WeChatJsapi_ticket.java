@@ -23,6 +23,9 @@ public class WeChatJsapi_ticket {
 	private AccessToken accessToken;
 
 	private Jsapi_Ticket jsapi_Ticket;
+	
+	private static String appid;
+	private static String appsecret;
 
 	public AccessToken getAccessToken() {
 		return accessToken;
@@ -45,8 +48,10 @@ public class WeChatJsapi_ticket {
 
 	static SimpleDateFormat dft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-	public WeChatJsapi_ticket() {
+	public WeChatJsapi_ticket(String appid,String appsecret) {
 		WeixinUtil weixinUtil = new WeixinUtil();
+		this.appid= appid;
+		this.appsecret=appsecret;
 
 		try {
 			Date date = new Date();
@@ -66,7 +71,7 @@ public class WeChatJsapi_ticket {
 
 			if (accessToken.getToken()!=null||accessToken.getToken()!="") {
 
-				jsapi_Ticket = weixinUtil.getJsapi_Ticket(accessToken.getToken());
+				jsapi_Ticket = weixinUtil.getJsapi_Ticket(accessToken.getToken(),appid,appsecret);
 				
 				log.info("获取到的jsapi_Ticket"+jsapi_Ticket);
 			}
@@ -80,7 +85,7 @@ public class WeChatJsapi_ticket {
 	
 	
 	public static class InnerSingletion {
-		public static WeChatJsapi_ticket single = new WeChatJsapi_ticket();
+		public static WeChatJsapi_ticket single = new WeChatJsapi_ticket(appid , appsecret);
 	}
 
 	public static WeChatJsapi_ticket getInstance() {
@@ -96,7 +101,7 @@ public class WeChatJsapi_ticket {
 
 		// 设定时间戳，7200,
 		if (flag || outofTimeJsapi_ticket.equals("0")) {
-			InnerSingletion.single = new WeChatJsapi_ticket();
+			InnerSingletion.single = new WeChatJsapi_ticket(appid,appsecret);
 		}
 		return WeChatJsapi_ticket.InnerSingletion.single;
 

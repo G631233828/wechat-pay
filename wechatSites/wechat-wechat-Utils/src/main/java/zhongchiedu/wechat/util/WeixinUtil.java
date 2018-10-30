@@ -96,7 +96,7 @@ public class WeixinUtil {
  * @param accessToken
  * @return
  */
-	public static Jsapi_Ticket getJsapi_Ticket(String accessToken) {
+	public static Jsapi_Ticket getJsapi_Ticket(String accessToken,String appid,String appsecret) {
 
 		Jsapi_Ticket jsapi_Ticket = null;
 
@@ -401,7 +401,7 @@ public class WeixinUtil {
 		return (int) ((random * num));
 	}
 
-	/**
+	/**WeChatToken
 	 * 获取当前时间 yyyyMMddHHmmss
 	 */
 	public static String getCurrTime() {

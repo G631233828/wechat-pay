@@ -36,15 +36,11 @@ public class ReadProperties {
 	}
 	
 	public static void main(String[] args) {
-		String url = getObjectProperties("config.properties","active.url" );
-		String user = getObjectProperties("config.properties","active.user" );
-		String password = getObjectProperties("config.properties","active.password" );
-		String queue = getObjectProperties("config.properties","active.queue" );
+		
+		
+		String url = getObjectProperties("application.properties","wechat.appid" );
 		
 		System.out.println(url);
-		System.out.println(user);
-		System.out.println(password);
-		System.out.println(queue);
 		
 		
 	}

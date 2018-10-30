@@ -13,6 +13,7 @@ import zhongchiedu.wechat.templates.util.sendTemplatMessage;
 import zhongchiedu.wechat.templates.util.sendTemplateMessage_Data_ValueAndColor;
 import zhongchiedu.wechat.util.WeixinUtil;
 import zhongchiedu.wechat.util.accessToken.AccessToken;
+import zhongchiedu.wechat.util.token.WeChatToken;
 
 
 public class BindingTempPlate {
@@ -29,11 +30,10 @@ public class BindingTempPlate {
 				//appid:wx40d294a89bcd9fcb
 				//appSecret:8718b53e61cfbdc946bf43f8557ec45b
 		//TODO
-		AccessToken a = t.getAccessToken(ReadProperties.getObjectProperties("config.properties","APPID"),
-				ReadProperties.getObjectProperties("config.properties","APPSECRET"));
+		AccessToken at= WeChatToken.getInstance().getAccessToken();
 		//绑定成功提示.
-		bindingNotifcation("ooiMKv-Em5FWT0WRYD7ZnHrga4_M",
-				a.getToken(),"刘庆－aaron");
+		bindingNotifcation("ooiMKv7cqR-2EgkeC9LdATpr-mbY",
+				at.getToken(),"您已经成功绑定了微信公众号");
 		log.info("success send template to user");
 		
 	} 
@@ -59,7 +59,7 @@ public class BindingTempPlate {
 			SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			BindingNotifcation datas=new BindingNotifcation();
 			datas.setFirst(new sendTemplateMessage_Data_ValueAndColor("您已成功绑定微信公告号成功."));
-			datas.setKeyword1(new sendTemplateMessage_Data_ValueAndColor("刘庆"));
+			datas.setKeyword1(new sendTemplateMessage_Data_ValueAndColor("fliay"));
 			datas.setKeyword2( new sendTemplateMessage_Data_ValueAndColor(sdf.format(new Date())));
 			datas.setRemark(new sendTemplateMessage_Data_ValueAndColor("绑定成功后可使用微信登录某某系统"));
 			sendTM.setData(datas);

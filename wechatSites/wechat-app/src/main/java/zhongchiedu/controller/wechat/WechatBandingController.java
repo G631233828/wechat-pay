@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 import zhongchiedu.common.utils.BasicDataResult;
 import zhongchiedu.common.utils.Common;
+import zhongchiedu.common.utils.ReadProperties;
 import zhongchiedu.school.pojo.HomeWork;
 import zhongchiedu.school.pojo.School;
 import zhongchiedu.school.pojo.WeChatbanding;
@@ -48,9 +49,13 @@ public class WechatBandingController {
 	public ModelAndView wechatAuth(HttpSession session, HttpServletRequest request) {
 		// 1.用户访问获取code如果没有获取到code则重定向
 		String code = request.getParameter("code");
-		School school = this.schoolService.findOneByQuery(new Query(), School.class);
-		String appid = school.getAppid(); // 获取appid
-		String url = school.getDoMainName();// 获取域名
+//		School school = this.schoolService.findOneByQuery(new Query(), School.class);
+//		String appid = school.getAppid(); // 获取appid
+//		String url = school.getDoMainName();// 获取域名
+		
+		String appid = ReadProperties.getObjectProperties("application.properties","wechat.appid");
+		String appsecret = ReadProperties.getObjectProperties("application.properties","wechat.appsecret");
+		String url =ReadProperties.getObjectProperties("application.properties","wechat.serverUrl");
 		if (Common.isEmpty(code)) {
 			String redirect_uri = url + "/wechat-app/wechat/weChatAuth";
 			// 注意：基于snsapi_base和snsapi_userinfo获取用户信息是不需要关注公众号。对于已关注公众号的用户，如果用户从公众号的会话或者自定义菜单进入本公众号的网页授权页，即使是scope为snsapi_userinfo，也是静默授权，用户无感知。
@@ -59,7 +64,7 @@ public class WechatBandingController {
 							+ redirect_uri + "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"));
 		} else {
 			// 2.通过用户code获取用户的信息，openId
-			NSNUserInfo nsn = WeixinUtil.baseWeChatLogin(school.getAppid(), school.getAppSecret(), code);
+			NSNUserInfo nsn = WeixinUtil.baseWeChatLogin(appid,appsecret, code);
 			String openId = nsn.getOpenid();
 			// 3.通过用户的openId在wechatbanding表中进行查询，
 			WeChatbanding weChatbinding = this.weChatbandingService.findWeChatbandingByOpenId(openId);
@@ -106,11 +111,12 @@ public class WechatBandingController {
 	@RequestMapping("/toAuthor")
 	public ModelAndView toAuthor(HttpSession session, HttpServletRequest request) {
 		String code = request.getParameter("code");
-		
-		School school = this.schoolService.findOneByQuery(new Query(), School.class);
-		String appid = school.getAppid(); // 获取appid
-		String url = school.getDoMainName();// 获取域名
-		
+//		School school = this.schoolService.findOneByQuery(new Query(), School.class);
+//		String appid = school.getAppid(); // 获取appid
+//		String url = school.getDoMainName();// 获取域名
+		String appid = ReadProperties.getObjectProperties("application.properties","wechat.appid");
+		//String appsecret = ReadProperties.getObjectProperties("application.properties","wechat.appsecret");
+		String url =ReadProperties.getObjectProperties("application.properties","wechat.serverUrl");
 		if(Common.isEmpty(code)){
 			String redirect_uri = url + "/wechat-app/wechat/toAuthor";
 			// 登录失败，用户名或者密码错误（已经发生了更改）
@@ -134,10 +140,13 @@ public class WechatBandingController {
 	public ModelAndView index(HttpSession session, HttpServletRequest request) {
 		String code = request.getParameter("code");
 		//获取登录用户的信息
-		School school = this.schoolService.findOneByQuery(new Query(), School.class);
-		String appid = school.getAppid(); // 获取appid
-		String url = school.getDoMainName();// 获取域名
-		NSNUserInfo nsn = WeixinUtil.baseWeChatLogin(school.getAppid(), school.getAppSecret(), code);
+//		School school = this.schoolService.findOneByQuery(new Query(), School.class);
+//		String appid = school.getAppid(); // 获取appid
+//		String url = school.getDoMainName();// 获取域名
+		String appid = ReadProperties.getObjectProperties("application.properties","wechat.appid");
+		String appsecret = ReadProperties.getObjectProperties("application.properties","wechat.appsecret");
+		String url =ReadProperties.getObjectProperties("application.properties","wechat.serverUrl");
+		NSNUserInfo nsn = WeixinUtil.baseWeChatLogin(appid, appsecret, code);
 		String openId = nsn.getOpenid();
 		if(Common.isEmpty(code)){
 			String redirect_uri = url + "/wechat-app/wechat/toAuthor";
@@ -178,9 +187,14 @@ public class WechatBandingController {
 			date= state;
 		}
 		String code = request.getParameter("code");
-		School school = this.schoolService.findOneByQuery(new Query(), School.class);
-		String appid = school.getAppid(); // 获取appid
-		String url = school.getDoMainName();// 获取域名
+		
+//		School school = this.schoolService.findOneByQuery(new Query(), School.class);
+//		String appid = school.getAppid(); // 获取appid
+//		String url = school.getDoMainName();// 获取域名
+		
+		String appid = ReadProperties.getObjectProperties("application.properties","wechat.appid");
+		String appsecret = ReadProperties.getObjectProperties("application.properties","wechat.appsecret");
+		String url =ReadProperties.getObjectProperties("application.properties","wechat.serverUrl");
 		if(Common.isEmpty(code)){
 			String redirect_uri = url + "/wechat-app/wechat/homework";
 			if(Common.isEmpty(date)){
@@ -192,7 +206,7 @@ public class WechatBandingController {
 					+ "&response_type=code&scope=snsapi_userinfo&state="+date+"#wechat_redirect"));
 		}
 		// 2.通过用户code获取用户的信息，openId
-		NSNUserInfo nsn = WeixinUtil.baseWeChatLogin(school.getAppid(), school.getAppSecret(), code);
+		NSNUserInfo nsn = WeixinUtil.baseWeChatLogin(appid, appsecret, code);
 		String openId = nsn.getOpenid();
 		// 3.通过用户的openId在wechatbanding表中进行查询，
 		WeChatbanding weChatbinding = this.weChatbandingService.findWeChatbandingByOpenId(openId);
@@ -237,7 +251,10 @@ public class WechatBandingController {
 	@RequestMapping("/toBinding")
 	@ResponseBody
 	public BasicDataResult toBinding(String account, String password, String code, HttpServletRequest request) {
-		School school = this.schoolService.findOneByQuery(new Query(), School.class);
+//		School school = this.schoolService.findOneByQuery(new Query(), School.class);
+		String appid = ReadProperties.getObjectProperties("application.properties","wechat.appid");
+		String appsecret = ReadProperties.getObjectProperties("application.properties","wechat.appsecret");
+		String url =ReadProperties.getObjectProperties("application.properties","wechat.serverUrl");
 		// 验证输入的信息是否为空
 		if (Common.isNotEmpty(account) && Common.isNotEmpty(password)&&Common.isNotEmpty(code)) {
 			// 1.验证帐号密码是否是正确的，如果正确则对帐号进行登录然后解析
@@ -246,7 +263,7 @@ public class WechatBandingController {
 				return BasicDataResult.build(400, "帐号或密码错误", null);
 			} else {
 				// 2.获取当前访问用户的code，并且通过code去获取用户的信息
-				NSNUserInfo nsn = WeixinUtil.baseWeChatLogin(school.getAppid(), school.getAppSecret(), code);
+				NSNUserInfo nsn = WeixinUtil.baseWeChatLogin(appid, appsecret, code);
 				if(Common.isEmpty(nsn)){
 					return BasicDataResult.build(400, "正在进行绑定，请不要重复提交！", null);
 				}
@@ -277,9 +294,14 @@ public class WechatBandingController {
 	@RequestMapping("/unbinding")
 	public ModelAndView unbinding(HttpServletRequest request){
 		
-		School school = this.schoolService.findOneByQuery(new Query(), School.class);
-		String appid = school.getAppid(); // 获取appid
-		String url = school.getDoMainName();// 获取域名
+//		School school = this.schoolService.findOneByQuery(new Query(), School.class);
+//		String appid = school.getAppid(); // 获取appid
+//		String url = school.getDoMainName();// 获取域名
+		
+		String appid = ReadProperties.getObjectProperties("application.properties","wechat.appid");
+		String appsecret = ReadProperties.getObjectProperties("application.properties","wechat.appsecret");
+		String url =ReadProperties.getObjectProperties("application.properties","wechat.serverUrl");
+		
 		String code = request.getParameter("code");
 		if(Common.isEmpty(code)){
 			String redirect_uri = url + "/wechat-app/wechat/unbinding";
@@ -287,7 +309,7 @@ public class WechatBandingController {
 					+ "appid=" + appid + "&redirect_uri=" + redirect_uri
 					+ "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"));
 		}
-		NSNUserInfo nsn = WeixinUtil.baseWeChatLogin(school.getAppid(), school.getAppSecret(), code);
+		NSNUserInfo nsn = WeixinUtil.baseWeChatLogin(appid,appsecret, code);
 		String openId = nsn.getOpenid();
 		WeChatbanding bd = this.weChatbandingService.findWeChatbandingByOpenId(openId);
 		if(Common.isNotEmpty(bd)){

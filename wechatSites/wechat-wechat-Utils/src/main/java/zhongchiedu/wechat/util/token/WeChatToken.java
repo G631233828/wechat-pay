@@ -9,6 +9,7 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import zhongchiedu.common.utils.ReadProperties;
 import zhongchiedu.wechat.util.WeixinUtil;
 import zhongchiedu.wechat.util.accessToken.AccessToken;
 
@@ -38,9 +39,12 @@ public class WeChatToken {
 			outofTimeAccessToken = dft.format(dar.getTime());
 			log.info("当前的outofTimeAccessToken过期时间为：" + outofTimeAccessToken);
 			
-			//TODO
+//			accessToken = weixinUtil.getAccessToken(ReadProperties.getObjectProperties("application.properties","wechat.appid"),
+//					ReadProperties.getObjectProperties("application.properties","wechat.appsecret"));
+			accessToken = weixinUtil.getAccessToken("wx40d294a89bcd9fcb",
+					"e48b8b33730cb8bf7ed2aa26e671549b");
 //			accessToken = weixinUtil.getAccessToken(Configure.getInstance().getValueString("APPID"),
-//					Configure.getInstance().getValueString("APPSECRET"));
+//					Configure.getInstance().getValueString("APPSECRET"));"wx40d294a89bcd9fcb","e48b8b33730cb8bf7ed2aa26e671549b"
 
 			log.info("load Token success");
 		} catch (Exception e) {
