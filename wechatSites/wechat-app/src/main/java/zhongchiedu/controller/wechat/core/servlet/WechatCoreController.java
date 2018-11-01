@@ -54,7 +54,6 @@ public class WechatCoreController extends HttpServlet {
 		// 随机字符串
 		String echostr = request.getParameter("echostr");
 		PrintWriter out = response.getWriter();
-		School ss = (School) session.getAttribute("SSchool");
 		// weChatServer.getToken()
 		try {
 			// WeChatServer

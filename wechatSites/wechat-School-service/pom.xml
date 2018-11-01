@@ -22,6 +22,12 @@
 		</dependency>
 		<dependency>
 			<groupId>zhongchiedu.wechat</groupId>
+			<artifactId>wechat-wechat-service</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>zhongchiedu.wechat</groupId>
 			<artifactId>wechat-Common-Utils</artifactId>
 			<version>${project.version}</version>
 			<scope>provided</scope>

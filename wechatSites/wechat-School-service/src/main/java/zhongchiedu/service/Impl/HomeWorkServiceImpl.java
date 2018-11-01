@@ -1,6 +1,7 @@
 package zhongchiedu.service.Impl;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -103,9 +104,9 @@ public class HomeWorkServiceImpl implements HomeWorkService {
 		return homework;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws UnsupportedEncodingException {
 		HomeWorkServiceImpl a = new HomeWorkServiceImpl();
-		String aa = a.checkLogin("20160101", "197905", "2018-10-15");
+		String aa = a.checkLogin("20170110", "Renqin771023", "2018-10-23");
 		System.out.println(aa);
 
 	}

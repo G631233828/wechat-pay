@@ -54,4 +54,15 @@ public class Contents {
     		
     
     
+    /**
+     * 微信配置文件读取
+     */
+    
+    public static final String URL = ReadProperties.getObjectProperties("application.properties", "wechat.serverUrl");
+    public static final String APPSECRET = ReadProperties.getObjectProperties("application.properties", "wechat.appsecret");
+    public static final String APPID = ReadProperties.getObjectProperties("application.properties", "wechat.appid");
+    
+    
+    
+    
 }

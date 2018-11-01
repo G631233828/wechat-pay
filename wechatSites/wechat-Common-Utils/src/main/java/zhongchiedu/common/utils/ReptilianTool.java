@@ -2,7 +2,6 @@ package zhongchiedu.common.utils;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.List;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
@@ -73,6 +72,10 @@ public class ReptilianTool {
 		webClient.getOptions().setTimeout(30000);
 		// 获取登陆
 		HtmlPage page = (HtmlPage) webClient.getPage(LOGIN_URL);
+		if(Common.isEmpty(page.getHtmlElementById(usernameId))){
+			return null;
+		}
+		
 		HtmlInput in = page.getHtmlElementById(usernameId);
 		HtmlInput pass = page.getHtmlElementById(passwordId);
 		HtmlInput btn = page.getFirstByXPath(loginBtnId);
@@ -85,14 +88,13 @@ public class ReptilianTool {
 			 HtmlPage page1 = webClient.getPage(HOMEWORK_URL);
 			 HtmlAnchor a = (HtmlAnchor)
 			 page1.getFirstByXPath("//a[@style='color:Black']");
-			 a.setAttribute("href",
-			 "javascript:__doPostBack('MyCalendar','"+days+"')");
+			 a.setAttribute("href",  "javascript:__doPostBack('MyCalendar','"+days+"')");
 			 HtmlPage page2 = a.click();
-			 webClient.close();
+//			 webClient.close();
 			 return page2;
 		}
 		
-		webClient.close();
+//		webClient.close();
 		return webClient.getPage(HOMEWORK_URL);
 	}
 
@@ -131,6 +133,7 @@ public class ReptilianTool {
 			return "error";
 		} else {
 			// 返回html
+			
 			return page.asXml();
 		}
 

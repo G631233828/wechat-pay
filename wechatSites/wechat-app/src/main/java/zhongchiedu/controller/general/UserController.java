@@ -89,8 +89,6 @@ public class UserController {
 	
 	
 	
-	@Value("${upload.path}")
-	private String path;
 
 	@PostMapping("/user")
 	@RequiresPermissions(value = "user:add")

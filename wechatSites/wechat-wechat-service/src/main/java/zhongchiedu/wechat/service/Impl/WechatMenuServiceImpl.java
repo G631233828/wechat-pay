@@ -5,11 +5,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -17,11 +15,10 @@ import org.springframework.stereotype.Repository;
 
 import zhongchiedu.common.utils.BasicDataResult;
 import zhongchiedu.common.utils.Common;
+import zhongchiedu.common.utils.ReadProperties;
 import zhongchiedu.common.utils.Types.menuType;
 import zhongchiedu.framework.service.GeneralServiceImpl;
 import zhongchiedu.pojo.WechatMenu;
-import zhongchiedu.school.pojo.School;
-import zhongchiedu.service.SchoolService;
 import zhongchiedu.wechat.pojo.createMenu.Button;
 import zhongchiedu.wechat.pojo.createMenu.Menu;
 import zhongchiedu.wechat.util.WeixinUtil;
@@ -31,8 +28,8 @@ import zhongchiedu.wechat.util.accessToken.AccessToken;
 public class WechatMenuServiceImpl extends GeneralServiceImpl<WechatMenu> {
 	
 	
-	@Autowired
-	private SchoolService schoolService;
+//	@Autowired
+//	private SchoolService schoolService;
 	
 	private static final Logger log = LoggerFactory.getLogger(WechatMenuServiceImpl.class);
 	/**
@@ -138,11 +135,6 @@ public class WechatMenuServiceImpl extends GeneralServiceImpl<WechatMenu> {
 
 	}
 	
-	
-	
-	
-	
-	
 
 	/**
 	 * 发布微信菜单
@@ -152,7 +144,7 @@ public class WechatMenuServiceImpl extends GeneralServiceImpl<WechatMenu> {
 	 */
 	public BasicDataResult release() {
 		
-		School school = this.schoolService.findOneByQuery(new Query(),School.class);
+//		School school = this.schoolService.findOneByQuery(new Query(),School.class);
 		
 		Menu menu = this.getMenu();
 		
@@ -160,8 +152,10 @@ public class WechatMenuServiceImpl extends GeneralServiceImpl<WechatMenu> {
 			return BasicDataResult.build(203, "请先配置学校的微信菜单", null);
 		}
 		
-		String appid = school.getAppid();
-		String appsecret = school.getAppSecret();
+		String appid = ReadProperties.getObjectProperties("application.properties", "wechat.appid");
+		String appsecret = ReadProperties.getObjectProperties("application.properties", "wechat.appsecret");
+//		String appid = school.getAppid();
+//		String appsecret = school.getAppSecret();
 		if(Common.isEmpty(appid)||Common.isEmpty(appsecret)){
 			return BasicDataResult.build(203, "请先到学校管理中配置学校的appId,appSecretId", null);
 		}

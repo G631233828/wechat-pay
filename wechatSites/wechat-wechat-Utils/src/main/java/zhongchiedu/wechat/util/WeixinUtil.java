@@ -531,7 +531,7 @@ public class WeixinUtil {
 		// e48b8b33730cb8bf7ed2aa26e671549b
 	 public static NSNUserInfo baseWeChatLogin(String appid ,String appSecret,String code) {
 	        try{
-	        	log.info("微信用户授权:" + code);
+//	        	log.info("微信用户授权:" + code);
 	            String openId = "";
 	            if (!"authdeny".equals(code)) {
 	                WeixinOauth2Token weixinOauth2Token = WeixinUtil.getOauth2AccessToken(appid,appSecret, code);
