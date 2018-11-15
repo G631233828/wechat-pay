@@ -57,7 +57,7 @@ public class WeChatMenuController {
 	@SystemControllerLog(description = "添加微信菜单")
 	public String addWechatMenu(@ModelAttribute("wechatmenu") WechatMenu wechatmenu, HttpSession session) {
 
-		this.wechatMenuService.saveOrUpdateUser(wechatmenu, session);
+		this.wechatMenuService.saveOrUpdateUser(wechatmenu,session);
 
 		return "redirect:/wechatmenus";
 	}

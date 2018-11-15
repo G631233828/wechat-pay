@@ -5,10 +5,13 @@ import java.util.Map;
 
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
+import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.SimpleCookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,10 +37,7 @@ public class ShiroConfig {
 		Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
 		// 配置不会被拦截的链接 顺序判断
 		filterChainDefinitionMap.put("/static/**", "anon");
-
 		filterChainDefinitionMap.put("/api/**", "anon");
-		filterChainDefinitionMap.put("/toast/**", "anon");
-
 		filterChainDefinitionMap.put("/assets/**", "anon");
 		filterChainDefinitionMap.put("/init/**", "anon");
 		filterChainDefinitionMap.put("/tologin", "anon");
@@ -61,6 +61,16 @@ public class ShiroConfig {
 		return shiroFilterFactoryBean;
 
 	}
+
+
+	@Bean
+	public MongoDBRealm mongoDBRealm() {
+		MongoDBRealm mongoDBRealm = new MongoDBRealm();
+		return mongoDBRealm;
+	}
+
+	
+	
 
 	/**
 	 * 密码匹配凭证管理器
@@ -108,11 +118,6 @@ public class ShiroConfig {
 
 	}
 
-	@Bean
-	public MongoDBRealm mongoDBRealm() {
-		MongoDBRealm mongoDBRealm = new MongoDBRealm();
-		return mongoDBRealm;
-	}
 
 	@Bean
 	public SecurityManager securityManager() {
@@ -123,5 +128,8 @@ public class ShiroConfig {
 
 		return securityManager;
 	}
+	
+	
+	
 
 }

@@ -25,7 +25,7 @@ import zhongchiedu.school.pojo.Student;
 import zhongchiedu.service.StudentService;
 
 @Service
-public class StudentServiceImpl extends GeneralServiceImpl<zhongchiedu.school.pojo.Student> implements StudentService {
+public class StudentServiceImpl extends GeneralServiceImpl<Student> implements StudentService {
 
 	
 	private static final Logger log = LoggerFactory.getLogger(StudentServiceImpl.class);
@@ -39,12 +39,13 @@ public class StudentServiceImpl extends GeneralServiceImpl<zhongchiedu.school.po
 	private ExcelReadUtil excelReadUtil;
 	//添加或是修改学生
 	@Override
-	public void SaveOrUpdateStudent(Student student,String clazzId) {
-		Clazz clazz=null;
-		if(clazzId!=null) {
-			clazz=this.clazzService.findOneById(clazzId, Clazz.class);
-		}
-		student.setClazz(clazz);
+	public void SaveOrUpdateStudent(Student student) {
+		System.out.println(student.getClazz().getId());
+//		Clazz clazz=null;
+//		if(clazzId!=null) {
+//			clazz=this.clazzService.findOneById(clazzId, Clazz.class);
+//		}
+//		student.setClazz(clazz);
 		if (Common.isNotEmpty(student)) {
 			if (student.getId() != null) {
 				// 执行修改操作
@@ -83,6 +84,13 @@ public class StudentServiceImpl extends GeneralServiceImpl<zhongchiedu.school.po
 	}
 
 
+	/**
+	 * 学生批量导入
+	 * @param file
+	 * @param row
+	 * @param session
+	 * @return
+	 */
 	public String BatchImport(File file, int row, HttpSession session)  {
 		String error = "";
 		int clazzYear=0;
@@ -115,7 +123,8 @@ public class StudentServiceImpl extends GeneralServiceImpl<zhongchiedu.school.po
 			}
 			try {
 				importStudent.setName(resultexcel[i][j]);
-				importStudent.setStudentCode(resultexcel[i][j+1]);
+				importStudent.setRegisterNumber(resultexcel[i][j+1]);
+				//importStudent.setStudentCode(resultexcel[i][j+1]);
 				Clazz clazz=clazzService.findClazzByYearNum(clazzYear,clazzNum);
 				if(clazz==null) {
 					clazz=new Clazz();
@@ -124,8 +133,8 @@ public class StudentServiceImpl extends GeneralServiceImpl<zhongchiedu.school.po
 					clazzService.insert(clazz);
 				}
 				importStudent.setClazz(clazz);
-				query.addCriteria(Criteria.where("studentCode").is(importStudent.getStudentCode()));
-				String studentCode=importStudent.getStudentCode();
+				query.addCriteria(Criteria.where("studentCode").is(importStudent.getRegisterNumber()));
+				String studentCode=importStudent.getRegisterNumber();
 				// 通过学籍号是否存在该信息
 				Student student = this.findOneByQuery(query, Student.class);
 				if(student !=null){
@@ -164,6 +173,25 @@ public class StudentServiceImpl extends GeneralServiceImpl<zhongchiedu.school.po
 		return  (StudentProcessInfo) request.getSession().getAttribute("proInfo");
 
 	}
+	
+	/**
+	 * 判断学生是否存在
+	 * @param registerNumber
+	 * @return
+	 */
+	public BasicDataResult findStudentByRegisterNum(String registerNumber){
+		if(Common.isNotEmpty(registerNumber)){
+			Query query = new Query();
+			query.addCriteria(Criteria.where("registerNumber").is(registerNumber));
+			Student student = this.findOneByQuery(query, Student.class);
+			return BasicDataResult.build(200, Common.isNotEmpty(student)?"true":"false", null);
+		}
+		return BasicDataResult.build(200, "false", null);
+		
+	}
+	
+	
+	
 
 	class StudentProcessInfo {
 		public long allnum = 0;// 导入数据总数

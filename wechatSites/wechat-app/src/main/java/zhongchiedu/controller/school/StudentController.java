@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -36,8 +38,10 @@ import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.log.annotation.SystemControllerLog;
 import zhongchiedu.school.pojo.Clazz;
 import zhongchiedu.school.pojo.Student;
+import zhongchiedu.school.pojo.Teacher;
 import zhongchiedu.service.Impl.ClazzServiceImpl;
 import zhongchiedu.service.Impl.StudentServiceImpl;
+import zhongchiedu.service.Impl.TeacherServiceImpl;
 
 
 
@@ -49,6 +53,10 @@ public class StudentController {
 	
 	@Autowired
 	private ClazzServiceImpl clazzService;
+	
+	@Autowired
+	private TeacherServiceImpl teacherService;
+	
 	
 	private static final Logger log = LoggerFactory.getLogger(StudentController.class);
 
@@ -98,9 +106,8 @@ public class StudentController {
 	@PostMapping("/student")
 	@RequiresPermissions(value = "student:add")
 	@SystemControllerLog(description = "添加学生")
-	public String addclazz(HttpServletRequest request, @ModelAttribute("student") Student student,
-			@RequestParam(value = "clazzId", defaultValue = "")String clazzId) {
-		this.studentService.SaveOrUpdateStudent(student,clazzId);
+	public String addclazz(HttpServletRequest request, Student student) {
+		this.studentService.SaveOrUpdateStudent(student);
 		return "redirect:students";
 	}
 	
@@ -114,8 +121,15 @@ public class StudentController {
 	@RequiresPermissions(value = "student:edit")
 	@SystemControllerLog(description = "查看")
 	public String toeditPage(@PathVariable String id, Model model) {
+		
+		
 		List<Clazz> clazzList=clazzService.findClazzsByisDisable();
 		model.addAttribute("clazzList", clazzList);
+		
+		List<Teacher> teacherList = this.teacherService.findTeachersByisDisable();
+		model.addAttribute("teacherList", teacherList);
+		
+		
 		Student student = this.studentService.findOneById(id, Student.class);
 		model.addAttribute("student", student);
 		return "schools/student/add";
@@ -132,7 +146,7 @@ public class StudentController {
 	@RequiresPermissions(value = "student:edit")
 	@SystemControllerLog(description = "修改学生")
 	public String editUser(@ModelAttribute("student") Student student,@RequestParam(value = "clazzId", defaultValue = "")String clazzId) {
-		this.studentService.SaveOrUpdateStudent(student,clazzId);
+		this.studentService.SaveOrUpdateStudent(student);
 		return "redirect:students";
 	}
 	
@@ -175,7 +189,7 @@ public class StudentController {
 	@RequestMapping(value = "/student/download")
 	@SystemControllerLog(description = "下载学校信息导入模版")
 	public ModelAndView download(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String storeName = "student.xlsx";
+		String storeName = "学生信息模版.xlsx";
 		String contentType = "application/octet-stream";
 		String UPLOAD = "Templates/";
 		FileOperateUtil.download(request, response, storeName, contentType, UPLOAD);
@@ -246,5 +260,22 @@ public class StudentController {
 		return this.studentService.findproInfo(request);
 	}
 
+	
+	
+	
+	
+	@RequestMapping(value="/student/findStudentByRegisterNum", method = RequestMethod.POST)
+	@ResponseBody
+	public BasicDataResult findStudentByRegisterNum(String registerNumber){
+		
+		return this.studentService.findStudentByRegisterNum(registerNumber);
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 }

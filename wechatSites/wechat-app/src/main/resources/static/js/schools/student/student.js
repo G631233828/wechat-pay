@@ -21,63 +21,59 @@ $.validator.setDefaults({
 
 $().ready(function() {
 	
-	$("#file-pretty input[type='file']").prettyFile();
-	
-	
 			var a = "<i class='fa fa-times-circle'></i> ";
-			$("#teacherForm").validate({
+			$("#studentForm").validate({
 				rules : {
 					 name: {
 						required : true,
 						minlength:2,
 					},	
-					contactsmobile : {
+					clazz : {
 						required : true,
-						isMobile : true,
 					},
-					teacherEmail  :{
+					code  :{
 						required : true,
-						email  : true,
 					},
-					cardType :{
-						required:true,
+					registerNumber  :{
+						required : true,
+						remote : {
+							url  : getRootPath()+"/student/findStudentByRegisterNum",
+							type : "POST",
+							data : {
+								registerNumber : function() {
+									return $("#registerNumber").val();
+								}
+							},
+							dataType : "json",
+							dataFilter : function(data, type) {
+								var jsondata = $.parseJSON(data);
+								if (jsondata.status == 200 && jsondata.msg == 'false') {
+									return true;
+								}
+								return false;
+							}
+						}
 					},
-					cardId:{
-						required:true,
-					}
-					
 				},
 				messages : {
 					name : {
-						required : a + "请输入班级年份",
+						required : a + "请输入学生姓名",
 						minlength: a + "姓名至少是2个字符",
 					},
-					contactsmobile : {
-						required : a + "请输入班级号",
-						isMobile  : a + "请输入正确的手机号",
+					clazz : {
+						required : a + "请选择所属班级",
 					},
-					teacherEmail  :{
-						required : a+ "请输入邮箱地址",
-						email   : a+"请输入正确的邮箱地址",
+					code  :{
+						required : a+ "请输入班级学号",
 					},
-					cardType:{
-						required: a+"请选择证件类型",
+					registerNumber  :{
+						required : a+ "请输入学籍号",
+						remote: "该学籍号已经存在"
 					},
-					cardId:{
-						required: a+"请输入证件号码",
-					}
-
 				}
 			});
 
 		});
-
-jQuery.validator.addMethod("isMobile", function(value, element) {
-    var length = value.length;
-    var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
-    return this.optional(element) || (length == 11 && mobile.test(value));
-}, "手机号有问题");
-
 
 
 

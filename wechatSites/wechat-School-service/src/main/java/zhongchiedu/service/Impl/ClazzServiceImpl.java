@@ -39,7 +39,7 @@ public class ClazzServiceImpl extends GeneralServiceImpl<Clazz> implements Clazz
 	}
 
 	/**
-	 * 查询所有在使用状态下的学校
+	 * 查询所有在使用状态下的班级
 	 */
 	@Override
 	public List<Clazz> findClazzsByisDisable() {

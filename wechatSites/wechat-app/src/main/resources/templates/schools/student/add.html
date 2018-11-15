@@ -45,7 +45,7 @@ canvas#canvas4 {
 						<!-- BLANK PAGE-->
 						<div style="margin: -20px 15px;" class="nest" id="Blank_PageClose">
 							<div class="title-alt">
-								<h6>老师信息</h6>
+								<h6>学生信息</h6>
 								<div class="titleClose">
 									<a class="gone" href="#Blank_PageClose"> <span
 										class="entypo-cancel"></span>
@@ -82,8 +82,17 @@ canvas#canvas4 {
 										<div class="form-group ">
 												<label class="col-lg-1 control-label">学籍号:</label>
 												<div class="col-lg-6">
-													<input class="form-control" id="studentCode" placeholder="请输入学籍号"
-														name="studentCode" th:value="${student!=null}?${student.studentCode}" 
+													<input class="form-control" id="registerNumber" placeholder="请输入学籍号"
+														name="registerNumber" th:value="${student!=null}?${student.registerNumber}" 
+														required="required">
+												</div>
+										</div>
+										
+										<div class="form-group ">
+												<label class="col-lg-1 control-label">班级学号:</label>
+												<div class="col-lg-6">
+													<input class="form-control" id="code" placeholder="请输入班级学号"
+														name="code" th:value="${student!=null}?${student.code}" 
 														required="required">
 												</div>
 										</div>
@@ -92,13 +101,44 @@ canvas#canvas4 {
 												<label class="col-lg-1 control-label">班级选择：</label>
 												<div class="col-lg-6">
 													<div class="ui-select">
-														<select id="clazzId" name="clazzId" required="required"
+														<select id="clazz" name="clazz.id" required="required"
 															class="form-control">
 															<option value="">---请选择班级---</option>
 															<option th:if="${clazzList!=null}" th:value="${clazz.id}"
 																th:text="${clazz.clazzYear}+'级'+${clazz.clazzNum}+'班'"
 																th:selected="${student!=null&&student.clazz!=null}?${student.clazz.id}==${clazz.id}"
 																th:each="clazz:${clazzList}"></option>
+															</select>
+															</div>
+												</div>
+									     </div>
+										<div class="form-group">
+												<label class="col-lg-1 control-label">班主任：</label>
+												<div class="col-lg-6">
+													<div class="ui-select">
+														<select id="headMaster" name="headMaster" 
+															class="form-control">
+															<option value="">---请选择班主任---</option>
+															<option th:if="${teacherList!=null}" th:value="${teacher.id}"
+																th:text="${teacher.name}"
+																th:selected="${student!=null&&student.headMaster!=null}?${student.headMaster.id}==${teacher.id}"
+																th:each="teacher:${teacherList}"></option>
+															</select>
+															</div>
+												</div>
+									     </div>
+												
+										<div class="form-group">
+												<label class="col-lg-1 control-label">副班主任：</label>
+												<div class="col-lg-6">
+													<div class="ui-select">
+														<select id="deputyHeadMaster" name="deputyHeadMaster" 
+															class="form-control">
+															<option value="">---请选择副班主任---</option>
+															<option th:if="${teacherList!=null}" th:value="${teacher.id}"
+																th:text="${teacher.name}"
+																th:selected="${student!=null&&student.deputyHeadMaster!=null}?${student.deputyHeadMaster.id}==${teacher.id}"
+																th:each="teacher:${teacherList}"></option>
 															</select>
 															</div>
 												</div>
@@ -144,9 +184,9 @@ canvas#canvas4 {
 		th:src="@{/plugs/validate/jquery.validate.min.js}"></script>
 	<script type="text/javascript" 
 		th:src="@{/plugs/validate/messages_zh.min.js}"></script>
-	<!-- 引入teacher.js
-	<script type="text/javascript"    th:inline="javascript" th:src="@{/js/schools/teacher/teacher.js}"></script>
-     -->
+	<!-- 引入student.js -->
+	<script type="text/javascript"    th:inline="javascript" th:src="@{/js/schools/student/student.js}"></script>
+    
 
 
 </body>

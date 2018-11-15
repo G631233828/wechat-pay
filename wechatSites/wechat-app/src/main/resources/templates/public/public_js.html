@@ -55,7 +55,6 @@
 			})
 
 			function toeditPage(id, path) {
-				alert(path)
 				if (id == '') {
 					//编辑为表格上方的按钮
 					var a = $("input[name='ids']:checked").length;
@@ -78,7 +77,7 @@
 				} else {
 					//	$("#editForm").attr("action", path + "/" + id);
 					//toedit();
-					window.location.href = path + id;
+					window.location.href =path+id;
 				}
 
 			}

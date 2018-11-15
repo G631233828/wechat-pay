@@ -6,7 +6,7 @@ import zhongchiedu.school.pojo.Student;
 
 public interface StudentService extends GeneralService<zhongchiedu.school.pojo.Student>{
 
-	 void SaveOrUpdateStudent(Student student,String clazzId);
+	 void SaveOrUpdateStudent(Student student);
 	 
 	 BasicDataResult studentDisable(String id);
 }

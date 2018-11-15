@@ -52,7 +52,8 @@ canvas#canvas4 {
 						<div class="body-nest" id="alert" th:if="${errorImport!=''}">
 							<div class="alert alert-danger">
 								<button data-dismiss="alert" class="close" type="button">×</button>
-								<th:block th:utext="${errorImport}"> </th:block>
+								<th:block th:utext="${errorImport}">
+								</th:block>
 							</div>
 
 						</div>
@@ -75,15 +76,15 @@ canvas#canvas4 {
 									</shiro:hasPermission>
 
 									<shiro:hasPermission name="student:delete">
-										<button class="btn btn-danger btn-sm" th:onclick="|return del('','@{/student/}')|">
+										<button class="btn btn-danger btn-sm"
+											th:onclick="|return del('','@{/student/}')|">
 											<i class="fa fa-trash-o"> </i>删除
 										</button>
 									</shiro:hasPermission>
 
 									<shiro:hasPermission name="student:batch">
-										<button class="btn btn-danger btn-sm"
-											onclick="return batchImput()">
-											<i class="fa fa-trash-o"> </i>批量导入
+										<button class="btn btn-success" onclick="return batchImput()">
+											<i class="fontawesome-upload"> </i>批量导入
 										</button>
 									</shiro:hasPermission>
 
@@ -136,7 +137,8 @@ canvas#canvas4 {
 												</td>
 												<td class="numeric" th:text="${student.name}"></td>
 												<td class="numeric" th:text="${student.studentCode}"></td>
-												<td class="numeric"  th:text="${student.clazz}!=null?${student.clazz.clazzYear}+'级'+${student.clazz.clazzNum}+'班'"></td>
+												<td class="numeric"
+													th:text="${student.clazz}!=null?${student.clazz.clazzYear}+'级'+${student.clazz.clazzNum}+'班'"></td>
 												<td class="numeric" th:id="disBtn+${student.id}"
 													th:utext="${student.isDisable eq true }?|<button type='button' onclick=toDisable('${student.id}','student') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${student.id}','student') class='btn btn-success'>启用</button>|"></td>
 												<td class="numeric"><shiro:hasPermission
@@ -218,7 +220,7 @@ canvas#canvas4 {
 		th:src="@{/plugs/validate/jquery.validate.min.js}"></script>
 	<script type="text/javascript"
 		th:src="@{/plugs/validate/messages_zh.min.js}"></script>
-	<!-- 引入teacher.js -->
+	<!-- 引入student.js -->
 	<script type="text/javascript" th:inline="javascript"
 		th:src="@{/js/schools/student/student.js}"></script>
 	<script type="text/javascript"

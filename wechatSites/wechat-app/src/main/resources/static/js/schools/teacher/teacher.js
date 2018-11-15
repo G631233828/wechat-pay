@@ -50,7 +50,7 @@ $().ready(function() {
 				},
 				messages : {
 					name : {
-						required : a + "请输入班级年份",
+						required : a + "请输入姓名",
 						minlength: a + "姓名至少是2个字符",
 					},
 					contactsmobile : {
