@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="public/public_css::pub_css"></head>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style type="text/css">
+canvas#canvas4 {
+	position: relative;
+	top: 20px;
+}
+</style>
+<link rel="shortcut icon" th:href="@{/assets/ico/minus.png}">
+ <link th:href="@{/assets/css/icons-style.css}" rel="stylesheet">
+</head>
+
+<body>
+	<!-- Preloader -->
+	<div id="preloader">
+		<div id="status">&nbsp;</div>
+	</div>
+	<!-- TOP NAVBAR -->
+	<div th:replace="public/public::top"></div>
+	<!-- /END OF TOP NAVBAR -->
+
+	<!-- SIDE MENU -->
+	<div th:replace="public/public::left(activeUri='system')"></div>
+	<!-- END OF SIDE MENU -->
+
+	<!--  PAPER WRAP -->
+	<div class="wrap-fluid">
+		<div class="container-fluid paper-wrap bevel tlbr">
+
+
+			<!-- CONTENT -->
+			<!--TITLE -->
+			<div th:replace="public/public::title"></div>
+			<!--/ TITLE -->
+
+			<!-- BREADCRUMB -->
+			<div th:replace="public/public::menu"></div>
+			<!-- END OF BREADCRUMB -->
+
+			<div class="content-wrap">
+				<div class="row">
+
+
+					<div class="col-sm-12">
+						<!-- BLANK PAGE-->
+
+						<div style="margin: -20px 15px;" class="nest" id="Blank_PageClose">
+							<div class="title-alt">
+								<h6>资源信息</h6>
+								<div class="titleClose">
+									<a class="gone" href="#Blank_PageClose"> <span
+										class="entypo-cancel"></span>
+									</a>
+								</div>
+								<div class="titleToggle">
+									<a class="nav-toggle-alt" href="#Blank_Page_Content"> <span
+										class="entypo-up-open"></span>
+									</a>
+								</div>
+
+							</div>
+
+
+							<div class="body-nest" id="Blank_Page_Content">
+								<div class="row">
+									<!-- edit form column -->
+									<div class="col-md-12 personal-info">
+										<form class="form-horizontal" enctype="multipart/form-data"
+											id="resourceForm" th:action="@{/resource}" method="post">
+											<input type="hidden" name="_method" value="put" th:if="${resource!=null}" />
+											 <input type="hidden" name="id" th:if="${resource!=null}" th:value="${resource.id}">
+
+											<div class="form-group">
+												<label class="col-lg-1 control-label">菜单名称：</label>
+												<div class="col-lg-6">
+													<input class="form-control" id="name"
+														placeholder="请输入菜单名称" name="name"
+														th:value="${resource!=null}?${resource.name}"
+														required="required">
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label class="col-lg-1 control-label">菜单权限Key：</label>
+												<div class="col-lg-6">
+													<input class="form-control" id="resKey"
+														placeholder="请输入菜单权限Key" name="resKey"
+														th:value="${resource!=null}?${resource.resKey}"
+														required="required">
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-lg-1 control-label">菜单Url：</label>
+												<div class="col-lg-6">
+													<input class="form-control" id="resUrl"
+														placeholder="请输入菜单权限Url" name="resUrl"
+														th:value="${resource!=null}?${resource.resUrl}"
+														required="required">
+												</div>
+											</div>
+
+
+											<div class="form-group">
+												<label class="col-lg-1 control-label">菜单类别：</label>
+												<div class="col-lg-6">
+													<div class="ui-select">
+														<select id="type" name="type" class="form-control"
+															onchange="return changeType();">
+															<option value="">---请选择菜单类别---</option>
+															<option
+																th:selected="${resource!=null}?${resource.type == 0}"
+																value="0">目录</option>
+															<option
+																th:selected="${resource!=null}?${resource.type == 1}"
+																value="1">菜单</option>
+															<option
+																th:selected="${resource!=null}?${resource.type == 2}"
+																value="2">按钮</option>
+														</select>
+													</div>
+												</div>
+											</div>
+
+
+											<div class="form-group" id="parent" th:style="${resourssupmenuId} !=null?'display:block;':'display:none;'">
+												<label class="col-lg-1 control-label">所属目录：</label>
+												<div class="col-lg-6">
+													<div class="ui-select">
+														<select name="parentId" id="parentId" class="form-control"
+															onchange="return getparentmenu();" required>
+															<option value="">----选择目录----</option>
+															<option th:if="${resList !=null}" th:value="${res.id}"
+																th:each="res:${resList}" th:selected="${res.id == resourssupmenuId}" th:text="${res.name}">
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class="form-group" id="parentmenu" th:style="${resourssubmenuId} !=null?'display:block;':'display:none;'" >
+												<label class="col-lg-1 control-label">所属菜单：</label>
+												<div class="col-lg-6">
+													<div class="ui-select">
+														<select name="parentSubId" id="parentSubId"
+															class="form-control" required>
+															<option value="" >----选择菜单----</option>
+															<option  th:value="${res.id}"
+																th:each="res:${resmenu}" th:selected="${res.id  == resourssubmenuId}" th:text="${res.name}">
+														</select>
+													</div>
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label class="col-lg-1 control-label">使用状态：</label>
+												<div class="col-lg-6">
+													<div class="ui-select">
+														<select name="isDisable" id="isDisable"
+															class="form-control" required>               
+															<option value="false" th:selected="${resource!=null}?${resource.isDisable eq false}">启用中</option>
+															<option value="true" th:selected="${resource!=null}?${resource.isDisable eq true}">禁用中</option>
+														</select>
+													</div>
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label class="col-lg-1 control-label">菜单图标：</label>
+												<div class="col-lg-6">
+													<input class="form-control" id="icon" placeholder="请选择菜单图标"
+														name="icon" th:value="${resource!=null}?${resource.icon}" onclick="return selectIcon();">
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label class="col-lg-1 control-label">描述：</label>
+												<div class="col-lg-6">
+
+													<textarea rows="5" id="description" class="col-lg-12"
+														name="description" placeholder="描述"
+														th:text="${resource!=null}?${resource.description }">
+													</textarea>
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label class="col-lg-1 control-label"></label>
+												<div class="col-md-8">
+													<button type="submit" class="btn btn-success"
+														th:text="${resource!=null?'修改':'添加'}"></button>
+													<span></span> <input th:if="${resource} eq null"
+														class="btn btn-default" value="重置" type="reset">
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- END OF BLANK PAGE -->
+
+				</div>
+			</div>
+
+			<!--/row-->
+
+	<div th:replace="admin/resource/icon::iconModal"></div>
+		</div>
+	</div>
+	<!--  END OF PAPER WRAP -->
+	<!-- 右侧隐藏菜单start -->
+	<div th:replace="public/public::right"></div>
+	<!-- 右侧隐藏菜单end-->
+	<!-- 底部js -->
+	<div th:replace="public/public_js::pub_js"></div>
+	<div th:replace="public/public_js::public_script"></div>
+	<div th:replace="public/public::footer"></div>
+	<!-- Jquery Validate -->
+	<script type="text/javascript"
+		th:src="@{/plugs/validate/jquery.validate.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/plugs/validate/messages_zh.min.js}"></script>
+
+	<script type="text/javascript"  th:inline="javascript"
+		th:src="@{/js/admin/resource/resource.js}"></script>
+
+</body>
+
+</html>

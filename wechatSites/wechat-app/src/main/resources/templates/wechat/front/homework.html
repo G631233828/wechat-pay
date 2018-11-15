@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+</head>
+<head th:include="wechat/front/public/public_css::pub_css"></head>
+
+	<script type="text/javascript">
+	  $(function(){
+	 $("#date").datetimePicker({title:"选择日期",m:1,min:'2000-01-01',max:'2020-12-31'});
+	  });   
+	  
+	  function checkhomework(){
+		  var date = $("#date").val();
+		  window.location.href="homework?date="+date;
+	  }
+	  
+	  
+	  
+	  
+	</script>
+	
+<body ontouchstart class="page-bg">
+
+	<div th:replace="/wechat/front/public/public::top"></div>
+
+	<div class="weui_cells weui_cells_form ">
+		<div class="weui_cell">
+			<div class="weui_cell_hd">
+				<label for="" class="weui_label">作业日期:</label>
+			</div>
+			<div class="weui_cell_bd weui_cell_primary">
+				<input class="weui_input" type="text" name="date" th:value="${date}" id='date' />
+			</div><a href="javascript:;" onclick="checkhomework();" class="weui_btn weui_btn_mini weui_btn_primary">查询</a>
+		</div>
+	</div>
+
+ <div class="weui_panel weui_panel_access">
+		<div class="weui_panel_hd">
+			[[${homeWork.date}]][[${homeWork.schoolName}]][[${homeWork.gradeName}]][[${homeWork.className}]]
+			<br /> [[${homeWork.studentName}]]的家庭作业
+		</div>
+
+
+		<div class="weui_panel_bd" th:each="work:${homeWork.homework}">
+			<div class="weui_media_box weui_media_appmsg">
+				<div class="weui_media_hd">
+					<img class="weui_media_appmsg_thumb"
+						th:src="@{/assets/weChatPage/images/homework.png}" alt="">
+				</div>
+				<div class="weui_media_bd">
+					<h4 class="weui_media_title" th:each="entry:${work}"
+						th:text="${entry.key}"></h4>
+					<p class="weui_panel_hd" th:each="entry:${work}"
+						th:utext="${entry.value}"></p>
+				</div>
+			</div>
+		</div>
+
+
+	</div> 
+
+<!-- 	<div th:replace="/wechat/front/public/public::footer"></div>
+	
+	 -->
+	
+	
+</body>
+</html>

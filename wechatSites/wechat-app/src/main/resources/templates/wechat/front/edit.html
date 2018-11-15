@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+</head>
+<head th:include="wechat/front/public/public_css::pub_css"></head>
+
+	
+<body ontouchstart class="page-bg">
+
+	<div th:replace="/wechat/front/public/public::top"></div>
+
+	<form id="form" th:action="@{/wechat/editStudent}" method="post">
+	
+	<input type="hidden" th:value="${bd!=null}?${bd.id}" id="id" name="id">
+    <div class="weui_cells weui_cells_form">
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label">学生姓名</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" type="text" th:value="${bd!=null}?${bd.studentName}" required placeholder="学生姓名" name="name" emptyTips="请输入学生姓名" notMatchTips="请输入正确的学生姓名">
+            </div>
+            <div class="weui_cell_ft">
+                <i class="weui_icon_warn"></i>
+            </div>
+        </div>
+    </div>
+    <div class="weui_btn_area">
+        <a id="formSubmitBtn" href="javascript:" class="weui_btn weui_btn_primary">提交</a>
+    </div>
+</form>
+<script>
+var $form = $("#form");
+$form.form();
+$("#formSubmitBtn").on("click", function(){
+    $form.validate(function(error){
+        if(error){
+            
+        }else{
+            $("#form").submit();
+            $.toptips('验证通过提交','ok');
+        }
+    });
+    
+});
+</script>
+	
+	
+</body>
+</html>

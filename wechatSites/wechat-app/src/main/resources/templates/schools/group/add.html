@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="public/public_css::pub_css"></head>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style type="text/css">
+canvas#canvas4 {
+	position: relative;
+	top: 20px;
+}
+</style>
+<link rel="stylesheet" th:href="@{/plugs/ztree/demo.css}">
+</head>
+
+<body>
+	<!-- Preloader -->
+	<div id="preloader">
+		<div id="status">&nbsp;</div>
+	</div>
+	<!-- TOP NAVBAR -->
+	<div th:replace="public/public::top"></div>
+	<!-- /END OF TOP NAVBAR -->
+
+	<!-- SIDE MENU -->
+	<div th:replace="public/public::left(activeUri='school')"></div>
+	<!-- END OF SIDE MENU -->
+
+	<!--  PAPER WRAP -->
+	<div class="wrap-fluid">
+		<div class="container-fluid paper-wrap bevel tlbr">
+
+
+			<!-- CONTENT -->
+			<!--TITLE -->
+			<div th:replace="public/public::title"></div>
+			<!--/ TITLE -->
+
+			<!-- BREADCRUMB -->
+			<div th:replace="public/public::menu"></div>
+			<!-- END OF BREADCRUMB -->
+
+			<div class="content-wrap">
+				<div class="row">
+					<div class="col-sm-12">
+						<!-- BLANK PAGE-->
+						<div style="margin: -20px 15px;" class="nest" id="Blank_PageClose">
+							<div class="title-alt">
+								<h6>组信息</h6>
+								<div class="titleClose">
+									<a class="gone" href="#Blank_PageClose"> <span
+										class="entypo-cancel"></span>
+									</a>
+								</div>
+								<div class="titleToggle">
+									<a class="nav-toggle-alt" href="#Blank_Page_Content"> <span
+										class="entypo-up-open"></span>
+									</a>
+								</div>
+							</div>
+
+
+							<div class="body-nest" id="Blank_Page_Content">
+								<div class="row">
+									<!-- edit form column -->
+									<div class="col-md-12 personal-info">
+										<form class="form-horizontal" id="groupForm"
+											th:action="@{/group}" method="post">
+											<input type="hidden" name="_method" value="put"
+												th:if="${group!=null}" /> <input type="hidden" name="id"
+												th:if="${group!=null}" th:value="${group.id}">
+
+											<div class="form-group ">
+
+												<label class="col-lg-1 control-label">组名:</label>
+												<div class="col-lg-4">
+													<input class="form-control" id="name" placeholder="请输入组姓名"
+														name="groupName"
+														th:value="${group!=null}?${group.groupName}"
+														required="required">
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label class="col-lg-1 control-label">组长选择：</label>
+												<div class="col-lg-4">
+													<div class="ui-select">
+														<select id="leaderId" name="leaderId" required="required"
+															class="form-control">
+															<option value="">---请选择组长---</option>
+															<option th:if="${teacherList!=null}" th:value="${t.id}"
+																th:selected="${group!=null&&group.leader!=null}?${group.leader.id}==${t.id}"
+																th:text="${t.name}"
+																th:each="t:${teacherList}"></option>
+														</select>
+													</div>
+												</div>
+											</div>
+
+
+											<div class="form-group">
+												<label class="col-lg-1 control-label">副组长选择：</label>
+												<div class="col-lg-4">
+													<div class="ui-select">
+														<select id="viceId" name="viceId" required="required"
+															class="form-control">
+															<option value="">---请选择副组长---</option>
+															<option th:if="${teacherList!=null}" th:value="${t.id}"
+																th:selected="${group!=null&&group.vice!=null}?${group.vice.id}==${t.id}"
+																th:text="${t.name}"
+																th:each="t:${teacherList}"></option>
+														</select>
+													</div>
+												</div>
+											</div>
+
+
+											<div class="form-group ">
+												<label class="col-lg-1 control-label">组员:</label>
+												<div class="col-lg-4">
+													<textarea id="citySel" readonly="readonly" rows="3"
+														cols="45" placeholder="请输入学籍号" name="teamName" th:text="${group}!=null?${group.teamName}"
+														onclick="showMenu();"></textarea>
+												</div>
+										<!-- 	<a><i id="menuBtn" onclick="showMenu(); return false;"
+													class="entypo-user-add" title="user-add"></i></a> -->	
+											</div>
+											<div id="menuContent" class="menuContent"
+												style="display: none; position: relative;margin-bottom: 10px;width:200px;">
+												<ul id="treeDemo" class="ztree"
+													style="margin-top: 0; width: 180px; height: 300px;"></ul>
+											</div>
+											<input type="hidden" id="ids" name="ids"  />
+											<div class="form-group">
+												<label class="col-md-1 control-label"></label>
+												<div class="col-md-8">
+													<button type="submit" class="btn btn-success"
+														th:text="${group!=null?'修改':'添加'}"></button>
+													<span></span> <input th:if="${group} eq null"
+														class="btn btn-default" value="重置" type="reset">
+												</div>
+											</div>
+										</form>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- END OF BLANK PAGE -->
+
+				</div>
+			</div>
+
+			<!--/row-->
+
+
+		</div>
+	</div>
+
+	<!--  END OF PAPER WRAP -->
+	<!-- 右侧隐藏菜单start -->
+	<div th:replace="public/public::right"></div>
+	<!-- 右侧隐藏菜单end-->
+	<!-- 底部js -->
+	<div th:replace="public/public_js::pub_js"></div>
+	<div th:replace="public/public_js::public_script"></div>
+	<div th:replace="public/public::footer"></div>
+	<!-- Jquery Validate -->
+	<script type="text/javascript"
+		th:src="@{/plugs/validate/jquery.validate.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/plugs/validate/messages_zh.min.js}"></script>
+	<!-- 引入ztree插件 -->
+	<div th:replace="public/ztree_js::ztree_js"></div>
+	<!-- ztree的逻辑js -->
+	<div th:replace="schools/group/add_js::ztree_js"></div>
+    <!-- validate -->
+	<div th:replace="schools/group/add_js::validate_js"></div>
+
+</body>
+
+</html>
