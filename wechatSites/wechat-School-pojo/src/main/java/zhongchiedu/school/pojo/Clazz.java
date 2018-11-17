@@ -25,9 +25,9 @@ public class Clazz  extends GeneralBean<Clazz>{
 	private int clazzYear;//班级年份
 	private int clazzNum;//班级号
 	@DBRef
-	private Teacher clazzTeacher;//班主任
+	private Teacher headMaster;//班主任
 	@DBRef
-	private Teacher deputyClazzTeacher;//副班主任
+	private Teacher deputyHeadMaster;//副班主任
 	
-	
+	public Clazz(){}
 }

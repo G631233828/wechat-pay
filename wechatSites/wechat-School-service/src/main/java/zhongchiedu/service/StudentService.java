@@ -9,4 +9,5 @@ public interface StudentService extends GeneralService<zhongchiedu.school.pojo.S
 	 void SaveOrUpdateStudent(Student student);
 	 
 	 BasicDataResult studentDisable(String id);
+	 
 }

@@ -59,7 +59,7 @@ canvas#canvas4 {
 						</div>
 
 						<div class="nest" id="tableStaticClose">
-							<div class="title-alt">
+							<div>
 								<div>
 									<shiro:hasPermission name="student:add">
 										<button class="btn btn-default btn-sm"
@@ -87,22 +87,39 @@ canvas#canvas4 {
 											<i class="fontawesome-upload"> </i>批量导入
 										</button>
 									</shiro:hasPermission>
-
-
-								</div>
-
-								<div class="titleClose">
-									<a class="gone" href="#tableStaticClose"> <span
-										class="entypo-cancel"></span>
-									</a>
-								</div>
-								<div class="titleToggle">
-									<a class="nav-toggle-alt" href="#tableStatic"> <span
-										class="entypo-up-open"></span>
-									</a>
+									
+									
+									<!-- <shiro:hasPermission name="student:tongbu"> -->
+										<button class="btn btn-info" onclick="return tongbu()">
+											<i class="entypo-upload-cloud"> </i>同步绑定
+										</button>
+									<!-- </shiro:hasPermission> -->
+									
+									
+									
 								</div>
 
 							</div>
+
+
+						<!-- //TODO学生检索	<div class="row" style="margin-bottom: 10px; margin-top: 10px;">
+								<div class="col-sm-2">
+									<input class="form-control" id="filter" placeholder="Search..."
+										type="text">
+								</div>
+								<div class="col-sm-2">
+									<select id="clazz" name="clazz.id" required="required"
+										class="form-control">
+										<option value="">---请选择班级---</option>
+										<option th:if="${clazzList!=null}" th:value="${clazz.id}"
+											th:text="${clazz.clazzYear}+'级'+${clazz.clazzNum}+'班'"
+											th:selected="${student!=null&&student.clazz!=null}?${student.clazz.id}==${clazz.id}"
+											th:each="clazz:${clazzList}"></option>
+									</select>
+								</div>
+
+							</div> -->
+
 							<div class="body-nest" id="tableStatic">
 
 								<section id="flip-scroll">
@@ -119,7 +136,9 @@ canvas#canvas4 {
 												</th>
 												<th class="numeric">学生姓名</th>
 												<th class="numeric">学籍号</th>
+												<th class="numeric">学号</th>
 												<th class="numeric">班级</th>
+												<th class="numeric">班主任</th>
 												<th class="numeric">使用状态</th>
 												<th class="numeric">操作</th>
 											</tr>
@@ -136,11 +155,15 @@ canvas#canvas4 {
 													</div>
 												</td>
 												<td class="numeric" th:text="${student.name}"></td>
-												<td class="numeric" th:text="${student.studentCode}"></td>
+												<td class="numeric" th:text="${student.registerNumber}"></td>
+												<td class="numeric" th:text="${student.code}"></td>
 												<td class="numeric"
-													th:text="${student.clazz}!=null?${student.clazz.clazzYear}+'级'+${student.clazz.clazzNum}+'班'"></td>
+													th:text="${student.clazz}!=null?${student.clazz.clazzYear}+'年'+${student.clazz.clazzNum}+'班'"></td>
+												<td class="numeric"
+													th:text="${student.clazz?.headMaster?.name}"></td>
 												<td class="numeric" th:id="disBtn+${student.id}"
 													th:utext="${student.isDisable eq true }?|<button type='button' onclick=toDisable('${student.id}','student') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${student.id}','student') class='btn btn-success'>启用</button>|"></td>
+
 												<td class="numeric"><shiro:hasPermission
 														name="student:edit">
 														<button class="btn btn-primary btn-xs"
@@ -153,7 +176,14 @@ canvas#canvas4 {
 															th:onclick="|return del('@{/student/}${student.id}')|">
 															<i class="fa fa-trash-o"> </i>删除
 														</button>
-													</shiro:hasPermission></td>
+													</shiro:hasPermission>
+												
+												    <img th:alt-title="${student.state == true}?'已绑定':'未绑定'" th:src="${student.state == true}?@{/assets/images/bind.png}:@{/assets/images/unbind.png}">
+<!-- 													<img alt="未绑定" th:src="@{/assets/images/unbind.png}">  -->
+
+												</td>
+
+
 											</tr>
 
 
@@ -209,6 +239,7 @@ canvas#canvas4 {
 				</div>
 			</div>
 			<div th:replace="public/public::myModal"></div>
+			<div th:replace="public/public::animationModal"></div>
 			<div th:replace="schools/student/batch::mybatch"></div>
 		</div>
 	</div>

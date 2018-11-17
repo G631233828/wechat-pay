@@ -28,14 +28,10 @@ $().ready(function() {
 						required : true,
 						minlength:2,
 					},	
-					clazz : {
-						required : true,
-					},
-					code  :{
-						required : true,
-					},
 					registerNumber  :{
 						required : true,
+						rangelength:[8,8],
+						digits:true,
 						remote : {
 							url  : getRootPath()+"/student/findStudentByRegisterNum",
 							type : "POST",
@@ -46,6 +42,11 @@ $().ready(function() {
 							},
 							dataType : "json",
 							dataFilter : function(data, type) {
+								var old =$("#oldregisterNumber").val();
+								var now = $("#registerNumber").val();
+								if(old == now){
+									return true;
+								}
 								var jsondata = $.parseJSON(data);
 								if (jsondata.status == 200 && jsondata.msg == 'false') {
 									return true;
@@ -60,15 +61,11 @@ $().ready(function() {
 						required : a + "请输入学生姓名",
 						minlength: a + "姓名至少是2个字符",
 					},
-					clazz : {
-						required : a + "请选择所属班级",
-					},
-					code  :{
-						required : a+ "请输入班级学号",
-					},
 					registerNumber  :{
 						required : a+ "请输入学籍号",
-						remote: "该学籍号已经存在"
+						rangelength:a+"请输入正确的学籍号",
+						digits:a+"学籍号必须是数字",
+						remote: a+"该学籍号已经存在",
 					},
 				}
 			});
@@ -84,6 +81,25 @@ $().ready(function() {
 function batchImput(){
 	
 	$("#mybatchUpload").modal('show');
+	
+	
+}
+
+
+function tongbu(){
+	$("#animationModal").modal('show');
+//$.ajax({
+//	type:'POST',
+//	url: 'student/tongbu',
+//	data:{},
+//	dataType:'json',
+//	success:function(data){
+//		if(data.status == 200){
+//		//window.location.href="students";
+//		$("#animationModal").modal('show');
+//		}
+//	}
+//})
 	
 	
 }

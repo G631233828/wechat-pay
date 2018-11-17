@@ -70,52 +70,68 @@ canvas#canvas4 {
 									<!-- edit form column -->
 									<div class="col-md-12 personal-info">
 
-										<form class="form-horizontal" 
-											id="clazzForm" th:action="@{/clazz}" method="post">
+										<form class="form-horizontal" id="clazzForm"
+											th:action="@{/clazz}" method="post">
 											<input type="hidden" name="_method" value="put"
 												th:if="${clazz!=null}" /> <input type="hidden" name="id"
 												th:if="${clazz!=null}" th:value="${clazz.id}">
 
-										<div class="form-group ">
-										
-										<label class="col-lg-1 control-label">班级年份:</label>
+											<div class="form-group ">
+
+												<label class="col-lg-1 control-label">班级年份:</label>
 												<div class="col-lg-6">
-													<input class="form-control" id="clazzYear" placeholder="请输入班级年份"
-														name="clazzYear" th:value="${clazz!=null}?${clazz.clazzYear}"
+													<input class="form-control" id="clazzYear"
+														placeholder="请输入班级年份" name="clazzYear"
+														th:value="${clazz!=null}?${clazz.clazzYear}"
 														required="required">
 												</div>
-										</div>
+											</div>
 
-										<div class="form-group ">
+											<div class="form-group ">
 												<label class="col-lg-1 control-label">班级号:</label>
 												<div class="col-lg-6">
-													<input class="form-control" id="clazzNum" placeholder="请输入班级号"
-														name="clazzNum" th:value="${clazz!=null}?${clazz.clazzNum}" 
+													<input class="form-control" id="clazzNum"
+														placeholder="请输入班级号" name="clazzNum"
+														th:value="${clazz!=null}?${clazz.clazzNum}"
 														required="required">
 												</div>
 											</div>
 
 
-											<div class="form-group  ">
+											<div class="form-group">
 												<label class="col-lg-1 control-label">班主任：</label>
 												<div class="col-lg-6">
-												<select id="clazzTeacher.id" name="clazzTeacher.id" class="form-control">
-															<option value="">---请选择证件类型---</option>
-															<!-- <option value="身份证"
-																th:selected="${user!=null}?${user.cardType =='身份证'}">身份证</option>
-															<option value="护照"
-																th:selected="${user!=null}?${user.cardType =='护照'}">护照</option>
-															<option value="军人证"
-																th:selected="${user!=null}?${user.cardType =='军人证'}">军人证</option>
-															<option value="港澳通行证"
-																th:selected="${user!=null}?${user.cardType =='港澳通行证'}">港澳通行证</option> -->
+													<div class="ui-select">
+														<select id="headMaster" name="headMaster.id"
+															class="form-control">
+															<option value="">---请选择班主任---</option>
+															<option th:if="${teacherList!=null}"
+																th:value="${teacher.id}" th:text="${teacher.name}"
+																th:selected="${clazz!=null&&clazz.headMaster!=null}?${clazz.headMaster.id}==${teacher.id}"
+																th:each="teacher:${teacherList}"></option>
 														</select>
 													</div>
+												</div>
 											</div>
-												
-												
-												
-												
+
+
+											<div class="form-group">
+												<label class="col-lg-1 control-label">副班主任：</label>
+												<div class="col-lg-6">
+													<div class="ui-select">
+														<select id="deputyHeadMaster" name="deputyHeadMaster.id"
+															class="form-control">
+															<option value="">---请选择副班主任---</option>
+															<option th:if="${teacherList!=null}"
+																th:value="${teacher.id}" th:text="${teacher.name}"
+																th:selected="${clazz!=null&&clazz.deputyHeadMaster!=null}?${clazz.deputyHeadMaster.id}==${teacher.id}"
+																th:each="teacher:${teacherList}"></option>
+														</select>
+													</div>
+												</div>
+											</div>
+
+
 											<div class="form-group">
 												<label class="col-md-1 control-label"></label>
 												<div class="col-md-8">
@@ -153,10 +169,11 @@ canvas#canvas4 {
 	<!-- Jquery Validate -->
 	<script type="text/javascript"
 		th:src="@{/plugs/validate/jquery.validate.min.js}"></script>
-	<script type="text/javascript" 
+	<script type="text/javascript"
 		th:src="@{/plugs/validate/messages_zh.min.js}"></script>
 	<!-- 引入clazz.js -->
-	<script type="text/javascript"    th:inline="javascript" th:src="@{/js/schools/clazz/clazz.js}"></script>
+	<script type="text/javascript" th:inline="javascript"
+		th:src="@{/js/schools/clazz/clazz.js}"></script>
 
 
 

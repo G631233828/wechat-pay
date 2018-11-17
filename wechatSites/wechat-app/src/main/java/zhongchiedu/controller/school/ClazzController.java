@@ -1,15 +1,23 @@
 package zhongchiedu.controller.school;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,6 +33,7 @@ import zhongchiedu.common.utils.BasicDataResult;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.log.annotation.SystemControllerLog;
 import zhongchiedu.school.pojo.Clazz;
+import zhongchiedu.school.pojo.Teacher;
 import zhongchiedu.service.ClazzService;
 import zhongchiedu.service.TeacherService;
 
@@ -48,7 +57,12 @@ public class ClazzController {
 		// 分页查询数据
 		Pagination<Clazz> pagination;
 		try {
-			pagination = this.clazzService.findPaginationByQuery(new Query(), pageNo, pageSize, Clazz.class);
+			Query query = new Query();
+			List<Order> listsort = new ArrayList();
+			listsort.add(new Order(Direction.DESC, "clazzYear"));
+			listsort.add(new Order(Direction.ASC, "clazzNum"));
+			query.with(new Sort(listsort));
+			pagination = this.clazzService.findPaginationByQuery(query, pageNo, pageSize, Clazz.class);
 			if (pagination == null)
 				pagination = new Pagination<Clazz>();
 
@@ -65,7 +79,7 @@ public class ClazzController {
 	@PostMapping("/clazz")
 	@RequiresPermissions(value = "clazz:add")
 	@SystemControllerLog(description = "添加班级")
-	public String addclazz(HttpServletRequest request, @ModelAttribute("clazz") Clazz clazz) {
+	public String addclazz(HttpServletRequest request,@Valid Clazz clazz ) {
 
 		this.clazzService.SaveOrUpdateClazz(clazz);
 
@@ -82,7 +96,7 @@ public class ClazzController {
 	@PutMapping("/clazz")
 	@RequiresPermissions(value = "clazz:edit")
 	@SystemControllerLog(description = "修改班级")
-	public String editUser(@ModelAttribute("clazz") Clazz clazz) {
+	public String editUser(@Valid Clazz clazz) {
 		this.clazzService.SaveOrUpdateClazz(clazz);
 		return "redirect:clazzs";
 	}
@@ -100,6 +114,9 @@ public class ClazzController {
 		Clazz clazz = this.clazzService.findOneById(id, Clazz.class);
 
 		model.addAttribute("clazz", clazz);
+		
+		List<Teacher> teacherList = this.teacherService.findTeachersByisDisable();
+		model.addAttribute("teacherList", teacherList);
 
 		return "schools/clazz/add";
 

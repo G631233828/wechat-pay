@@ -3,7 +3,9 @@ package zhongchiedu.controller.general;
 
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.SecurityUtils;
@@ -90,9 +92,13 @@ public class LoginController {
 	 * @return
 	 */
 	@RequestMapping(value = "/loginOut")
-	public String loginOut(HttpSession session) {
+	public String loginOut(HttpSession session,HttpServletResponse resp) {
 		Subject subject = SecurityUtils.getSubject();// 获得主体
-		session.removeAttribute(Contents.USER_SESSION);
+		session.removeAttribute(Contents.USER_SESSION);//删除cookie
+		Cookie co = new Cookie("accountName", "");
+		co.setMaxAge(0);// 设置立即过期
+		co.setPath("/");// 根目录，整个网站有效
+		resp.addCookie(co);
 		subject.logout();
 		return "login";
 	}

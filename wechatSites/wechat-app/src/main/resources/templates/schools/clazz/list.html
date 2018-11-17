@@ -128,9 +128,9 @@ canvas#canvas4 {
 												<td class="numeric"
 													th:text="|${clazz.clazzYear}年${clazz.clazzNum}班|"></td>
 												<td class="numeric"
-													th:text="${clazz.clazzTeacher!=null}?${clazz.clazzTeacher}"></td>
+													th:text="${clazz.headMaster!=null}?${clazz.headMaster.name}"></td>
 												<td class="numeric"
-													th:text="${clazz.deputyClazzTeacher!=null}?${clazz.deputyClazzTeacher}"></td>
+													th:text="${clazz.deputyHeadMaster!=null}?${clazz.deputyHeadMaster.name}"></td>
 												<td class="numeric" th:id="disBtn+${clazz.id}"
 													th:utext="${clazz.isDisable eq true }?|<button type='button' onclick=toDisable('${clazz.id}','clazz') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${clazz.id}','clazz') class='btn btn-success'>启用</button>|"></td>
 												<td class="numeric"><shiro:hasPermission

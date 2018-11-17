@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -39,29 +38,33 @@ import zhongchiedu.log.annotation.SystemControllerLog;
 import zhongchiedu.school.pojo.Clazz;
 import zhongchiedu.school.pojo.Student;
 import zhongchiedu.school.pojo.Teacher;
+import zhongchiedu.school.pojo.WeChatbanding;
+import zhongchiedu.school.pojo.WeChatbandingStudent;
 import zhongchiedu.service.Impl.ClazzServiceImpl;
 import zhongchiedu.service.Impl.StudentServiceImpl;
 import zhongchiedu.service.Impl.TeacherServiceImpl;
-
-
+import zhongchiedu.service.Impl.WeChatbandingServiceImpl;
 
 @Controller
 public class StudentController {
-	
+
 	@Autowired
 	private StudentServiceImpl studentService;
-	
+
 	@Autowired
 	private ClazzServiceImpl clazzService;
-	
+
 	@Autowired
 	private TeacherServiceImpl teacherService;
-	
-	
+
+	@Autowired
+	private WeChatbandingServiceImpl weChatbandingService;
+
 	private static final Logger log = LoggerFactory.getLogger(StudentController.class);
 
 	/**
 	 * 查询所有学生
+	 * 
 	 * @param pageNo
 	 * @param model
 	 * @param pageSize
@@ -73,14 +76,20 @@ public class StudentController {
 	@RequiresPermissions(value = "student:list")
 	@SystemControllerLog(description = "查询所有学生")
 	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, Model model,
-			@RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize, HttpSession session,
+			@RequestParam(value = "pageSize", defaultValue = "50") Integer pageSize, HttpSession session,
 			@ModelAttribute("errorImport") String errorImport) {
 
-		if(Common.isNotEmpty(errorImport)){
-			
+		if (Common.isNotEmpty(errorImport)) {
+
 			model.addAttribute("errorImport", errorImport);
 		}
+
+		//获取所有的班级
+		List<Clazz> clazzList = clazzService.findClazzsByisDisable();
+		model.addAttribute("clazzList", clazzList);
 		
+		//获取所有的绑定
+		List<WeChatbanding> bds = this.weChatbandingService.find(new Query(), WeChatbanding.class);
 		// 分页查询数据
 		Pagination<Student> pagination;
 		try {
@@ -88,8 +97,19 @@ public class StudentController {
 			if (pagination == null)
 				pagination = new Pagination<Student>();
 
+			List<Student> students = pagination.getDatas();
+			for(Student s:students){
+				boolean flag = false;
+				for(WeChatbanding wechatbanding:bds){
+					for(WeChatbandingStudent ws:wechatbanding.getListbandings()){
+						if(ws.getStudentAccount().equals(s.getAccount())){
+							flag = true;
+						}
+					}
+				}
+				s.setState(flag);
+			}
 			model.addAttribute("pageList", pagination);
-			System.out.println(pagination.toString());
 		} catch (Exception e) {
 			log.info("查询学生信息失败——————————》" + e.toString());
 			e.printStackTrace();
@@ -97,8 +117,10 @@ public class StudentController {
 
 		return "schools/student/list";
 	}
+
 	/**
 	 * 添加学生
+	 * 
 	 * @param request
 	 * @param student
 	 * @return
@@ -106,13 +128,14 @@ public class StudentController {
 	@PostMapping("/student")
 	@RequiresPermissions(value = "student:add")
 	@SystemControllerLog(description = "添加学生")
-	public String addclazz(HttpServletRequest request, Student student) {
+	public String addclazz(HttpServletRequest request, @Valid Student student) {
 		this.studentService.SaveOrUpdateStudent(student);
 		return "redirect:students";
 	}
-	
+
 	/**
 	 * 编辑跳转
+	 * 
 	 * @param id
 	 * @param model
 	 * @return
@@ -121,37 +144,36 @@ public class StudentController {
 	@RequiresPermissions(value = "student:edit")
 	@SystemControllerLog(description = "查看")
 	public String toeditPage(@PathVariable String id, Model model) {
-		
-		
-		List<Clazz> clazzList=clazzService.findClazzsByisDisable();
+
+/*		List<Clazz> clazzList = clazzService.findClazzsByisDisable();
 		model.addAttribute("clazzList", clazzList);
-		
+
 		List<Teacher> teacherList = this.teacherService.findTeachersByisDisable();
 		model.addAttribute("teacherList", teacherList);
-		
-		
+*/
 		Student student = this.studentService.findOneById(id, Student.class);
 		model.addAttribute("student", student);
 		return "schools/student/add";
 
 	}
-	
-	
+
 	/**
 	 * 修改学生
+	 * 
 	 * @param student
 	 * @return
 	 */
 	@PutMapping("/student")
 	@RequiresPermissions(value = "student:edit")
 	@SystemControllerLog(description = "修改学生")
-	public String editUser(@ModelAttribute("student") Student student,@RequestParam(value = "clazzId", defaultValue = "")String clazzId) {
+	public String editUser(@ModelAttribute("student") Student student) {
 		this.studentService.SaveOrUpdateStudent(student);
 		return "redirect:students";
 	}
-	
+
 	/**
 	 * 删除学生
+	 * 
 	 * @param id
 	 * @return
 	 */
@@ -170,6 +192,7 @@ public class StudentController {
 
 	/**
 	 * 禁用
+	 * 
 	 * @param id
 	 * @return
 	 */
@@ -178,9 +201,10 @@ public class StudentController {
 	public BasicDataResult studentDisable(@RequestParam(value = "id", defaultValue = "") String id) {
 		return this.studentService.studentDisable(id);
 	}
-	
+
 	/**
 	 * 模版下载
+	 * 
 	 * @param request
 	 * @param response
 	 * @return
@@ -196,6 +220,7 @@ public class StudentController {
 
 		return null;
 	}
+
 	/***
 	 * 文件上传
 	 * 
@@ -208,7 +233,6 @@ public class StudentController {
 	@SystemControllerLog(description = "批量导入学生信息")
 	public ModelAndView upload(Student student, HttpServletRequest request, HttpSession session,
 			RedirectAttributes attr) {
-
 		log.info("开始上传文件");
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("redirect:/students");
@@ -216,7 +240,7 @@ public class StudentController {
 		try {
 			Map<String, Object> map = new HashMap<String, Object>();
 			// 别名
-			String upname =  File.separator + "FileUpload" + File.separator + "student";
+			String upname = File.separator + "FileUpload" + File.separator + "student";
 
 			// 可以上传的文件格式
 			log.info("准备上传学生数据");
@@ -231,9 +255,7 @@ public class StudentController {
 				File file = new File(path);
 				// 知道导入返回导入结果
 				error = this.studentService.BatchImport(file, 1, session);
-
 				attr.addFlashAttribute("errorImport", error);
-				// map.put("result", result);
 			}
 		} catch (Exception e) {
 			modelAndView.addObject("errorImport", e);
@@ -244,8 +266,7 @@ public class StudentController {
 		return modelAndView;
 
 	}
-	
-	
+
 	/**
 	 * process 获取进度
 	 * 
@@ -260,22 +281,38 @@ public class StudentController {
 		return this.studentService.findproInfo(request);
 	}
 
-	
-	
-	
-	
-	@RequestMapping(value="/student/findStudentByRegisterNum", method = RequestMethod.POST)
+	@RequestMapping(value = "/student/findStudentByRegisterNum", method = RequestMethod.POST)
 	@ResponseBody
-	public BasicDataResult findStudentByRegisterNum(String registerNumber){
-		
+	public BasicDataResult findStudentByRegisterNum(String registerNumber) {
+
 		return this.studentService.findStudentByRegisterNum(registerNumber);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+
+	// 将绑定的学生同步
+
+	@RequestMapping("/student/tongbu")
+	@ResponseBody
+	public BasicDataResult tongbu() {
+		try{
+			
+		
+		log.info("正在同步学生信息");
+		// 1.获取所有绑定好的学生
+		List<WeChatbanding> bds = this.weChatbandingService.find(new Query(), WeChatbanding.class);
+		if (bds.size() > 0) {
+			for (WeChatbanding we : bds) {
+				for (WeChatbandingStudent stu : we.getListbandings()) {
+					log.info("正在同步："+stu);
+					this.studentService.saveStudentByRegisterNum(stu);
+				}
+			}
+		}
+		log.info("同步完成");
+		return BasicDataResult.build(200, "同步完成", null);
+		}catch(Exception e){
+			e.printStackTrace();
+			return BasicDataResult.build(400, "同步过程中出现异常", null);
+		}
+	}
+
 }

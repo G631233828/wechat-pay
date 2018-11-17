@@ -79,6 +79,9 @@ canvas#canvas4 {
 												</div>
 										</div>
 												
+										<input type="hidden" name="oldregisterNumber" id="oldregisterNumber"  th:value="${student!=null}?${student.registerNumber}" >
+												
+												
 										<div class="form-group ">
 												<label class="col-lg-1 control-label">学籍号:</label>
 												<div class="col-lg-6">
@@ -88,16 +91,34 @@ canvas#canvas4 {
 												</div>
 										</div>
 										
-										<div class="form-group ">
+						<!-- 				<div class="form-group ">
+												<label class="col-lg-1 control-label">帐号:</label>
+												<div class="col-lg-6">
+													<input class="form-control" id="account" placeholder="请输入帐号"
+														name="account" th:value="${student!=null}?${student.account}" 
+														required="required">
+												</div>
+										</div> -->
+										
+							<!-- 			<div class="form-group ">
+												<label class="col-lg-1 control-label">密码:</label>
+												<div class="col-lg-6">
+													<input class="form-control" id="password" placeholder="请输入密码"
+														name="password" th:value="${student!=null}?${student.password}" 
+														required="required">
+												</div>
+										</div> -->
+										
+									<!-- 	<div class="form-group ">
 												<label class="col-lg-1 control-label">班级学号:</label>
 												<div class="col-lg-6">
 													<input class="form-control" id="code" placeholder="请输入班级学号"
 														name="code" th:value="${student!=null}?${student.code}" 
 														required="required">
 												</div>
-										</div>
+										</div> -->
 										
-										<div class="form-group">
+										<!-- <div class="form-group">
 												<label class="col-lg-1 control-label">班级选择：</label>
 												<div class="col-lg-6">
 													<div class="ui-select">
@@ -111,12 +132,12 @@ canvas#canvas4 {
 															</select>
 															</div>
 												</div>
-									     </div>
-										<div class="form-group">
+									     </div> -->
+									<!-- 	<div class="form-group">
 												<label class="col-lg-1 control-label">班主任：</label>
 												<div class="col-lg-6">
 													<div class="ui-select">
-														<select id="headMaster" name="headMaster" 
+														<select id="headMaster" name="headMaster.id" 
 															class="form-control">
 															<option value="">---请选择班主任---</option>
 															<option th:if="${teacherList!=null}" th:value="${teacher.id}"
@@ -132,7 +153,7 @@ canvas#canvas4 {
 												<label class="col-lg-1 control-label">副班主任：</label>
 												<div class="col-lg-6">
 													<div class="ui-select">
-														<select id="deputyHeadMaster" name="deputyHeadMaster" 
+														<select id="deputyHeadMaster" name="deputyHeadMaster.id" 
 															class="form-control">
 															<option value="">---请选择副班主任---</option>
 															<option th:if="${teacherList!=null}" th:value="${teacher.id}"
@@ -142,7 +163,7 @@ canvas#canvas4 {
 															</select>
 															</div>
 												</div>
-									     </div>
+									     </div> -->
 												
 												
 											<div class="form-group">

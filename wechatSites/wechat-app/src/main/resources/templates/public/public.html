@@ -215,6 +215,7 @@
 
 			<a id="toggle"> <span class="entypo-menu"></span>
 			</a>
+			
 			<div class="dark">
 				<form action="#">
 					<span> <input type="text" name="search" value=""
@@ -223,11 +224,14 @@
 					</span>
 				</form>
 			</div>
+			
+			
 			<div class="search-hover">
 				<form id="demo-2">
 					<input type="search" placeholder="Search Menu..." class="id_search">
 				</form>
 			</div>
+			
 			<div class="skin-part">
 				<div id="tree-wrap">
 					<div class="side-bar">
@@ -389,6 +393,27 @@
 	</div>
 
 
+	<!-- 动画model -->
+	<div aria-labelledby="myLargeModalLabel" role="dialog" tabindex="-1"
+		class="modal fade bs-example-modal-lg" style="display: none;"
+		th:fragment="animationModal" id="animationModal">
+		正在同步
+		<!-- <div class="modal-dialog modal-lg"
+			style="margin-top: 10%; width: 320px; height: 200px;">
+			<div class="modal-content">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">×</button>
+				</div>
+			
+
+			</div>
+
+		</div> -->
+
+	</div>
+
+
 
 
 	<div th:fragment="menu">
@@ -413,12 +438,12 @@
 				th:utext="|<a href='#'>${res.name}</a>|">
 			<li th:if="${session.menuid !=null }"><i
 				class="fa fa-lg fa-angle-right"></i></li>
-			<li class="pull-right">
+			<!-- <li class="pull-right">
 				<div class="input-group input-widget">
 					<input style="border-radius: 15px" type="text"
 						placeholder="Search..." class="form-control">
 				</div>
-			</li>
+			</li> -->
 		</ul>
 	</div>
 

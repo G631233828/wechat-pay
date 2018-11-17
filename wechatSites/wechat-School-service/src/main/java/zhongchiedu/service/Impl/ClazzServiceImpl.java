@@ -1,10 +1,14 @@
 package zhongchiedu.service.Impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -44,6 +48,10 @@ public class ClazzServiceImpl extends GeneralServiceImpl<Clazz> implements Clazz
 	@Override
 	public List<Clazz> findClazzsByisDisable() {
 		Query query = new Query();
+		List<Order> listsort = new ArrayList();
+		listsort.add(new Order(Direction.ASC, "clazzYear"));
+		listsort.add(new Order(Direction.ASC, "clazzNum"));
+		query.with(new Sort(listsort));
 		query.addCriteria(Criteria.where("isDisable").is(false));
 		List<Clazz> list = this.find(query, Clazz.class);
 		return list.size() > 0 ? list : null;
