@@ -216,6 +216,8 @@ public class StudentServiceImpl extends GeneralServiceImpl<Student> implements S
 		return null;
 	}
 
+	
+	
 	public void saveStudentByRegisterNum(WeChatbandingStudent stu) {
 		Student getstu = this.findStudentByRegisterNum2(stu.getStudentAccount());
 

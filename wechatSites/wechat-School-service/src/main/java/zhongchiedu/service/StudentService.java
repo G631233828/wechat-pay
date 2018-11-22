@@ -10,4 +10,5 @@ public interface StudentService extends GeneralService<zhongchiedu.school.pojo.S
 	 
 	 BasicDataResult studentDisable(String id);
 	 
+	  Student findStudentByRegisterNum2(String registerNumber);
 }

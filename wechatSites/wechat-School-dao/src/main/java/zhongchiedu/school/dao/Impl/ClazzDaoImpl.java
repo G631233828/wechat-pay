@@ -1,4 +1,4 @@
-package zhongchiedu.school.daoImpl;
+package zhongchiedu.school.dao.Impl;
 
 
 

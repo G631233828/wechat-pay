@@ -63,6 +63,8 @@ public class WeChatbandingServiceImpl extends GeneralServiceImpl<WeChatbanding> 
 		return weChatbanding != null ? weChatbanding : null;
 	}
 
+	
+	
 	@Override
 	public NSNUserInfo findWechatNsn(String code) {
 		NSNUserInfo nsn = WeixinUtil.baseWeChatLogin(Contents.APPID, Contents.APPSECRET, code);

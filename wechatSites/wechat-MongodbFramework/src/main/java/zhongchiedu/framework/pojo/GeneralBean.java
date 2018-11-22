@@ -10,8 +10,8 @@ import lombok.Setter;
 import lombok.Singular;
 import lombok.ToString;
 
-@Getter
 @Setter
+@Getter
 @ToString
 public class GeneralBean<T> implements Serializable{
 

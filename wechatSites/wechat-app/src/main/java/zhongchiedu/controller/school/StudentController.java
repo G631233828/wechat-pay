@@ -142,7 +142,7 @@ public class StudentController {
 	 */
 	@GetMapping("/student{id}")
 	@RequiresPermissions(value = "student:edit")
-	@SystemControllerLog(description = "查看")
+	@SystemControllerLog(description = "查看学生")
 	public String toeditPage(@PathVariable String id, Model model) {
 
 /*		List<Clazz> clazzList = clazzService.findClazzsByisDisable();
@@ -294,8 +294,6 @@ public class StudentController {
 	@ResponseBody
 	public BasicDataResult tongbu() {
 		try{
-			
-		
 		log.info("正在同步学生信息");
 		// 1.获取所有绑定好的学生
 		List<WeChatbanding> bds = this.weChatbandingService.find(new Query(), WeChatbanding.class);

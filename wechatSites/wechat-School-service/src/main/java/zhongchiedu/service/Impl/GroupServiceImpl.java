@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import zhongchiedu.framework.service.GeneralServiceImpl;
-import zhongchiedu.school.daoImpl.GroupDaoImpl;
+import zhongchiedu.school.dao.Impl.GroupDaoImpl;
 import zhongchiedu.school.pojo.Group;
 import zhongchiedu.school.pojo.School;
 import zhongchiedu.school.pojo.Teacher;

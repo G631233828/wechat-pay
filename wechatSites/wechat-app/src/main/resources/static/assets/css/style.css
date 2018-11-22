@@ -490,7 +490,7 @@ input:-webkit-autofill, textarea:-webkit-autofill {
 }
 
 .modal2 {
-/*     background: none repeat scroll 0 0 rgba(0, 0, 0, 0.8)!important; */
+    background: none repeat scroll 0 0 #eee!important; 
     bottom: 0;
     display: none;
     left: 0;

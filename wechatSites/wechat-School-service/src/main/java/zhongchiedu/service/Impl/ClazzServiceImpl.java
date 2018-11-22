@@ -100,6 +100,7 @@ public class ClazzServiceImpl extends GeneralServiceImpl<Clazz> implements Clazz
 	 * @param num
 	 * @return
 	 */
+	@Override
 	public Clazz findClazzByYearNum(int year, int num) {
 
 		Query query = new Query();

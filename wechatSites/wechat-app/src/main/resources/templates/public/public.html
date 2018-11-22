@@ -111,8 +111,8 @@
 							data-placement="bottom" title="Help" style="font-size: 20px;"
 							class="icon-help tooltitle"></i></a></li>
  -->
-				</ul> 
-			<!-- 	<div id="nt-title-container"
+				</ul>
+				<!-- 	<div id="nt-title-container"
 					class="navbar-left running-text visible-lg">
 					<ul class="date-top">
 						<li class="entypo-calendar" style="margin-right: 5px"></li>
@@ -150,15 +150,17 @@
 				</div> -->
 
 				<ul style="margin-right: 0;" class="nav navbar-nav navbar-right">
-					<li> <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+					<li><a data-toggle="dropdown" class="dropdown-toggle" href="#">
 							<img alt="" class="admin-pic img-circle"
-							src="http://api.randomuser.me/portraits/thumb/men/10.jpg">Hi,[[${session.user_session.userName}]] <b class="caret"></b>
-					</a> 
+							src="http://api.randomuser.me/portraits/thumb/men/10.jpg">Hi,[[${session.user_session.userName}]]
+							<b class="caret"></b>
+					</a>
 						<ul style="margin-top: 14px;" role="menu"
 							class="dropdown-setting dropdown-menu">
-							<li><a th:href="@{/loginOut}"> <span class="fontawesome-reply"></span>&#160;&#160;退出
+							<li><a th:href="@{/loginOut}"> <span
+									class="fontawesome-reply"></span>&#160;&#160;退出
 							</a></li>
-				<!-- 			<li><a href="#"> <span class="entypo-vcard"></span>&#160;&#160;Account
+							<!-- 			<li><a href="#"> <span class="entypo-vcard"></span>&#160;&#160;Account
 									Setting
 							</a></li>
 							<li><a href="#"> <span class="entypo-lifebuoy"></span>&#160;&#160;Help
@@ -169,7 +171,7 @@
 									<span class="entypo-basket"></span>&#160;&#160; Purchase
 							</a></li> -->
 						</ul></li>
-				<!-- 	<li><a data-toggle="dropdown" class="dropdown-toggle" href="#">
+					<!-- 	<li><a data-toggle="dropdown" class="dropdown-toggle" href="#">
 							<span class="icon-gear"></span>&#160;&#160;Setting
 					</a>
 						<ul role="menu" class="dropdown-setting dropdown-menu">
@@ -189,7 +191,7 @@
 								<div id="button-bg13"></div>
 							</li>
 						</ul></li> -->
-				<!-- 	<li class="hidden-xs"><a class="toggle-left" href="#"> <span
+					<!-- 	<li class="hidden-xs"><a class="toggle-left" href="#"> <span
 							style="font-size: 20px;" class="entypo-list-add"></span>
 					</a></li> -->
 				</ul>
@@ -215,7 +217,7 @@
 
 			<a id="toggle"> <span class="entypo-menu"></span>
 			</a>
-			
+
 			<div class="dark">
 				<form action="#">
 					<span> <input type="text" name="search" value=""
@@ -224,14 +226,14 @@
 					</span>
 				</form>
 			</div>
-			
-			
+
+
 			<div class="search-hover">
 				<form id="demo-2">
 					<input type="search" placeholder="Search Menu..." class="id_search">
 				</form>
 			</div>
-			
+
 			<div class="skin-part">
 				<div id="tree-wrap">
 					<div class="side-bar">
@@ -245,10 +247,14 @@
                         </li> -->
 							<li th:each="res:${session.resourceslist}"
 								th:if="${res.type} eq '0'"><a class="tooltip-tip ajax-load"
-								href="#" th:title="${res.name}"> <i th:class="${res.icon}"></i> <span>[[${res.name}]]</span>
-								
-							<h4 style="display: inline-block; float: none;"><img th:src="${activeUri}==${res.resUrl}?'assets/img/minus.png':'assets/img/plus.png'" ></h4>
-								
+								href="#" th:title="${res.name}"> <i th:class="${res.icon}"></i>
+									<span>[[${res.name}]]</span>
+
+									<h4 style="display: inline-block; float: none;">
+										<img
+											th:src="${activeUri}==${res.resUrl}?'assets/img/minus.png':'assets/img/plus.png'">
+									</h4>
+
 							</a>
 								<ul
 									th:style="${activeUri}==${res.resUrl}?'display: block;':'display: none;'">
@@ -340,15 +346,13 @@
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">×</button>
-					<h4>
-						信息提示
-					</h4>
+					<h4>信息提示</h4>
 				</div>
 				<div class="modal-body">
 					<h3 id="modalbody" align="center"></h3>
 				</div>
 				<div class="modal-footer" style="margin-top: 0px;">
-				<a href="#" class="btn btn-primary" data-dismiss="modal">确定</a>
+					<a href="#" class="btn btn-primary" data-dismiss="modal">确定</a>
 				</div>
 
 			</div>
@@ -356,10 +360,10 @@
 		</div>
 
 	</div>
-	
-	
-	
-	
+
+
+
+
 
 	<!-- delete Model -->
 	<div aria-labelledby="myLargeModalLabel" role="dialog" tabindex="-1"
@@ -395,21 +399,16 @@
 
 	<!-- 动画model -->
 	<div aria-labelledby="myLargeModalLabel" role="dialog" tabindex="-1"
-		class="modal fade bs-example-modal-lg" style="display: none;"
+		class="modal2 fade bs-example-modal-lg" style="display: none;"
 		th:fragment="animationModal" id="animationModal">
-		正在同步
-		<!-- <div class="modal-dialog modal-lg"
+
+		<div class="modal-dialog modal-lg"
 			style="margin-top: 10%; width: 320px; height: 200px;">
-			<div class="modal-content">
-
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">×</button>
-				</div>
-			
-
+			<div id="status">
+				<i class="fa fa-spinner fa-spin"
+					style="width: 100px; height: 100px;"></i>
 			</div>
-
-		</div> -->
+		</div>
 
 	</div>
 
@@ -432,7 +431,7 @@
 				th:each="res2:${session.resourceslist}"
 				th:if="${res2.id eq res.parentId}" class="fa fa-lg fa-angle-right"></i>
 			</li>
-			
+
 			<li th:if="${session.menuid !=null && session.menuid eq res.id}"
 				th:each="res:${session.resourceslist}"
 				th:utext="|<a href='#'>${res.name}</a>|">
@@ -555,7 +554,7 @@
 
 
 	<div th:fragment="footer">
-	
+
 		<div style="text-align: center;">
 			<p>
 				More Templates <a href="http://www.cssmoban.com/" target="_blank"

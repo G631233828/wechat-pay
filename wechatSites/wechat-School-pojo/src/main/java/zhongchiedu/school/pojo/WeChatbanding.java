@@ -2,6 +2,7 @@ package zhongchiedu.school.pojo;
 
 import java.util.List;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Getter;
@@ -28,6 +29,10 @@ public class WeChatbanding extends GeneralBean<WeChatbanding>{
 	private String studentClass;    //绑定学生班级
 	private String studentAccount;  //登录帐号
 	private String password;	
+	@Transient
+	private int clazzYear;//班级年份
+	@Transient
+	private int clazzNum;//班级号
 	
 	
 	
