@@ -32,12 +32,16 @@ import org.springframework.stereotype.Repository;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
+import zhongchiedu.common.utils.Common;
 import zhongchiedu.wechat.oauto2.NSNUserInfo;
 import zhongchiedu.wechat.oauto2.WeixinOauth2Token;
 import zhongchiedu.wechat.pojo.createMenu.Menu;
+import zhongchiedu.wechat.resp.Data;
+import zhongchiedu.wechat.resp.UserGet;
 import zhongchiedu.wechat.util.accessToken.AccessToken;
 import zhongchiedu.wechat.util.jsapi_Ticket.Jsapi_Ticket;
 import zhongchiedu.wechat.util.token.WeChatToken;
+import zhongchiedu.wechat.util.token.WeChatToken.InnerSingletion;
 
 /**
  * 公众平台通用接口工具类
@@ -57,8 +61,10 @@ public class WeixinUtil {
 	public final static String jsapi_ticket_url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESSTOKEN&type=jsapi";// 这个url链接和参数不能变
 	//通过access_token获取创建的微信菜单
 	public final static String wechat_menu = "https://api.weixin.qq.com/cgi-bin/get_current_selfmenu_info?access_token=ACCESS_TOKEN";
+	//客服消息发送，可用于消息推送等
+	public final static String send_url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=ACCESS_TOKEN";
 	
-	
+	public final static String user_get_url="https://api.weixin.qq.com/cgi-bin/user/get?access_token=ACCESS_TOKEN";
 	
 	/**
 	 * 获取access_token
@@ -456,34 +462,36 @@ public class WeixinUtil {
 		// APPID=wxcab148803e627d91
 		// APPSECRET=bd70520f4f3eb98bea66d638efd8b247
 		// //1、获取AccessToken
-		AccessToken accessToken = WeixinUtil.getAccessToken("wxcab148803e627d91", "bd70520f4f3eb98bea66d638efd8b247");
-
-		// 2、获取Ticket
-		String jsapi_ticket = getTicket(accessToken.getToken());
-
-		// 3、时间戳和随机字符串
-		String noncestr = UUID.randomUUID().toString().replace("-", "").substring(0, 16);// 随机字符串
-		String timestamp = String.valueOf(System.currentTimeMillis() / 1000);// 时间戳
-
-		System.out.println("accessToken:" + accessToken + "\njsapi_ticket:" + jsapi_ticket + "\n时间戳：" + timestamp
-				+ "\n随机字符串：" + noncestr);
-
-		// 4、获取url
-		String url = "http://www.luiyang.com/add.html";
-		/*
-		 * 根据JSSDK上面的规则进行计算，这里比较简单，我就手动写啦 String[] ArrTmp =
-		 * {"jsapi_ticket","timestamp","nonce","url"}; Arrays.sort(ArrTmp);
-		 * StringBuffer sf = new StringBuffer(); for(int
-		 * i=0;i<ArrTmp.length;i++){ sf.append(ArrTmp[i]); }
-		 */
-
-		// 5、将参数排序并拼接字符串
-		String str = "jsapi_ticket=" + jsapi_ticket + "&noncestr=" + noncestr + "&timestamp=" + timestamp + "&url="
-				+ url;
-
-		// 6、将字符串进行sha1加密
-		String signature = SHA1(str);
-		System.out.println("参数：" + str + "\n签名：" + signature);
+		AccessToken accessToken =  WeChatToken.getInstance().getAccessToken();
+		UserGet get =getusers(accessToken.getToken(),null);
+		System.out.println(get);
+		
+//		// 2、获取Ticket
+//		String jsapi_ticket = getTicket(accessToken.getToken());
+//
+//		// 3、时间戳和随机字符串
+//		String noncestr = UUID.randomUUID().toString().replace("-", "").substring(0, 16);// 随机字符串
+//		String timestamp = String.valueOf(System.currentTimeMillis() / 1000);// 时间戳
+//
+//		System.out.println("accessToken:" + accessToken + "\njsapi_ticket:" + jsapi_ticket + "\n时间戳：" + timestamp
+//				+ "\n随机字符串：" + noncestr);
+//
+//		// 4、获取url
+//		String url = "http://www.luiyang.com/add.html";
+//		/*
+//		 * 根据JSSDK上面的规则进行计算，这里比较简单，我就手动写啦 String[] ArrTmp =
+//		 * {"jsapi_ticket","timestamp","nonce","url"}; Arrays.sort(ArrTmp);
+//		 * StringBuffer sf = new StringBuffer(); for(int
+//		 * i=0;i<ArrTmp.length;i++){ sf.append(ArrTmp[i]); }
+//		 */
+//
+//		// 5、将参数排序并拼接字符串
+//		String str = "jsapi_ticket=" + jsapi_ticket + "&noncestr=" + noncestr + "&timestamp=" + timestamp + "&url="
+//				+ url;
+//
+//		// 6、将字符串进行sha1加密
+//		String signature = SHA1(str);
+//		System.out.println("参数：" + str + "\n签名：" + signature);
 
 	}
 
@@ -555,7 +563,84 @@ public class WeixinUtil {
 	    }
 
 
-	
+	 
+	 /**
+	  * 微信客服消息发送
+	  * @param accessToken
+	  * @param json
+	  * @return
+	  */
+	 public static JSONObject send(String accessToken , String json){
+		 JSONObject jsonObject =  WeixinUtil.httpRequest(send_url.replace("ACCESS_TOKEN", accessToken), "POST", json);
+		 log.info("消息发送返回"+jsonObject);
+		int errorCode = jsonObject.getInt("errcode");
+			//如果错误代码是42001说明access_token过期
+			if(errorCode == 42001){
+				log.info("access_token过期");
+				//重新获取ACCESS_token
+				InnerSingletion.single=new WeChatToken();
+				log.info("重新获取access_token成功"+InnerSingletion.single.getAccessToken().getToken());
+				//重新发送数据
+				jsonObject = WeixinUtil.httpRequest(send_url.replace("ACCESS_TOKEN", accessToken), "POST", json);
+				log.info("重新发送返回结果："+jsonObject);
+			}
+			
+			if (null != jsonObject) {
+				if (0 != jsonObject.getInt("errcode")) {
+					  jsonObject.getInt("errcode");
+				}
+			}
+		 
+		 
+		 return jsonObject;
+	 }
+	 /**
+	  * 获取用户openid列表
+	  * @param accessToken
+	  * @param nextOpenId
+	  * @return
+	  */
+	 public static  UserGet getusers(String accessToken,String nextOpenId){
+		 String nextopenid = "&next_openid=NEXT_OPENID";
+		
+		 
+		 
+		String requestUrl =  user_get_url.replace("ACCESS_TOKEN", accessToken); 
+		
+		 if(Common.isNotEmpty(nextOpenId)){
+			 //如果关注的用户超过10000个需要多次获取
+			 nextopenid = nextopenid.replace("NEXT_OPENID", nextOpenId);
+			 requestUrl = requestUrl+nextopenid;
+			 
+		 }
+		
+		 JSONObject jsonObject =  WeixinUtil.httpRequest(requestUrl, "GET", null);
+		 UserGet user = null;
+		 if (null != jsonObject) {
+				try {
+					user = new UserGet();
+					user.setCount(jsonObject.getInt("count"));
+					user.setTotal(jsonObject.getInt("total"));
+					user.setNext_openid(jsonObject.getString("next_openid"));
+					JSONObject j =jsonObject.getJSONObject("data");
+					JSONArray array = j.getJSONArray("openid");
+					Data d = new Data();
+					d.setOpenid(array.toArray());
+					user.setData(d);
+				} catch (Exception e) {
+					log.error("获取openid列表出现错误");
+					return null;
+				}
+			}
+		 return user;
+	 }
+	 
+	 
+	 
+	 
+	 
+	 
+	 
 	
 	
 	

@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import zhongchiedu.common.utils.BasicDataResult;
+import zhongchiedu.common.utils.Common;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.log.annotation.SystemControllerLog;
 import zhongchiedu.school.pojo.Clazz;
@@ -44,7 +45,7 @@ public class ClazzController {
 
 	@Autowired
 	private ClazzService clazzService;
-	
+
 	@Autowired
 	private TeacherService teacherService;
 
@@ -79,7 +80,7 @@ public class ClazzController {
 	@PostMapping("/clazz")
 	@RequiresPermissions(value = "clazz:add")
 	@SystemControllerLog(description = "添加班级")
-	public String addclazz(HttpServletRequest request,@Valid Clazz clazz ) {
+	public String addclazz(HttpServletRequest request, @Valid Clazz clazz) {
 
 		this.clazzService.SaveOrUpdateClazz(clazz);
 
@@ -112,11 +113,41 @@ public class ClazzController {
 	public String toeditPage(@PathVariable String id, Model model) {
 
 		Clazz clazz = this.clazzService.findOneById(id, Clazz.class);
-
 		model.addAttribute("clazz", clazz);
 		
+		
+		// 获取到所有的已经绑定班主任的班级信息
+
+		List<Clazz> listclazz = this.clazzService.findClazzsByisDisable();
+		List<Teacher> list = new ArrayList<>();
+		for (Clazz c : listclazz) {
+			if (Common.isNotEmpty(c.getHeadMaster())) {
+				list.add(c.getHeadMaster());
+			}
+		}
 		List<Teacher> teacherList = this.teacherService.findTeachersByisDisable();
-		model.addAttribute("teacherList", teacherList);
+		
+		List<Teacher> lists = new ArrayList<>();
+		if(Common.isNotEmpty(clazz)){
+			lists.add(clazz.getHeadMaster());
+		}
+		
+		for(Teacher t1:teacherList){
+			boolean flag = false;
+			for(Teacher t2:list){
+				if(t1.getContactsmobile().equals(t2.getContactsmobile())){
+					flag = true;
+				}		
+			}
+			
+			if(!flag){
+				lists.add(t1);
+			}
+			
+		}
+		
+		
+		model.addAttribute("teacherList", lists);
 
 		return "schools/clazz/add";
 
@@ -150,5 +181,21 @@ public class ClazzController {
 		this.clazzService.autoBatchClazz(clazzYear, clazzNum);
 		return "redirect:/clazzs";
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

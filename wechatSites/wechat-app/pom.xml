@@ -34,6 +34,11 @@
 		</dependency>
 		<dependency>
 			<groupId>zhongchiedu.wechat</groupId>
+			<artifactId>wechat-wechat-Utils</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>zhongchiedu.wechat</groupId>
 			<artifactId>wechat-School-service</artifactId>
 			<version>${project.version}</version>
 		</dependency>

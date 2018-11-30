@@ -22,6 +22,13 @@ import zhongchiedu.wechat.util.MessageUtil;
  */
 public class CoreService {
 
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * 处理微信发来的请求
 	 * 
@@ -38,17 +45,21 @@ public class CoreService {
 			Map<String, String> requestMap = MessageUtil.parseXml(request);
 
 			// 发送方帐号（open_id）
-			String fromUserName = requestMap.get("FromUserName");
-			// 公众帐号
-			String toUserName = requestMap.get("ToUserName");
+//			String fromUserName = requestMap.get("FromUserName");
+//			// 公众帐号
+//			String toUserName = requestMap.get("ToUserName");
 			// 消息类型
 			String msgType = requestMap.get("MsgType");
+			
+			String fromUserName = "ooiMKv7cqR-2EgkeC9LdATpr-mbY";
+			String toUserName ="gh_8f67927a39ba";
 
 			// 回复文本消息
 			TextMessage textMessage = new TextMessage();
 			textMessage.setToUserName(fromUserName);
-			System.out.println("UserMessage:" + fromUserName);
+			System.out.println("fromUserName:" + fromUserName);
 			textMessage.setFromUserName(toUserName);
+			System.out.println("toUserName:" + toUserName);
 			textMessage.setCreateTime(new Date().getTime());
 			textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
 			textMessage.setFuncFlag(0);

@@ -106,16 +106,15 @@ canvas#canvas4 {
 															class="form-control">
 															<option value="">---请选择班主任---</option>
 															<option th:if="${teacherList!=null}"
-																th:value="${teacher.id}" th:text="${teacher.name}"
 																th:selected="${clazz!=null&&clazz.headMaster!=null}?${clazz.headMaster.id}==${teacher.id}"
-																th:each="teacher:${teacherList}"></option>
+																th:each="teacher:${teacherList}" th:value="${teacher?.id}" th:text="${teacher?.name}"></option>
 														</select>
 													</div>
 												</div>
 											</div>
 
 
-											<div class="form-group">
+										<!-- 	<div class="form-group">
 												<label class="col-lg-1 control-label">副班主任：</label>
 												<div class="col-lg-6">
 													<div class="ui-select">
@@ -129,7 +128,7 @@ canvas#canvas4 {
 														</select>
 													</div>
 												</div>
-											</div>
+											</div> -->
 
 
 											<div class="form-group">

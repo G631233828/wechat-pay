@@ -31,11 +31,17 @@
 			</div>
 			<p class="weui_grid_label">作业</p>
 		</a> 
-		<a href="|@{/wechat/toleave?openId=}${wechatbinding.openId}|" class="weui_grid js_grid" >
+		<a th:href="|@{/wechat/toleave?openId=}${wechatbinding.openId}|" class="weui_grid js_grid" >
 			<div class="weui_grid_icon">
 				<img th:src="@{/assets/weChatPage/images/icon_nav_panel.png}" alt="">
 			</div>
 			<p class="weui_grid_label">请假</p>
+		</a> 
+		<a th:href="|@{/wechat/leavehistory?openId=}${wechatbinding.openId}|" class="weui_grid js_grid" >
+			<div class="weui_grid_icon">
+				<img th:src="@{/assets/weChatPage/images/icon_nav_panel.png}" alt="">
+			</div>
+			<p class="weui_grid_label">请假记录</p>
 		</a> 
 		
 		<a th:href="|@{/wechat/bindManagement?openId=}${wechatbinding.openId}|" class="weui_grid js_grid"

@@ -16,9 +16,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
+import net.sf.json.JSONObject;
 import zhongchiedu.framework.pagination.Pagination;
+import zhongchiedu.school.pojo.News;
 import zhongchiedu.wechat.resp.Article;
+import zhongchiedu.wechat.resp.CustomMessage;
 import zhongchiedu.wechat.resp.NewsMessage;
+import zhongchiedu.wechat.resp.TextMessage;
 import zhongchiedu.wechat.util.MessageUtil;
 
 
@@ -52,8 +56,8 @@ public class CoreServiceMessage {
 		Article article = new Article();
 			article.setTitle("中赤信息技术欢迎您！");
 			article.setDescription("从事教育行业产品的研发，针对中小学管理系统的研发，目前主要产品有：学前教育管理系统，全媒体资源管理系统，学校多媒体教室一体化建设，学校网站建设等！");
-			article.setPicUrl(address+"web/assets/images/school.png");
-		
+			article.setPicurl(address+"web/assets/images/school.png");
+			article.setUrl("http://www.baidu.com");
 		articleList.add(article);
 		// 设置图文消息个数
 		newsMessage.setArticleCount(articleList.size());
@@ -61,6 +65,27 @@ public class CoreServiceMessage {
 		newsMessage.setArticles(articleList);
 		// 将图文消息对象转换成xml字符串
 		return MessageUtil.newsMessageToXml(newsMessage);
+	}
+	//消息群发
+	public static String send(NewsMessage newsMessage,News news) {
+		List<Article> articleList = new ArrayList<Article>();
+		Article article = new Article();
+		article.setTitle("中赤信息技术欢迎您！");
+		article.setDescription("从事教育行业产品的研发，针对中小学管理系统的研发，目前主要产品有：学前教育管理系统，全媒体资源管理系统，学校多媒体教室一体化建设，学校网站建设等！");
+		article.setPicurl("http://zhongchiedu.com/wechat-app/assets/1.png");
+		article.setUrl("http://zhongchiedu.com/wechat-app/assets/1.png");
+		articleList.add(article);
+		// 设置图文消息个数
+		newsMessage.setArticleCount(articleList.size());
+		// 设置图文消息包含的图文集合
+		newsMessage.setArticles(articleList);
+		
+		CustomMessage cus = new CustomMessage();
+		cus.setMsgtype(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
+		cus.setNews(newsMessage);
+		cus.setTouser("ooiMKv7cqR-2EgkeC9LdATpr-mbY");
+		// 将图文消息对象转换成xml字符串
+		return  JSONObject.fromObject(cus).toString();
 	}
 	
 	

@@ -139,7 +139,7 @@ public class TeacherServiceImpl extends GeneralServiceImpl<Teacher> implements T
 				if (teacher == null) {
 				
 					Teacher ed = new Teacher();
-					importTeacher.setNamePinyin(pinyinTool.toPinYin(importTeacher.getName()));
+					importTeacher.setNamePinyin(pinyinTool.toPinYin(importTeacher.getName(), "", PinyinTool.Type.LOWERCASE));
 					BeanUtils.copyProperties(importTeacher, ed);
 					this.insert(ed);
 				}
@@ -194,6 +194,39 @@ public class TeacherServiceImpl extends GeneralServiceImpl<Teacher> implements T
 		public long lastnum = 0;// 还剩几条数据
 	}
 
+	/**
+	 * 根据openId查询老师
+	 */
+	@Override
+	public Teacher findTeacherByOpenId(String openId) {
+		if(Common.isNotEmpty(openId)){
+			Query query = new Query();
+			query.addCriteria(Criteria.where("isDisable").is(false)).addCriteria(Criteria.where("openId").is(openId));
+			return this.findOneByQuery(query, Teacher.class);
+		}
+		return null;
+	}
+
+	@Override
+	public Teacher findTeacherByAccount(String account, String password) {
+		Teacher teacher = null;
+		if(Common.isNotEmpty(account)&&Common.isNotEmpty(password)){
+			Query query = new Query();
+			query.addCriteria(Criteria.where("contactsmobile").is(account)).addCriteria(Criteria.where("password").is(password));
+			teacher = this.findOneByQuery(query, Teacher.class);
+		}
+		return Common.isNotEmpty(teacher)?teacher:null;
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 

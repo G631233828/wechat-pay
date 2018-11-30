@@ -20,9 +20,11 @@ public interface TeacherService extends GeneralService<Teacher>{
 
 	List<Teacher> findTeachersByisDisable(); //查询在使用状态下的班级
 
-	public String BatchImport(File file, int row, HttpSession session) throws IOException;
+	String BatchImport(File file, int row, HttpSession session) throws IOException;
 	
+	Teacher findTeacherByOpenId(String openId);
 	
+	Teacher findTeacherByAccount(String account,String password);
 	
 	
 	

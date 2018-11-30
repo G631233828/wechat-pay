@@ -66,7 +66,6 @@ public class TeacherController {
 				pagination = new Pagination<Teacher>();
 
 			model.addAttribute("pageList", pagination);
-			System.out.println(pagination.toString());
 		} catch (Exception e) {
 			log.info("查询教师信息失败——————————》" + e.toString());
 			e.printStackTrace();

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -109,6 +110,15 @@ public class ClazzServiceImpl extends GeneralServiceImpl<Clazz> implements Clazz
 
 		return this.findOneByQuery(query, Clazz.class);
 
+	}
+
+	@Override
+	public Clazz findHeadMaster(String id) {
+		//通过老师的id查询班级
+		Query query = new Query();
+		query.addCriteria(Criteria.where("headMaster.$id").is(new ObjectId(id)));
+		Clazz clazz = this.findOneByQuery(query, Clazz.class);
+		return clazz;
 	}
 
 }

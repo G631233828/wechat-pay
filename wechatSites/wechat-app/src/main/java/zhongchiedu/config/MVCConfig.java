@@ -22,14 +22,20 @@ import zhongchiedu.compent.LoginHandlerInterceptor;
 @Configuration
 public class MVCConfig extends WebMvcConfigurerAdapter {
 
+	@Value("${upload.imgpath}")
+	private String imgpath;
+	@Value("${upload.kinderitor}")
+	private String kinderitor;
+	@Value("${upload.savedir}")
+	private String dir;
 	
 	
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 //    	registry.addResourceHandler("/img/**").addResourceLocations("file:"+filepath+"/"); 
 //    	registry.addResourceHandler(savePath+"/**").addResourceLocations("file:"+savePath+"/");
-//    	registry.addResourceHandler(kinderitorPath+"/**").addResourceLocations("file:"+kinderitorPath+"/");
-//    	registry.addResourceHandler(imgPath+"/**").addResourceLocations("file:"+imgPath+"/");
+    	registry.addResourceHandler(kinderitor+"/**").addResourceLocations("file:"+dir+kinderitor+"/");
+    	registry.addResourceHandler(imgpath+"/**").addResourceLocations("file:"+dir+imgpath+"/");
 	    	super.addResourceHandlers(registry);
 	    }
 		  

@@ -19,4 +19,6 @@ public interface ClazzService extends GeneralService<Clazz>{
 	void autoBatchClazz(int year, int num);
 	
 	 Clazz findClazzByYearNum(int year, int num);
+	 
+	 Clazz findHeadMaster(String id);
 }

@@ -24,6 +24,13 @@
 			<scope>provided</scope>
 		</dependency>
 		
+		<dependency>
+			<groupId>zhongchiedu.wechat</groupId>
+			<artifactId>wechat-General-pojo</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		
 		
 	</dependencies>
 

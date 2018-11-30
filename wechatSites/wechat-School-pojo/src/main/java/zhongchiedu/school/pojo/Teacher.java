@@ -30,6 +30,8 @@ public class Teacher  extends GeneralBean<Teacher>{
     private String cardId;// 身份证Id（证件号）
     private NSNUserInfo nsnUserInfo; //绑定微信用户信息
     private String openId;//老师的openId
+    private Clazz clazz;//绑定班级
+//    private boolean clazzTeacher;//true班主任 false非班主任
     @DBRef
 	private School school;
     

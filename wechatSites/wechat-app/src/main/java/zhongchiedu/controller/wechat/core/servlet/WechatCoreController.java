@@ -2,6 +2,7 @@ package zhongchiedu.controller.wechat.core.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,8 +15,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import net.sf.json.JSONObject;
 import zhongchiedu.controller.wechat.core.service.CoreService;
+import zhongchiedu.controller.wechat.core.service.CoreServiceMessage;
 import zhongchiedu.school.pojo.School;
+import zhongchiedu.wechat.resp.NewsMessage;
+import zhongchiedu.wechat.resp.TextMessage;
+import zhongchiedu.wechat.util.MessageUtil;
+import zhongchiedu.wechat.util.WeixinUtil;
+import zhongchiedu.wechat.util.accessToken.AccessToken;
+import zhongchiedu.wechat.util.token.WeChatToken;
+import zhongchiedu.wechat.util.token.WeChatToken.InnerSingletion;
 
 /**
  * 微信核心请求处理
@@ -25,7 +35,7 @@ import zhongchiedu.school.pojo.School;
  */
 
 @Controller
-@RequestMapping("/weChat/weChatCore")
+@RequestMapping("/wechat/weChatCore")
 public class WechatCoreController extends HttpServlet {
 
 	/**
@@ -34,7 +44,7 @@ public class WechatCoreController extends HttpServlet {
 	private static final long serialVersionUID = -5697616411205492433L;
 
 	private static final Logger log = LoggerFactory.getLogger(WechatCoreController.class);
-
+	static WeixinUtil t = new WeixinUtil();
 	/**
 	 * 校验信息是否是从微信服务器发过来的。
 	 * 
@@ -87,7 +97,6 @@ public class WechatCoreController extends HttpServlet {
 		String respMessage = CoreService.processRequest(request);// 调用CoreService类的processRequest方法接收、处理消息，并得到处理结果；
 		PrintWriter out = response.getWriter();
 		out.print(respMessage);
-
 		out.close();
 
 	}
