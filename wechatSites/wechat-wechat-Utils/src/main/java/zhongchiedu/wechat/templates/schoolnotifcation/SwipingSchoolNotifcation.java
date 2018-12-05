@@ -14,7 +14,6 @@ import zhongchiedu.wechat.templates.util.sendTemplateMessage_Data_ValueAndColor;
 public class SwipingSchoolNotifcation {
 
 	
-	public static String template_id="FoNU2P8hDJkPh8f2NUGqxhrAXs9h42_0LsNDhUUyCJc";
 	//日期
 	private sendTemplateMessage_Data_ValueAndColor first;
 	//学校

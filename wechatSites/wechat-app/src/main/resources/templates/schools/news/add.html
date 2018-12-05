@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="public/public_css::pub_css"></head>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet"
+	th:href="@{/plugs/kindeditor/themes/default/default.css}" />
+<link th:href="@{/plugs/bootstrap-fileinput/css/fileinput.css}"
+	media="all" rel="stylesheet" type="text/css" />
+
+<link rel="stylesheet"
+	th:href="@{/plugs/kindeditor/plugins/code/prettify.css}" />
+</head>
+
+
+<body>
+	<!-- Preloader -->
+	<div id="preloader">
+		<div id="status">&nbsp;</div>
+	</div>
+	<!-- TOP NAVBAR -->
+	<div th:replace="public/public::top"></div>
+	<!-- /END OF TOP NAVBAR -->
+
+	<!-- SIDE MENU -->
+	<div th:replace="public/public::left(activeUri='wechat')"></div>
+	<!-- END OF SIDE MENU -->
+
+	<!--  PAPER WRAP -->
+	<div class="wrap-fluid">
+		<div class="container-fluid paper-wrap bevel tlbr">
+
+
+			<!-- CONTENT -->
+			<!--TITLE -->
+			<div th:replace="public/public::title"></div>
+			<!--/ TITLE -->
+
+			<!-- BREADCRUMB -->
+			<div th:replace="public/public::menu"></div>
+			<!-- END OF BREADCRUMB -->
+
+			<div class="content-wrap">
+				<div class="row">
+
+
+					<div class="col-sm-12">
+						<!-- BLANK PAGE-->
+
+						<div style="margin: -20px 15px;" class="nest" id="Blank_PageClose">
+							<div class="title-alt">
+								<h6>新闻信息</h6>
+								<div class="titleClose">
+									<a class="gone" href="#Blank_PageClose"> <span
+										class="entypo-cancel"></span>
+									</a>
+								</div>
+								<div class="titleToggle">
+									<a class="nav-toggle-alt" href="#Blank_Page_Content"> <span
+										class="entypo-up-open"></span>
+									</a>
+								</div>
+
+							</div>
+
+
+							<div class="body-nest" id="Blank_Page_Content">
+
+								<div class="row">
+
+									<!-- edit form column -->
+									<div class="col-md-12 personal-info">
+
+										<form class="form-horizontal" id="newsForm" enctype="multipart/form-data"
+											th:action="@{/news}" method="post">
+											<input type="hidden" name="_method" value="put"
+												th:if="${news!=null}" /> <input type="hidden" name="id"
+												th:if="${news!=null}" th:value="${news.id}">
+
+											<div class="form-group ">
+
+												<label class="col-lg-1 control-label">新闻标题:</label>
+												<div class="col-lg-6">
+													<input class="form-control" id="title"
+														placeholder="请输入新闻标题" name="title"
+														th:value="${news?.title}" required="required">
+												</div>
+											</div>
+
+											<div class="form-group ">
+												<label class="col-lg-1 control-label">作者:</label>
+												<div class="col-lg-6">
+													<input class="form-control" id="author" placeholder="请输入作者"
+														name="author" th:value="${news?.author}"
+														required="required">
+												</div>
+											</div>
+
+
+											<div class="form-group">
+												<label class="col-lg-1 control-label">新闻图片：</label>
+												<div class="col-lg-6" id="newsfile">
+													<input id="filenews" name="filenews" type="file">
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-lg-1 control-label">描述：</label>
+												<div class="col-lg-6" >
+													<textarea id="description"  style="margin: 0px; height: 148px; width: 755px;" name="description" th:text="${news?.description}">
+													
+													</textarea>
+												</div>
+											</div>
+
+											<input type="hidden" th:value="${news?.newsImg?.id}"
+												name="oldnewsImg" id="oldnewsImg">
+
+											<div class="form-group">
+												<label class="col-lg-1 control-label">新闻内容：</label>
+												<div class="col-lg-6">
+													<textarea rows="5" id="content" class="col-lg-12"
+														name="content" placeholder="新闻内容"
+														th:text="${news?.content}">
+													</textarea>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-md-1 control-label"></label>
+												<div class="col-md-8">
+													<button type="submit" class="btn btn-success"
+														th:text="${news!=null?'修改':'添加'}"></button>
+													<span></span> <input th:if="${news} eq null"
+														class="btn btn-default" value="重置" type="reset">
+												</div>
+											</div>
+										</form>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- END OF BLANK PAGE -->
+
+				</div>
+			</div>
+
+			<!--/row-->
+
+
+		</div>
+	</div>
+	<!--  END OF PAPER WRAP -->
+	<!-- 右侧隐藏菜单start -->
+	<div th:replace="public/public::right"></div>
+	<!-- 右侧隐藏菜单end-->
+	<!-- 底部js -->
+	<div th:replace="public/public_js::pub_js"></div>
+	<div th:replace="public/public_js::public_script"></div>
+	<div th:replace="public/public::footer"></div>
+	<!-- Jquery Validate -->
+	<script type="text/javascript"
+		th:src="@{/plugs/validate/jquery.validate.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/plugs/validate/messages_zh.min.js}"></script>
+	<!-- 引入news.js -->
+	<script type="text/javascript" th:inline="javascript"
+		th:src="@{/js/schools/news/news.js}"></script>
+	<script  th:src="@{/plugs/kindeditor/kindeditor-all.js}"></script>
+
+	<script charset="utf-8"
+		th:src="@{/plugs/kindeditor/plugins/code/prettify.js}"></script>
+	<script th:src="@{/plugs/bootstrap-fileinput/js/fileinput.js}"
+		type="text/javascript"></script>
+
+	<script type="text/javascript" th:inline="javascript">
+		KindEditor.ready(function(KK) {
+			
+			
+			var editor1 = KK.create('textarea[name="content"]', {
+				width : "100%", //编辑器的宽度为70%
+				height : "400px", //编辑器的高度为100px
+				uploadJson : 'fileUpload',
+				fileManagerJson : 'fileManager',
+				allowFileManager : true,
+				afterCreate : function() {
+					var self = this;
+					KK.ctrl(document, 13, function() {
+						self.sync();
+						document.forms['newsForm'].submit();
+					});
+					KK.ctrl(self.edit.doc, 13, function() {
+						self.sync();
+						document.forms['newsForm'].submit();
+					});
+				},
+				
+			});
+			
+			
+			prettyPrint();
+			
+			
+		});
+		
+		
+	</script>
+
+
+<script type="text/javascript" th:inline="javascript">
+	
+	var path = "";
+	var img ;
+	var newsImg;
+	/* <![CDATA[ */
+		path = [[@{/}]];
+			   newsImg = [[${news!=null}?${news.newsImg}:null]];
+			   if(newsImg!=null){
+				 img = "<img src='"+path+newsImg.savePath+"/"+newsImg.generateName
+				+"' class='file-preview-image' style='width:auto;height:160px;'>";
+			   }
+
+				$("#filenews").fileinput({
+					maxFileCount : 1, //表示允许同时上传的最大文件个数
+					allowedFileExtensions : [ 'jpg', 'gif', 'png', 'jpeg' ],//接收的文件后缀
+					showUpload: false,
+					showCaption: false,
+					showPreview : true,//显示预览
+					browseClass: "btn btn-primary btn-lg",
+					fileType: "any",
+		     	    previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+		      	    initialPreview : [
+		      	  		 	img,
+					],
+			});
+	
+	
+				//点击删除按钮之后将图片所在input清空
+				$("#newsfile .fileinput-remove-button").click(function(e){
+					$("#oldnewsImg").val(""); 
+				})
+				//点击删除按钮之后将图片所在input清空
+				$("#newsfile .fileinput-remove").click(function(e){
+				$("#oldnewsImg").val("");
+				})
+	
+	
+</script>
+
+
+
+
+
+
+</body>
+
+</html>

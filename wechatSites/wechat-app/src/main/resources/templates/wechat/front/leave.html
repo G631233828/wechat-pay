@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+</head>
+<head th:include="wechat/front/public/public_css::pub_css"></head>
+
+<script type="text/javascript">
+	$(function() {
+		$("#date").datetimePicker({
+			title : "选择日期",
+			m : 1,
+			min : '2000-01-01',
+			max : '2020-12-31'
+		});
+	});
+
+</script>
+
+<body ontouchstart class="page-bg">
+
+	<div th:replace="/wechat/front/public/public::top"></div>
+
+
+	<form id="form" th:action="@{/wechat/leave}" method="post">
+
+		<input type="hidden" th:value="${openId}" th:name="openId">
+		<input type="hidden" th:value="${leave?.id}" th:name="${leave!=null}?'id':''">
+
+		<div class="weui_cells weui_cells_form ">
+			<div class="weui_cell">
+				<div class="weui_cell_hd">
+					<label class="weui_label">姓名：</label>
+				</div>
+				<div class="weui_cell_bd weui_cell_primary">
+					<input class="weui_input" type="text"
+						th:value="${wechatbanding?.studentName}" disabled="disabled" />
+				</div>
+			</div>
+
+			<div class="weui_cell">
+				<div class="weui_cell_hd">
+					<label class="weui_label">班级：</label>
+				</div>
+				<div class="weui_cell_bd weui_cell_primary">
+					<input class="weui_input" type="text" disabled="disabled"
+						th:value="|${wechatbanding?.clazzYear}年${wechatbanding?.clazzNum}班|" />
+				</div>
+			</div>
+
+
+			<div class="weui_cell">
+				<div class="weui_cell_hd">
+					<label for="" class="weui_label">请假日期:</label>
+				</div>
+				<div class="weui_cell_bd weui_cell_primary">
+					<input class="weui_input" type="text" name="startLeave" readonly="readonly"
+						 th:value="${leave?.startLeave}"  th:id="${leave==null}?date:''" 
+						required emptyTips="请选择请假日期" />
+				</div>
+			</div>
+		
+		</div>
+
+
+		
+		<div class="weui_cells_title">请假原因：</div>
+		<div class="weui_cells weui_cells_form">
+			<div class="weui_cell">
+				<div class="weui_cell_bd weui_cell_primary">
+					<textarea  th:maxlength="50" id="reason" name="reason" class="weui_textarea"
+						placeholder="请输入请假原因"  rows="3"  maxlength="" th:text="${leave?.reason}"></textarea>
+					  <div class="weui_textarea_counter"><span id='count'>0</span>/<span id='count_max'>50</span></div>
+				</div>
+				
+				
+<script type="text/javascript">
+    $(function(){
+      var max = $('#count_max').text();
+      $('#reason').on('input', function(){
+         var text = $(this).val();
+         var len = text.length;   
+         $('#count').text(len);    
+         if(len > max){
+           $(this).closest('.weui_cell').addClass('weui_cell_warn');
+         }
+         else{
+           $(this).closest('.weui_cell').removeClass('weui_cell_warn');
+         }     
+      });
+    })
+	
+	</script>
+			</div>
+		</div>
+		
+		
+		<div class="weui_btn_area weui_btn_area_inline">
+			<a id="cancel" onclick="return cancel();" th:if="${leave}!=null"
+				class="weui_btn weui_btn_primary" >取消请假</a>
+			<a id="formSubmitBtn" href="javascript:"  
+				class="weui_btn weui_btn_primary" th:text="${leave==null}?'提交':'修改'"></a>
+		</div>
+	</form>
+
+	<!-- 	<div th:replace="/wechat/front/public/public::footer"></div>
+	
+	 -->
+	<script>
+	
+		var $form = $("#form");
+		$form.form();
+		$("#formSubmitBtn").on("click", function() {
+			$form.validate(function(error) {
+				if (error) {
+
+				} else {
+					$.toptips('验证通过提交', 'ok');
+					//$("#form").submit();
+			
+					$.ajax({
+						url : 'leave',
+						type : 'post',
+						data : $("#form").serialize(),
+						success : function(data) {
+							if(data.status ==200){
+								setTimeout(function(){
+								window.location.href="index";
+								},300)
+								$.toptips(data.msg, 'success');
+							}else{
+								$.toptips(data.msg, 'warning');
+							}
+						}
+
+					});
+				}
+			});
+
+		});
+		
+		
+		function cancel(){
+			$.ajax({
+				url:'cancelLeave',
+				type:'post',
+				data:$("#form").serialize(),
+				success:function(data){
+					if(data.status == 200){
+						setTimeout(function(){
+							window.location.href="index";
+							},300)
+						$.toptips(data.msg, 'success');
+					}else{
+						$.toptips(data.msg, 'warning');
+					}
+				}
+				
+			})
+			
+			
+			
+		}
+		
+		
+		
+		
+		
+		
+	</script>
+	
+	
+
+</body>
+</html>

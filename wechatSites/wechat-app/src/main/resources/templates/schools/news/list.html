@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head th:include="public/public_css::pub_css"></head>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/js/progress-bar/number-pb.css}">
+<link th:href="@{/plugs/sweetalert/sweetalert.css}" rel="stylesheet">
+
+<style type="text/css">
+canvas#canvas4 {
+	position: relative;
+	top: 20px;
+}
+</style>
+</head>
+
+<body>
+	<!-- Preloader -->
+	<div id="preloader">
+		<div id="status">&nbsp;</div>
+	</div>
+	<!-- TOP NAVBAR -->
+	<div th:replace="public/public::top"></div>
+	<!-- /END OF TOP NAVBAR -->
+
+	<!-- SIDE MENU -->
+	<div th:replace="public/public::left(activeUri='wechat')"></div>
+	<!-- END OF SIDE MENU -->
+
+	<!--  PAPER WRAP -->
+	<div class="wrap-fluid">
+		<div class="container-fluid paper-wrap bevel tlbr">
+
+
+			<!-- CONTENT -->
+			<!--TITLE -->
+			<div th:replace="public/public::title"></div>
+			<!--/ TITLE -->
+
+			<!-- BREADCRUMB -->
+			<div th:replace="public/public::menu"></div>
+			<!-- END OF BREADCRUMB -->
+
+			<div class="content-wrap">
+				<div class="row">
+
+
+					<div class="col-sm-12">
+
+						<div class="nest" id="tableStaticClose">
+							<div class="title-alt">
+								<div>
+									<shiro:hasPermission name="news:add">
+										<button class="btn btn-default btn-sm"
+											th:onclick="|window.location.href='@{/news}'|">
+											<i class="glyphicon glyphicon-plus"> </i> 添加
+										</button>
+									</shiro:hasPermission>
+
+									<shiro:hasPermission name="news:edit">
+										<button class="btn btn-primary btn-sm"
+											onclick="return toeditPage('','news')">
+											<i class="fa fa-edit"> </i>编辑
+										</button>
+									</shiro:hasPermission>
+
+									<shiro:hasPermission name="news:delete">
+										<button class="btn btn-danger btn-sm" th:onclick="|return del('','@{/news/}')|">
+											<i class="fa fa-trash-o"> </i>删除
+										</button>
+									</shiro:hasPermission>
+
+									<shiro:hasPermission name="news:batch">
+										<button class="btn btn-success"
+											onclick="return batchImput()">
+											<i class="fontawesome-upload"> </i>定时推送
+										</button>
+									</shiro:hasPermission>
+
+
+								</div>
+
+								<div class="titleClose">
+									<a class="gone" href="#tableStaticClose"> <span
+										class="entypo-cancel"></span>
+									</a>
+								</div>
+								<div class="titleToggle">
+									<a class="nav-toggle-alt" href="#tableStatic"> <span
+										class="entypo-up-open"></span>
+									</a>
+								</div>
+
+							</div>
+							<div class="body-nest" id="tableStatic">
+
+								<section id="flip-scroll">
+
+									<table class="table table-bordered table-striped cf">
+										<thead class="cf">
+											<tr>
+												<th class="numeric" style="width: 20px;">
+													<div class="checkbox checkbox-inline"
+														style="margin-top: 0px;">
+														<input type="checkbox" id="checkall" name="checkall" /> <label
+															for="checkall"></label>
+													</div>
+												</th>
+												<th class="numeric">标题</th>
+												<th class="numeric">作者</th>
+												<th class="numeric">发布时间</th>
+												<th class="numeric">访问量</th>
+												<th class="numeric">使用状态</th>
+												<th class="numeric">操作1</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="news:${pageList.datas}">
+												<td class="numeric">
+													<div class="checkbox checkbox-inline"
+														style="margin-top: 0px;">
+														<input type="checkbox" name="ids" th:id="${news.id}"
+															style="margin-top: 0px;" class="numeric"
+															th:value="${news.id}"> <label
+															th:for="${news.id}"></label>
+													</div>
+												</td>
+												<td class="numeric" th:text="${news.title}"></td>
+												<td class="numeric" th:text="${news.author}"></td>
+												<td class="numeric" th:text="${news.releaseDate}!=null?${news.releaseDate}:'未发布'"></td>
+												<td class="numeric" th:text="${news.views}"></td>
+												<td class="numeric" th:id="disBtn+${news.id}"
+													th:utext="${news.isDisable eq true }?|<button type='button' onclick=toDisable('${news.id}','news') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${news.id}','news') class='btn btn-success'>启用</button>|"></td>
+												<td class="numeric"><shiro:hasPermission
+														name="news:edit">
+														<button class="btn btn-primary btn-xs"
+															th:onclick="|return toeditPage('${news.id}','news')|">
+															<i class="fa fa-edit"> </i>编辑
+														</button>
+
+													</shiro:hasPermission>
+													 <shiro:hasPermission name="news:delete">
+														<button class="btn btn-danger btn-xs"
+															th:onclick="|return del('@{/news/}${news.id}')|">
+															<i class="fa fa-trash-o"> </i>删除
+														</button>
+													</shiro:hasPermission>
+													 <shiro:hasPermission name="news:delete">
+														<button class="btn btn-info btn-xs"
+															th:onclick="|return release('${news.id}')|">
+															<i class="fontawesome-upload-alt"> </i>发布
+														</button>
+													</shiro:hasPermission>
+													
+															<a class="btn btn-success" target="_black"
+															th:href="|@{/news/view/}${news.id}|">
+															<i class="icon icon-preview"> </i>预览
+															</a>
+													
+													</td>
+													
+													
+											</tr>
+
+
+
+										</tbody>
+									</table>
+
+									<form method="post" id="deleteForm">
+										<input name="_method" value="delete" type="hidden">
+									</form>
+
+
+									<div class="row">
+
+										<div class="col-md-12">
+											<div class="col-md-6">
+												<div class="dataTables_info hidden-xs"
+													style="margin-top: 0px;" role="status" aria-live="polite"
+													th:text="|每页显示${pageList.pageSize}行
+										－ 当前页${pageList.pageNo}页 － 共${pageList.totalPage}页|"></div>
+											</div>
+											<div class="col-md-6">
+												<ul class="pagination pagination-split pull-right"
+													style="margin-top: 0px;">
+													<li th:class="${pageList.pageNo } eq 1 ?disabled:''"><a
+														th:href="${pageList.pageNo} eq 1?'javascript:void(0);':@{/newses?pageNo=}+${pageList.upPage}">上一页</a>
+													</li>
+													<li th:each="page:${pageList.navigatepageNums}"
+														th:class="${page  == pageList.pageNo}?active:''"><a
+														th:href="${page eq pageList.pageNo}?'javascript:void(0)':@{/newses?pageNo=}+${page}">[[${page}]]</a>
+													</li>
+													<li
+														th:class="${pageList.pageNo eq pageList.totalPage}?disabled:''">
+														<a
+														th:href="${pageList.pageNo eq pageList.totalPage}?'javascript:void(0);':@{/newses?pageNo=}+${pageList.nextPage}">下一页</a>
+													</li>
+												</ul>
+											</div>
+										</div>
+
+										<!-- 分页结束 -->
+									</div>
+
+								</section>
+
+							</div>
+
+						</div>
+
+
+					</div>
+
+				</div>
+			</div>
+			<div th:replace="public/public::myModal"></div>
+			<div th:replace="schools/news/batch::mybatch"></div>
+		</div>
+	</div>
+
+	<!-- Sweet alert -->
+	<script th:src="@{/plugs/sweetalert/sweetalert.min.js}"></script>
+	<!-- Jquery Validate -->
+	<script type="text/javascript"
+		th:src="@{/plugs/validate/jquery.validate.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/plugs/validate/messages_zh.min.js}"></script>
+	<!-- 引入news.js -->
+	<script type="text/javascript" th:inline="javascript"
+		th:src="@{/js/schools/news/news.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/plugs/prettyfile/bootstrap-prettyfile.js}"></script>
+	<!--  END OF PAPER WRAP -->
+	<!-- 右侧隐藏菜单start -->
+	<div th:replace="public/public::right"></div>
+	<!-- 右侧隐藏菜单end-->
+	<!-- 底部js -->
+	<div th:replace="public/public_js::pub_js"></div>
+	<div th:replace="public/public_js::public_script"></div>
+	<div th:replace="public/public::deleteModal"></div>
+	<div th:replace="public/public::footer"></div>
+
+</body>
+
+</html>

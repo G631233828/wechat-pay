@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+</head>
+<head th:include="wechat/front/public/public_css::pub_css"></head>
+<body ontouchstart class="page-bg">
+
+	<div th:replace="/wechat/front/public/public::top"></div>
+	<!-- 	<div th:replace="/wechat/front/public/public::footer"></div>
+	 -->
+	<div class="page-hd">
+		<h1 class="page-hd-title">[[${clazz.clazzYear}]]年[[${clazz.clazzNum}]]班请假记录</h1>
+		<p class="page-hd-desc">以下信息是所有请假数据</p>
+	</div>
+	<input th:value="${openId}" id="openId">
+
+	<div class="weui_search_bar">
+		<input type="search" class="search-input" id='search'
+			placeholder='可查询 日期：xxxx-xx-xx、学号、姓名' style="box-sizing: content-box" />
+		<button class="weui_btn weui_btn_mini weui_btn_primary">
+			<i class="icon icon-4"></i>
+		</button>
+	</div>
+
+	<table class="weui-table weui-border-tb weui-table-2n">
+		<thead>
+			<tr>
+				<th>姓名</th>
+				<th>学号</th>
+				<th>请假时间</th>
+			</tr>
+		</thead>
+		<tbody>
+		
+		
+			<tr th:each="leave:${pageList.datas}" >
+				<td>[[${leave.student.name}]]</td>
+				<td>[[${leave.student.code}]]</td>
+				<td>[[${leave.startLeave}]]</td>
+			</tr>
+			
+
+		</tbody>
+	</table>
+
+	<br>
+
+
+	<div class='pager'>
+		<div class="pager-left">
+			<div class="pager-first">
+				<a class="pager-nav" th:href="|@{/wechat/teacher/findleave}?id=${id}&pageNo=1&pageSize=10&serach=${serach}|" >首页[[${serach}]]</a>
+			</div>
+			<div  th:class="${pageList.pageNo } eq 1 ?'pager-pre disabled':'pager-pre'">
+				<a class="pager-nav" th:href="${pageList.pageNo eq 1}?'javascript:void(0);':|@{/wechat/teacher/findleave?pageNo=}${pageList.upPage}&serach=${serach}&id=${id}|">上一页</a>
+			</div>
+		</div>													   
+		<div class="pager-cen">[[${pageList.pageNo}]]/[[${pageList.totalPage}]]</div>
+		<div class="pager-right">
+			<div  th:class="${pageList.pageNo eq pageList.totalPage}?'pager-next disabled':'pager-next'">
+				<a class="pager-nav" th:href="${pageList.pageNo eq pageList.totalPage}?'javascript:void(0);':|@{/wechat/teacher/findleave?pageNo=}${pageList.nextPage}&serach=${serach}&id=${id}|">下一页</a>
+			</div>
+			<div class="pager-end">
+				<a class="pager-nav" th:href="|@{/wechat/teacher/findleave}?pageNo=${pageList.totalPage}&pageSize=10&serach=${serach}&id=${id}|">尾页</a>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+</html>

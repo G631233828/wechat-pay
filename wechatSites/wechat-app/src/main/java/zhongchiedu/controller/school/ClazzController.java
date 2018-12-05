@@ -68,7 +68,6 @@ public class ClazzController {
 				pagination = new Pagination<Clazz>();
 
 			model.addAttribute("pageList", pagination);
-			System.out.println(pagination.toString());
 		} catch (Exception e) {
 			log.info("查询班级信息失败——————————》" + e.toString());
 			e.printStackTrace();
