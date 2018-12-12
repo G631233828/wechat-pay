@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+</head>
+<head th:include="wechat/front/public/public_css::pub_css"></head>
+
+<body ontouchstart class="page-bg">
+
+	<div th:replace="wechat/front/public/public::top"></div>
+
+	<div class="page-hd">
+		<h1 class="page-hd-title">密码修改</h1>
+		<p class="page-hd-desc"></p>
+	</div>
+
+	<form th:action="@{/wechat/teacher/}" id="editform" method="post">
+		<input type="hidden" id="id" name="id" th:value="${teacher.id}">
+
+		<div class="weui_cells weui_cells_form">
+			<div class="weui_cell">
+				<div class="weui_cell_hd">
+					<label class="weui_label">姓名</label>
+				</div>
+				<div class="weui_cell_bd weui_cell_primary">
+					<input class="weui_input" type="text" th:value="${teacher.name}">
+				</div>
+				<div class="weui_cell_ft">
+					<i class="weui_icon_warn"></i>
+				</div>
+			</div>
+			<div class="weui_cell">
+				<div class="weui_cell_hd">
+					<label class="weui_label">账号</label>
+				</div>
+				<div class="weui_cell_bd weui_cell_primary">
+					<input class="weui_input" type="text"
+						th:value="${teacher.contactsmobile}">
+				</div>
+				<div class="weui_cell_ft">
+					<i class="weui_icon_warn"></i>
+				</div>
+			</div>
+
+			<div class="weui_cell">
+				<div class="weui_cell_hd">
+					<label class="weui_label">旧密码</label>
+				</div>
+				<div class="weui_cell_bd weui_cell_primary">
+					<input class="weui_input" type="password" 
+						onchange="return checkpassword();" onkeyup="return checkpassword();" required id="oldpassword"
+						placeholder="请输入旧密码" emptyTips="请输入旧密码">
+				</div>
+				<div class="weui_cell_ft">
+					<i class="weui_icon_warn"></i>
+				</div>
+			</div>
+
+			<div class="weui_cell">
+				<div class="weui_cell_hd">
+					<label class="weui_label">新密码</label>
+				</div>
+				<div class="weui_cell_bd weui_cell_primary">
+					<input class="weui_input" type="password" required name="password"
+						id="password" placeholder="请输入新密码" emptyTips="请输入新密码">
+				</div>
+				<div class="weui_cell_ft">
+					<i class="weui_icon_warn"></i>
+				</div>
+			</div>
+
+			<div class="weui_cell">
+				<div class="weui_cell_hd">
+					<label class="weui_label">确认密码</label>
+				</div>
+				<div class="weui_cell_bd weui_cell_primary">
+					<input class="weui_input" type="password" required id="password1"
+						placeholder="请输入新密码" emptyTips="请输入新密码">
+				</div>
+				<div class="weui_cell_ft">
+					<i class="weui_icon_warn"></i>
+				</div>
+			</div>
+
+		</div>
+		<div class="weui_btn_area">
+			<a id="formSubmitBtn" href="javascript:"
+				class="weui_btn weui_btn_primary">修改</a>
+		</div>
+	</form>
+
+
+	<script>
+		var flag = false;
+			
+			var password = $("#password").val();
+			var id = $("#id").val();
+		//验证就密码是否正确
+		function checkpassword() {
+			var oldpassword = $("#oldpassword").val();
+			if (oldpassword == null || oldpassword == "") {
+				$.toptips("请输入旧密码", 'warning');
+				flag = false;
+				return;
+			}
+			$.ajax({
+				url : "checkpassword",
+				type : "post",
+				data : "&password=" + oldpassword + "&id=" + id,
+				dataType : 'json',
+				success : function(data) {
+					if (data.status == 200) {
+						$.toptips(data.msg, 'ok');
+						flag = true;
+					} else {
+						$.toptips(data.msg, 'warning');
+						flag = false;
+						return;
+					}
+				}
+			})
+		}
+
+		var $form = $("#editform");
+		$form.form();
+		$("#formSubmitBtn").on("click", function() {
+			$form.validate(function(error) {
+				if (error) {
+				} else {
+					var password = $("#password").val();
+					var password1 = $("#password1").val();
+					if (password1 == password) {
+						$.toptips('密码有效', 'ok');
+						checkpassword();
+						if(flag){
+							$.ajax({
+								url : "changePassword",
+								type : "post",
+								data : "id=" + id + "&password=" + password,
+								dataType:'json',
+								success : function(data) {
+									if (data.status == 200) {
+										 $.toptips(data.msg,'ok');
+										window.location.href = "index";
+									}else{
+										 $.toptips(data.msg,'warning');
+									}
+								},
+							})
+							
+							
+						}
+					
+					} else {
+						$.toptips('两次输入密码不一致，请检查', 'ok');
+						$("#password").val('');
+						$("#password1").val('');
+						flag = false;
+						return;
+					}
+					
+					
+				
+				}
+			});
+
+		});
+	</script>
+
+
+
+
+</body>
+</html>

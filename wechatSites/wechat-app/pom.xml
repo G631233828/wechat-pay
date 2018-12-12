@@ -42,40 +42,30 @@
 			<artifactId>wechat-School-service</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>zhongchiedu.wechat</groupId>
 			<artifactId>wechat-wechat-service</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-		
-		
-		<!-- <dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-			移除嵌入式tomcat插件
-	 		<exclusions>
+			<artifactId>spring-boot-starter</artifactId>
+			<exclusions>
 				<exclusion>
 					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-tomcat</artifactId>
+					<artifactId>spring-boot-starter-logging</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency> -->
-		 <!--  <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>provided</scope>
-        </dependency> -->
+		</dependency>
+
+
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-web</artifactId> 
+			移除嵌入式tomcat插件 <exclusions> <exclusion> <groupId>org.springframework.boot</groupId> 
+			<artifactId>spring-boot-starter-tomcat</artifactId> </exclusion> </exclusions> 
+			</dependency> -->
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-tomcat</artifactId> 
+			<scope>provided</scope> </dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -121,6 +111,22 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
+		</dependency>
+		<!-- <dependency>
+			<groupId>com.baidu</groupId>
+			<artifactId>ueditor</artifactId>
+		</dependency> -->
+		<dependency>
+			<groupId>com.json</groupId>
+			<artifactId>json</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
 		</dependency>
 	</dependencies>
 

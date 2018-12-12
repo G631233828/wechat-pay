@@ -13,12 +13,12 @@
 		<h1 class="page-hd-title">[[${clazz.clazzYear}]]年[[${clazz.clazzNum}]]班请假记录</h1>
 		<p class="page-hd-desc">以下信息是所有请假数据</p>
 	</div>
-	<input th:value="${openId}" id="openId">
+	<input type="hidden" th:value="${openId}" id="openId">
 
 	<div class="weui_search_bar">
-		<input type="search" class="search-input" id='search'
+		<input type="search" class="search-input" id='search' th:value="${serach}"
 			placeholder='可查询 日期：xxxx-xx-xx、学号、姓名' style="box-sizing: content-box" />
-		<button class="weui_btn weui_btn_mini weui_btn_primary">
+		<button class="weui_btn weui_btn_mini weui_btn_primary" th:onclick="|return serach('${id}');|">
 			<i class="icon icon-4"></i>
 		</button>
 	</div>
@@ -32,15 +32,11 @@
 			</tr>
 		</thead>
 		<tbody>
-		
-		
 			<tr th:each="leave:${pageList.datas}" >
 				<td>[[${leave.student.name}]]</td>
 				<td>[[${leave.student.code}]]</td>
 				<td>[[${leave.startLeave}]]</td>
 			</tr>
-			
-
 		</tbody>
 	</table>
 
@@ -50,7 +46,7 @@
 	<div class='pager'>
 		<div class="pager-left">
 			<div class="pager-first">
-				<a class="pager-nav" th:href="|@{/wechat/teacher/findleave}?id=${id}&pageNo=1&pageSize=10&serach=${serach}|" >首页[[${serach}]]</a>
+				<a class="pager-nav" th:href="|@{/wechat/teacher/findleave}?id=${id}&pageNo=1&pageSize=10&serach=${serach}|" >首页</a>
 			</div>
 			<div  th:class="${pageList.pageNo } eq 1 ?'pager-pre disabled':'pager-pre'">
 				<a class="pager-nav" th:href="${pageList.pageNo eq 1}?'javascript:void(0);':|@{/wechat/teacher/findleave?pageNo=}${pageList.upPage}&serach=${serach}&id=${id}|">上一页</a>
@@ -66,6 +62,15 @@
 			</div>
 		</div>
 	</div>
+
+<script type="text/javascript">
+
+function serach(o){
+	var serach = $("#search").val();
+	window.location.href="findleave?id="+o+"&serach="+serach;
+}
+
+</script>
 
 
 </body>

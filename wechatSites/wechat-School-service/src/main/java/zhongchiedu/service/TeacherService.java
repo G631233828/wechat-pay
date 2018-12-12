@@ -26,6 +26,10 @@ public interface TeacherService extends GeneralService<Teacher>{
 	
 	Teacher findTeacherByAccount(String account,String password);
 	
+	BasicDataResult CheckTeacherPassword(String id,String password);
+	
+	BasicDataResult ChangeTeacherPassword(String id ,String password);
+	
 	
 	
 }

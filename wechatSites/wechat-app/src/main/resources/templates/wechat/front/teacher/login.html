@@ -12,25 +12,12 @@
 	<div class="page-hd">
 		<h1 class="page-hd-title">您的微信尚未绑定</h1>
 		<p class="page-hd-desc">
-			您需要先绑定在进行使用！<br />
+			您需要先绑定在进行使用！登录之后请先修改您的密码<br />
 		</p>
 	</div>
 
 <form th:action="@{/wechat/toBinding}" id="regform" method="post">
     <div class="weui_cells weui_cells_form">
-      <!--       <div class="weui_cell weui_cell_select weui_select_after">
-                <div class="weui_cell_hd">
-                    <label for="" class="weui_label">班级</label>
-                </div>
-                <div class="weui_cell_bd weui_cell_primary">
-                    <select class="weui_select" name="clazz.id" id="clazz" required emptyTips="请选择绑定班级">
-                        <option value="">请选择的班级</option>
-                       	<option th:value="${list.id}"  th:each="list:${listClazz}" th:text="|${list.clazzYear}年${list.clazzNum}班|">
-                    </select>
-                </div>
-            </div>
-     -->
-    
         <div class="weui_cell">
             <div class="weui_cell_hd"><label class="weui_label">账号</label></div>
             <div class="weui_cell_bd weui_cell_primary">
@@ -56,16 +43,7 @@
         <a id="formSubmitBtn" href="javascript:" class="weui_btn weui_btn_primary">登陆</a>
     </div>
 </form>
-
-
-
-
-
 	<div th:replace="wechat/front/public/public::footer"></div>
-
-
-
-
 
 <script>
 var $form = $("#regform");

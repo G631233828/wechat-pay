@@ -18,20 +18,22 @@
 	</div>
 	<div class="weui_grids" style="margin-top: 20px;">
 
-		<a href="javascript:;" class="weui_grid js_grid"
+<!-- 		<a href="javascript:;" class="weui_grid js_grid"
 			onclick="return tongzhi();">
 			<div class="weui_grid_icon">
 				<img th:src="@{/assets/weChatPage/images/icon_nav_article.png}"
 					alt="">
 			</div>
 			<p class="weui_grid_label">通知</p>
-		</a> <a th:href="@{/wechat/homework}" class="weui_grid js_grid">
+		</a>  -->
+		
+		<a th:href="@{/wechat/homework}" class="weui_grid js_grid">
 			<div class="weui_grid_icon">
 				<img th:src="@{/assets/weChatPage/images/homework.png}" alt="">
 			</div>
 			<p class="weui_grid_label">作业</p>
 		</a> 
-		<a th:href="|@{/wechat/toleave?openId=}${wechatbinding.openId}|" class="weui_grid js_grid" >
+		<!-- <a th:href="|@{/wechat/toleave?openId=}${wechatbinding.openId}|" class="weui_grid js_grid" >
 			<div class="weui_grid_icon">
 				<img th:src="@{/assets/weChatPage/images/icon_nav_panel.png}" alt="">
 			</div>
@@ -42,7 +44,7 @@
 				<img th:src="@{/assets/weChatPage/images/icon_nav_panel.png}" alt="">
 			</div>
 			<p class="weui_grid_label">请假记录</p>
-		</a> 
+		</a>  -->
 		
 		<a th:href="|@{/wechat/bindManagement?openId=}${wechatbinding.openId}|" class="weui_grid js_grid"
 			>
@@ -66,16 +68,6 @@
 
 
 	<div th:replace="wechat/front/public/public::footer"></div>
-	<script type="text/javascript">
-
-
-function tongzhi(){
-	alert('功能正在完善！');
-}
-function qingjia(){
-	alert('功能正在完善');
-}
-</script>
 
 </body>
 </html>

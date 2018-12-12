@@ -16,9 +16,9 @@
 		  <a style="float: right;" class="weui-weixin-a weui-weixin-nickname" th:href="@{/wechat/teacher/unbinding}">解除绑定</a>
  
 	</div>
-	<div class="weui_grids" style="margin-top: 20px;">
+	<div class="weui_grids"style="margin-top: 20px;">
 
-		<a href="javascript:;" class="weui_grid js_grid">
+		 <a th:href="|@{/wechat/teacher/tonotice}?id=${teacher.id}|" class="weui_grid js_grid">
 			<div class="weui_grid_icon">
 				<img th:src="@{/assets/weChatPage/images/icon_nav_article.png}"
 					alt="">
@@ -30,6 +30,12 @@
 				<img th:src="@{/assets/weChatPage/images/icon_nav_panel.png}" alt="">
 			</div>
 			<p class="weui_grid_label">查看学生请假</p>
+		</a> 
+		<a th:href="|@{/wechat/teacher/toModifyPage}?id=${teacher.id}|" class="weui_grid js_grid" >
+			<div class="weui_grid_icon">
+				<img th:src="@{/assets/weChatPage/images/icon_nav_panel.png}" alt="">
+			</div>
+			<p class="weui_grid_label">修改密码</p>
 		</a> 
 
 

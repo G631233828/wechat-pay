@@ -2,10 +2,12 @@ package zhongchiedu.service.Impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -254,6 +256,13 @@ public class StudentServiceImpl extends GeneralServiceImpl<Student> implements S
 		public long allnum = 0;// 导入数据总数
 		public long nownum = 0;// 当前导入第几条
 		public long lastnum = 0;// 还剩几条数据
+	}
+
+	@Override
+	public List<Student> findStudentByClazz(Clazz clazz) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("clazz.$id").is(new ObjectId(clazz.getId())));
+		return this.find(query, Student.class);
 	}
 
 }

@@ -221,6 +221,41 @@ public class TeacherServiceImpl extends GeneralServiceImpl<Teacher> implements T
 	
 	
 	
+	@Override
+	public BasicDataResult CheckTeacherPassword(String id,String password) {
+		if(Common.isEmpty(id)||Common.isEmpty(password)){
+			return BasicDataResult.build(400, "非正常访问，请刷新页面后再试", null);
+		}
+		
+		Teacher teacher = this.findOneById(id, Teacher.class);
+		if(Common.isEmpty(teacher)){
+			return BasicDataResult.build(400, "未能获取到老师的信息，请联系管理员", null);
+		}
+		if(teacher.getPassword().trim().equals(password)){
+			return BasicDataResult.build(200, "旧密码正确", null);
+		}
+		return BasicDataResult.build(400, "旧密码输入错误，请重新输入", null);
+	}
+
+	@Override
+	public BasicDataResult ChangeTeacherPassword(String id, String password) {
+		if(Common.isEmpty(id)||Common.isEmpty(password)){
+			return BasicDataResult.build(400, "非正常访问，请刷新页面后再试", null);
+		}
+		Teacher teacher = this.findOneById(id, Teacher.class);
+		if(Common.isEmpty(teacher)){
+			return BasicDataResult.build(400, "未能获取到老师的信息，请联系管理员", null);
+		}
+		
+		teacher.setPassword(password);
+		this.save(teacher);
+		return BasicDataResult.build(200, "密码修改成功,即将跳转页面...", null);
+		
+	}
+
+	
+	
+	
 	
 	
 	

@@ -44,7 +44,7 @@ public class Kinderitor {
 	@Value("${upload.kinderitor}")
 	private String kinderitor;
 	@Value("${server.servlet.context-path}")
-	private String rootPath;
+	private String rootPATH;
 
 	private static final ObjectMapper objectMapper = new ObjectMapper();
 	private  PrintWriter writer = null;
@@ -62,7 +62,7 @@ public class Kinderitor {
 
 		// 文件保存目录URL
 		//String saveUrl = request.getContextPath() + "/attached/";
-		String saveUrl = rootPath+"/"+kinderitor + "attached/";
+		String saveUrl = rootPATH+"/"+kinderitor + "attached/";
 
 		// 定义允许上传的文件扩展名
 		HashMap<String, String> extMap = new HashMap<String, String>();
@@ -178,18 +178,14 @@ public class Kinderitor {
 		ServletContext application = request.getSession().getServletContext();
 		ServletOutputStream out = response.getOutputStream();
 		
-//		String uploadPath = ReadProperties.getObjectProperties("application.properties", "upload-kinderitor");
-		String uploadPath =  dir+kinderitor;
-//		String rootPATH = ReadProperties.getObjectProperties("application.properties", "server.servlet.context-path");
-		
-		
+		String uploadPath = dir + kinderitor+"attached/";//上传文件的路径 d:/xxxx
 		// 根目录路径，可以指定绝对路径，比如 /var/www/attached/
-		 rootPath = rootPath + "attached/";
 		//String rootPath = application.getRealPath("/") + "attached/";
+		String rootPath = rootPATH+"/upload/kinderitor/attached/";//wechat-app/xxx/xxx/xx
 		// 根目录URL，可以指定绝对路径，比如 http://www.yoursite.com/attached/
-	//	String rootUrl = request.getContextPath() + "/attached/";
-			String rootUrl = rootPath+"/"+kinderitor + "attached/";
-		// 图片扩展名
+		String rootUrl = rootPath;
+			
+			// 图片扩展名
 		String[] fileTypes = new String[] { "gif", "jpg", "jpeg", "png", "bmp" };
 
 		String dirName = request.getParameter("dir");
@@ -200,9 +196,9 @@ public class Kinderitor {
 				out.println("Invalid Directory name.");
 				return;
 			}
-			rootPath += dirName + "/";
+			uploadPath += dirName + "/";
 			rootUrl += dirName + "/";
-			File saveDirFile = new File(rootPath);
+			File saveDirFile = new File(uploadPath);
 			if (!saveDirFile.exists()) {
 				saveDirFile.mkdirs();
 			}
@@ -210,7 +206,7 @@ public class Kinderitor {
 		// 根据path参数，设置各路径和URL
 		String path = request.getParameter("path") != null ? request
 				.getParameter("path") : "";
-		String currentPath = rootPath + path;
+		String currentPath = uploadPath + path;
 		String currentUrl = rootUrl + path;
 		String currentDirPath = path;
 		String moveupDirPath = "";

@@ -73,10 +73,10 @@ public class NewsController {
 	@RequiresPermissions(value = "news:add")
 	@SystemControllerLog(description = "添加新闻")
 	public String addNews(HttpServletRequest request, @ModelAttribute("news") News news,
-			@RequestParam("filenews")MultipartFile[] filenews,
+			@RequestParam("filenews")MultipartFile[] filenews,String editorValue,
 			@RequestParam(defaultValue="",value="oldnewsImg")String oldnewsImg
 			) {
-		this.newsService.SaveOrUpdateNews(news,filenews,oldnewsImg,imgpath,dir);
+		this.newsService.SaveOrUpdateNews(news,filenews,oldnewsImg,imgpath,dir,editorValue);
 		return "redirect:newses";
 	}
 
@@ -91,9 +91,9 @@ public class NewsController {
 	@RequiresPermissions(value = "news:edit")
 	@SystemControllerLog(description = "修改新闻")
 	public String editNews(HttpServletRequest request, @ModelAttribute("news") News news,
-			@RequestParam("filenews")MultipartFile[] filenews,
+			@RequestParam("filenews")MultipartFile[] filenews,String editorValue,
 			@RequestParam(defaultValue="",value="oldnewsImg")String oldnewsImg) {
-		this.newsService.SaveOrUpdateNews(news,filenews,oldnewsImg,imgpath,dir);
+		this.newsService.SaveOrUpdateNews(news,filenews,oldnewsImg,imgpath,dir,editorValue);
 		return "redirect:newses";
 	}
 

@@ -1,6 +1,7 @@
 package zhongchiedu.config;
 
 
+import java.net.URISyntaxException;
 import java.util.Collections;
 
 import javax.servlet.ServletContext;
@@ -28,7 +29,8 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 	private String kinderitor;
 	@Value("${upload.savedir}")
 	private String dir;
-	
+	@Value("${upload.ueditordir}")
+	private String ueditordir;
 	
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -36,6 +38,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 //    	registry.addResourceHandler(savePath+"/**").addResourceLocations("file:"+savePath+"/");
     	registry.addResourceHandler(kinderitor+"/**").addResourceLocations("file:"+dir+kinderitor+"/");
     	registry.addResourceHandler(imgpath+"/**").addResourceLocations("file:"+dir+imgpath+"/");
+    	registry.addResourceHandler(ueditordir+"/**").addResourceLocations("file:"+ueditordir+"/");
 	    	super.addResourceHandlers(registry);
 	    }
 		  
@@ -114,7 +117,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 	
 	
 	
-	
+
 	
 	
 	

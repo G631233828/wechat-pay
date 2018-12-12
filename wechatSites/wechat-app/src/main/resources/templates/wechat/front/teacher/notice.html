@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+</head>
+<head th:include="wechat/front/public/public_css::pub_css"></head>
+
+<body ontouchstart class="page-bg">
+
+	<div th:replace="wechat/front/public/public::top"></div>
+
+	<div class="page-hd">
+		<h1 class="page-hd-title">通知发送</h1>
+		<p class="page-hd-desc">[[${teacher.name}]]老师，您好！</p>
+	</div>
+
+	<form th:action="@{/teacher/notice}" id="noticeform" method="post">
+
+		<input type="hidden" name="teacherId" th:value="${teacher.id}"
+			id="teacherId">
+		<div class="weui_cells weui_cells_form">
+			<div class="weui_cell">
+				<div class="weui_cell_hd">
+					<label class="weui_label">通知主题</label>
+				</div>
+				<div class="weui_cell_bd weui_cell_primary">
+					<input class="weui_input" type="text" th:value="${notice?.title}" name="title" id="title"
+						required placeholder="输入通知主题" emptyTips="请输入通知主题">
+				</div>
+				<div class="weui_cell_ft">
+					<i class="weui_icon_warn"></i>
+				</div>
+			</div>
+
+			<div class="weui_cell">
+				<div class="weui_cell_hd">
+					<label class="weui_label">通知内容</label>
+				</div>
+				<div class="weui_cells weui_cells_form">
+					<div class="weui_cell">
+						<div class="weui_cell_bd weui_cell_primary">
+							<textarea th:maxlength="200" id="content" name="content"
+								class="weui_textarea" placeholder="请输入通知内容" rows="3"
+								 th:text="${notice?.content}"></textarea>
+							<div class="weui_textarea_counter">
+								<span id='count'>0</span>/<span id='count_max'>200</span>
+							</div>
+						</div>
+
+
+						<script type="text/javascript">
+							$(function() {
+								var max = $('#count_max').text();
+								$('#content')
+										.on(
+												'input',
+												function() {
+													var text = $(this).val();
+													var len = text.length;
+													$('#count').text(len);
+													if (len > max) {
+														$(this)
+																.closest(
+																		'.weui_cell')
+																.addClass(
+																		'weui_cell_warn');
+													} else {
+														$(this)
+																.closest(
+																		'.weui_cell')
+																.removeClass(
+																		'weui_cell_warn');
+													}
+												});
+							})
+						</script>
+					</div>
+				</div>
+
+				<div class="weui_cell_ft">
+					<i class="weui_icon_warn"></i>
+				</div>
+			</div>
+
+		</div>
+		<div class="weui_btn_area">
+			<a id="formSubmitBtn" href="javascript:"
+				class="weui_btn weui_btn_primary">发送</a>
+		</div>
+	</form>
+	<div th:replace="wechat/front/public/public::footer"></div>
+
+	<script>
+	
+	
+	
+	
+	
+		var $form = $("#noticeform");
+		$form.form();
+		$("#formSubmitBtn").on("click", function() {
+			$form.validate(function(error) {
+				if (error) {
+				} else {
+					        $.confirm("您确定要发送此条通知吗?", "发送通知", function() {
+					        	var clazzId = $("#clazz option:selected").val();
+								$.toptips('正在发送', 'ok');
+								$.ajax({
+									url : "notice",
+									type : "post",
+									data : $("#noticeform").serialize(),
+									dataType : 'json',
+									success : function(data) {
+										if (data.status == 200) {
+											  $.toast(data.msg);
+											window.location.href = "index";
+										} else {
+											  $.toast(data.msg);
+										}
+									},
+								});
+					        
+					        }, function() {
+					        	$.toast("您取消了发送！");
+					        });
+					
+					
+					
+					
+					
+					
+					
+				
+				}
+			});
+
+		});
+	</script>
+
+
+
+	<script>
+		function showmark() {
+			$('.weui_mask').addClass('weui_mask_visible');
+			$('.weui-custom-pop').addClass('weui-dialog-visible');
+		}
+		function hidemark() {
+			$('.weui_mask').removeClass('weui_mask_visible');
+			$('.weui-custom-pop').removeClass('weui-dialog-visible');
+		}
+	</script>
+
+</body>
+</html>

@@ -101,13 +101,17 @@ public class WeChatbandingServiceImpl extends GeneralServiceImpl<WeChatbanding> 
 					this.save(wchat);
 			
 		}
-		
-		
-		
-		
-		
-		
-
 	}
+
+	@Override
+	public NSNUserInfo findnsnByStudentAccount(String account) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("listbandings.studentAccount").is(account));
+		WeChatbanding wb = this.findOneByQuery(query, WeChatbanding.class);
+		return Common.isNotEmpty(wb)?wb.getNsnUserInfo():null;
+	}
+	
+	
+	
 
 }

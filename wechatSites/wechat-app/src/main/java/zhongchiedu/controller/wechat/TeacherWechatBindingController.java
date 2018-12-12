@@ -215,7 +215,8 @@ public class TeacherWechatBindingController {
 	 */
 	@RequestMapping("/findleave")
 	public ModelAndView findleave(String id, @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
-			@RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize, @RequestParam(value = "serach", defaultValue = "")String serach) {
+			@RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+			@RequestParam(value = "serach", defaultValue = "")String serach) {
 		ModelAndView model = new ModelAndView();
 		Clazz clazz = this.clazzService.findHeadMaster(id);
 		log.info("老师id"+id+"当前班级信息"+clazz);
@@ -271,13 +272,35 @@ public class TeacherWechatBindingController {
 	}
 	
 	
+	 @RequestMapping("/toModifyPage")
+	 public ModelAndView toModifyPage(String id){
+		 
+		 ModelAndView model = new ModelAndView();
+		 
+		 if(Common.isNotEmpty(id)){
+			 Teacher teacher = this.teacherService.findOneById(id, Teacher.class);
+			 model.addObject("teacher", teacher);
+		 }
+		 	model.setViewName("wechat/front/teacher/modify");
+			return model;
+	 }
 	
 	
-	
-	
-	
-	
-	
+	 
+		@RequestMapping("/checkpassword")
+		@ResponseBody
+		public BasicDataResult checkPassword(String id, String password) {
+			return this.teacherService.CheckTeacherPassword(id,password);
+		}
+		
+		
+	@RequestMapping("/changePassword")
+	@ResponseBody
+	public BasicDataResult changePassword(String id,String password){
+		
+		return this.teacherService.ChangeTeacherPassword(id, password);
+		
+	}
 	
 	
 	

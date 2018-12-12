@@ -15,6 +15,7 @@ public interface WeChatbandingService extends GeneralService<WeChatbanding>{
 	
 	public void updateStudentName(WeChatbanding we ,String newName);
 	
+	NSNUserInfo findnsnByStudentAccount(String account);
 	
 	
 }

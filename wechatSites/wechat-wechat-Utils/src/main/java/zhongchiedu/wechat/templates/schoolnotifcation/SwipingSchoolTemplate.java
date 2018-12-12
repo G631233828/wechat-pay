@@ -37,7 +37,6 @@ public class SwipingSchoolTemplate {
 		log.info("通知模板");
 		send.setTouser(toUser);
 		send.setTemplate_id(templateId);
-		send.setUrl("https://mp.weixin.qq.com/s?__biz=MzA5NTMwMjIyMQ==&tempkey=OTg0X2I5bUMvVWlnNGZEVVNIZEJWRXdVQTJNYVFuYkpTOE11aHpTM1UxaXJwd2hMY2VhNVotRVZvQjZQNk1XRkhsd0FpMThjUlgwVUFUTE11Y3lBdWcxMVVJdElTRFZhbEFIaGxHV3lTTE9sSDZPalJ2WTE5eGp0cmtxZlVNQy04emxVa0pwbFR0SlBKOERMT2hqNUZPS3NXcVdaRHRHWFpXZWF2M3lDaWd%2Bfg%3D%3D&chksm=045af23c332d7b2a0dd2fe36813a0ce3dad2f6d25b714f82dde7b5bc5e85ab540e77b83166d9#rd");
 		send.setTopcolor("#FF0000");
 		
 		SwipingSchoolNotifcation scn = new SwipingSchoolNotifcation();
