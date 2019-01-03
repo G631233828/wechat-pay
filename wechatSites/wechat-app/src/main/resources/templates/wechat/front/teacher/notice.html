@@ -88,11 +88,8 @@
 				class="weui_btn weui_btn_primary">发送</a>
 		</div>
 	</form>
-	<div th:replace="wechat/front/public/public::footer"></div>
 
 	<script>
-	
-	
 	
 	
 	
@@ -111,6 +108,8 @@
 									data : $("#noticeform").serialize(),
 									dataType : 'json',
 									success : function(data) {
+										alert(data.status)
+										
 										if (data.status == 200) {
 											  $.toast(data.msg);
 											window.location.href = "index";

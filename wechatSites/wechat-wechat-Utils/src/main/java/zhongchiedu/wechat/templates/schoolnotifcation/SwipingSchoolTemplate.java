@@ -28,8 +28,9 @@ public class SwipingSchoolTemplate {
 	static WeixinUtil t = new WeixinUtil();
 	
 	public static String swipingSchoolNotifcation(String toUser,String accessToken,SchoolTemplateMessage schoolTemplateMessage){
+		//String templateId = "FoNU2P8hDJkPh8f2NUGqxhrAXs9h42_0LsNDhUUyCJc";
 		String templateId = ReadProperties.getObjectProperties("application.properties", "school.template");
-		
+		log.info("通知模版id"+templateId);
 		//发送菜单的url
 		String url = sendTemplateMessageUrl.replace("ACCESS_TOKEN", accessToken);
 		//拼装发送json字符串

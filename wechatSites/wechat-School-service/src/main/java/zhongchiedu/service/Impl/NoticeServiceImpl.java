@@ -1,8 +1,9 @@
 package zhongchiedu.service.Impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ import zhongchiedu.wechat.util.token.WeChatToken;
 @Service
 public class NoticeServiceImpl extends GeneralServiceImpl<Notice> implements NoticeService {
 
-	
+	private static final Logger log = LoggerFactory.getLogger(NoticeServiceImpl.class);
 	@Autowired
 	private StudentService studentService;
 	
@@ -49,6 +50,8 @@ public class NoticeServiceImpl extends GeneralServiceImpl<Notice> implements Not
 			BeanUtils.copyProperties(notice, ed);
 			this.insert(ed);
 		}
+		
+		log.info("发送数据保存成功！"+ed);
 		//通过班级获取所有的学生
 		List<Student> list = this.studentService.findStudentByClazz(clazz);
 		if(list.size()>0){

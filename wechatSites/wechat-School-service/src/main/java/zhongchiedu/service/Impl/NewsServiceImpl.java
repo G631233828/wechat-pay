@@ -1,6 +1,5 @@
 package zhongchiedu.service.Impl;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import net.sf.json.JSONObject;
 import zhongchiedu.common.utils.BasicDataResult;
 import zhongchiedu.common.utils.Common;
 import zhongchiedu.framework.service.GeneralServiceImpl;
@@ -20,8 +18,6 @@ import zhongchiedu.general.service.MultiMediaService;
 import zhongchiedu.school.pojo.News;
 import zhongchiedu.service.NewsService;
 import zhongchiedu.service.executor.ExecutorsQueue;
-import zhongchiedu.wechat.resp.Article;
-import zhongchiedu.wechat.resp.CustomMessage;
 import zhongchiedu.wechat.resp.NewsMessage;
 import zhongchiedu.wechat.resp.UserGet;
 import zhongchiedu.wechat.util.MessageUtil;
@@ -103,9 +99,10 @@ public class NewsServiceImpl extends GeneralServiceImpl<News> implements NewsSer
 				try{
 					NewsMessage newsMessage = new NewsMessage();
 					newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
-					//创建线程池发送
+					//创建线程池发送ooiMKv7cqR-2EgkeC9LdATpr-mbY
+//					executorsQueue.Executor(newsMessage, news, "ooiMKv7cqR-2EgkeC9LdATpr-mbY".trim(), serverUrl, contextpath, at);
 					for (int i = 0; i < openids.length; i++) {
-					executorsQueue.Executor(newsMessage, news, openids[i].toString(), serverUrl, contextpath, at);
+						executorsQueue.Executor(newsMessage, news, openids[i].toString(), serverUrl, contextpath, at);
 					}
 				}catch(Exception e) {
 					e.printStackTrace();
@@ -114,6 +111,20 @@ public class NewsServiceImpl extends GeneralServiceImpl<News> implements NewsSer
 			}
 
 	}
+	
+	
+	public static void main(String[] args) {
+		ExecutorsQueue executorsQueue = new ExecutorsQueue();
+		for(int i =0 ;i<10000;i++){
+			executorsQueue.Executor(null, null, null, null, null, null);
+		}
+	}
+	
+	
+	
+	
+	
+	
 
 	//返回openid列表
 	public Object[] findOpenIds(AccessToken at){

@@ -30,6 +30,7 @@ public class SwipingLeaveTemplate {
 	static WeixinUtil t = new WeixinUtil();
 	
 	public static String swipingLeaveNotifcation(String link,String toUser,String accessToken,LeaveTemplateMessage leave){
+//		String templateId = "OpYtn49XUgytmQus8vDRguvLAQjRldG2Hyy1ZuiwV6M";
 		String templateId = ReadProperties.getObjectProperties("application.properties", "leave.template");
 		log.info("templateId"+templateId);
 		//发送菜单的url
@@ -78,16 +79,16 @@ public class SwipingLeaveTemplate {
 	public static void main(String[] args) {
 		
 		LeaveTemplateMessage leave = new LeaveTemplateMessage();
-		leave.setTitle("请假申请");
+		leave.setTitle("<img src='https://images2017.cnblogs.com/q/37026/201709/37026-20170904162851085-594461350.jpg' alt=''>");
 		leave.setName("张三");
 		leave.setReason("感冒");
 		leave.setDate("2018-12-12");
 		leave.setRemark("备注");
-		String link = "http://www.baidu.com";
+		String link = "http://zhongchiedu.com/wechat-app/wechat/weChatCore";
 		AccessToken at= WeChatToken.getInstance().getAccessToken();
 		//ooiMKvywAoyhK1gF29qrq1tllE6I
 		//ooiMKv7cqR-2EgkeC9LdATpr-mbY
-		SwipingLeaveTemplate.swipingLeaveNotifcation(link, "ooiMKv7cqR-2EgkeC9LdATpr-mbY", at.getToken(), leave);
+		SwipingLeaveTemplate.swipingLeaveNotifcation(link, "ooiMKvywAoyhK1gF29qrq1tllE6I".toString(), at.getToken(), leave);
 		
 	}
 	

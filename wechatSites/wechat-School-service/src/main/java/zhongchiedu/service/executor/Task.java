@@ -2,6 +2,8 @@ package zhongchiedu.service.executor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,24 +28,42 @@ public class Task implements Runnable {
 	 private String serverUrl;
 	 private String contextpath;
 	 private AccessToken at;
+	 private BlockingQueue<Runnable> queue;
 	 
-	 public Task(NewsMessage newsMessage,News news,String openId,String serverUrl,String contextpath,AccessToken at){
+	 public Task(NewsMessage newsMessage,News news,String openId,String serverUrl,String contextpath,AccessToken at,BlockingQueue<Runnable> queue){
 		 this.newsMessage=newsMessage;
 		 this.news = news;
 		 this.openId = openId;
 		 this.serverUrl= serverUrl;
 		 this.contextpath= contextpath;
 		 this.at = at;
+		 this.queue = queue;
 	 }
 	 
 	
 	
 	@Override
 	public void run() {
-		log.info("开始处理数据");
-		String json = this.send(newsMessage, news,openId,serverUrl,contextpath);
-		JSONObject j = WeixinUtil.send(at.getToken(), json);
-		log.info("发送给"+openId+"发送返回结果"+j);
+//		try {
+//			TimeUnit.SECONDS.sleep((long) (Math.random()*5));
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		System.out.println("模拟发送成功！");
+//		
+		try{
+			String json = this.send(newsMessage, news,openId,serverUrl,contextpath);
+			JSONObject j = WeixinUtil.send(at.getToken(), json);
+			log.info("发送给"+openId+"发送返回结果"+j);
+			log.info("剩余数据"+queue.size());
+			Thread.sleep(200);
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			
+		}
+		
 	}
 
 	

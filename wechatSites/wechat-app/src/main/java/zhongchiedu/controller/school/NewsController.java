@@ -4,10 +4,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -135,7 +137,16 @@ public class NewsController {
 	
 	@RequestMapping("/news/view/{id}")
 	public String view(@PathVariable String id,Model model,HttpServletRequest request,HttpSession session) {
-		News news = this.newsService.findOneById(id, News.class);
+		Query query = new Query();
+		//查询未被禁用的新闻
+		query.addCriteria(Criteria.where("isDisable").is(false)).addCriteria(Criteria.where("id").is(new ObjectId(id)));
+		News news = this.newsService.findOneByQuery(query, News.class);
+		if(Common.isEmpty(news)){
+			//未能找到新闻
+			return "";
+		}
+		
+	//News news = this.newsService.findOneById(id, News.class);
 		model.addAttribute("news", Common.isNotEmpty(news)?news:null);
 		String ip = request.getRemoteAddr();
 		log.info("访问者ip"+ip);

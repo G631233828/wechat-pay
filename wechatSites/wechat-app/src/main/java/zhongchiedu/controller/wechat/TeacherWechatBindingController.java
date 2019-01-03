@@ -165,45 +165,53 @@ public class TeacherWechatBindingController {
 	 */
 	@RequestMapping("/toBinding")
 	@ResponseBody
-	public BasicDataResult toBinding(String account, String password, String code,HttpServletRequest request) {
+	public BasicDataResult toBinding(String account, String password, String code,HttpServletRequest request,
+			String openId) {
 		log.info("正在绑定:account"+account+"code"+code);
 	
 		try{
 		//验证输入的信息是否为空
-		if(Common.isNotEmpty(account)&&Common.isNotEmpty(password)&&Common.isNotEmpty(code)){
+		if(Common.isNotEmpty(account)&&Common.isNotEmpty(password)){
+			
+			
 			//通过用户的code获取到用户的信息
-			NSNUserInfo nsn = this.weChatbandingService.findWechatNsn(code);
+			NSNUserInfo nsn = null;
+			if(Common.isEmpty(openId)){
+				nsn = this.weChatbandingService.findWechatNsn(code);
+				openId = nsn.getOpenid();
+			}
+			
 			//通过微信openId查询该微信是否已经绑定过
-			Teacher t = this.teacherService.findTeacherByOpenId(nsn.getOpenid());
+			Teacher t = this.teacherService.findTeacherByOpenId(openId);
 			if(Common.isNotEmpty(t)){
-				return BasicDataResult.build(400, "您的微信已经绑定过一个教师账号了！", null);
+				return BasicDataResult.build(400, "您的微信已经绑定过一个教师账号了！", openId);
 			}
 			
 			
 			Teacher teacher = this.teacherService.findTeacherByAccount(account, password);
 			if(Common.isEmpty(teacher)){
-				return BasicDataResult.build(400,"输入的账号或密码错误",null);
+				return BasicDataResult.build(400,"输入的账号或密码错误",openId);
 			}
 			if(Common.isNotEmpty(teacher.getOpenId())){
 				//当前老师已经绑定过了
-				return BasicDataResult.build(400,"当前账号已经绑定过微信了，无法绑定其它微信账号",null);
+				return BasicDataResult.build(400,"当前账号已经绑定过微信了，无法绑定其它微信账号",openId);
 			}
 			
-			if(Common.isEmpty(nsn)){
-				return BasicDataResult.build(400,"请使用微信客户端进行打开",null);
+			if(Common.isEmpty(openId)){
+				return BasicDataResult.build(400,"请使用微信客户端进行打开",openId);
 			}
 			
 			teacher.setNsnUserInfo(nsn);
 			teacher.setOpenId(nsn.getOpenid());
 			this.teacherService.save(teacher);
-			return BasicDataResult.build(200, "用户绑定成功", null);
+			return BasicDataResult.build(200, "用户绑定成功", openId);
 		}
 		}catch(Exception e){
 			e.printStackTrace();
 			// 验证输入的信息是否为空
-			return BasicDataResult.build(400, "绑定过程中出现未知异常，请联系管理员！", null);
+			return BasicDataResult.build(400, "绑定过程中出现未知异常，请联系管理员！", openId);
 		}
-		return BasicDataResult.build(400, "绑定过程中出现未知异常，请联系管理员！", null);
+		return BasicDataResult.build(400, "绑定过程中出现未知异常，请联系管理员！", openId);
 	}
 	
 	

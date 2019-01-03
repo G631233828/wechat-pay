@@ -8,7 +8,7 @@
 <body ontouchstart class="page-bg">
 
 	<div th:replace="wechat/front/public/public::top"></div>
-	
+
 	<div class="page-hd">
 		<h1 class="page-hd-title">您的微信尚未绑定</h1>
 		<p class="page-hd-desc">
@@ -16,81 +16,94 @@
 		</p>
 	</div>
 
-<form th:action="@{/wechat/toBinding}" id="regform" method="post">
-    <div class="weui_cells weui_cells_form">
-        <div class="weui_cell">
-            <div class="weui_cell_hd"><label class="weui_label">账号</label></div>
-            <div class="weui_cell_bd weui_cell_primary">
-                <input class="weui_input" type="text" name="account" id="account" required placeholder="输入登陆账号" emptyTips="请输入登陆账号">
-            </div>
-            <div class="weui_cell_ft">
-                <i class="weui_icon_warn"></i>
-            </div>
-        </div>
-        
-        <div class="weui_cell">
-            <div class="weui_cell_hd"><label class="weui_label">密码</label></div>
-            <div class="weui_cell_bd weui_cell_primary">
-                <input class="weui_input" type="password" required name="password" id="password" placeholder="请输入密码" emptyTips="请输入密码" >
-            </div>
-            <div class="weui_cell_ft">
-                <i class="weui_icon_warn"></i>
-            </div>
-        </div>
-        
-    </div>
-    <div class="weui_btn_area">
-        <a id="formSubmitBtn" href="javascript:" class="weui_btn weui_btn_primary">登陆</a>
-    </div>
-</form>
+	<form th:action="@{/wechat/toBinding}" id="regform" method="post">
+		<div class="weui_cells weui_cells_form">
+			<div class="weui_cell">
+				<input type="hidden" id="openId" name="openId">
+				<div class="weui_cell_hd">
+					<label class="weui_label">账号</label>
+				</div>
+				<div class="weui_cell_bd weui_cell_primary">
+					<input class="weui_input" type="text" name="account" id="account"
+						required placeholder="输入登陆账号" emptyTips="请输入登陆账号">
+				</div>
+				<div class="weui_cell_ft">
+					<i class="weui_icon_warn"></i>
+				</div>
+			</div>
+
+			<div class="weui_cell">
+				<div class="weui_cell_hd">
+					<label class="weui_label">密码</label>
+				</div>
+				<div class="weui_cell_bd weui_cell_primary">
+					<input class="weui_input" type="password" required name="password"
+						id="password" placeholder="请输入密码" emptyTips="请输入密码">
+				</div>
+				<div class="weui_cell_ft">
+					<i class="weui_icon_warn"></i>
+				</div>
+			</div>
+
+		</div>
+		<div class="weui_btn_area">
+			<a id="formSubmitBtn" href="javascript:"
+				class="weui_btn weui_btn_primary">登陆</a>
+		</div>
+	</form>
 	<div th:replace="wechat/front/public/public::footer"></div>
 
-<script>
-var $form = $("#regform");
-$form.form();
-$("#formSubmitBtn").on("click", function(){
-    $form.validate(function(error){
-        if(error){
-        }else{
-var account = $("#account").val();
-var password = $("#password").val();
-var clazzId = $("#clazz option:selected").val();
-            $.toptips('验证通过提交','ok');
-     	$.ajax({
-				url : "toBinding",
-				type : "get",
-				data : "account=" + account + "&password=" + password
-				+"&clazzId="+clazzId+ "&code=" + getQueryString("code"),
-				dataType:'json',
-				success : function(data) {
-					if (data.status == 200) {
-						 $.toptips(data.msg,'ok');
-						window.location.href = "index";
-					}else{
-						 $.toptips(data.msg,'warning');
-					}
-				},
-			}); 
-        }
-    });
-    
-});
-
-function getQueryString(name) {
-	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-	var r = window.location.search.substr(1).match(reg);
-	if (r != null)
-		return unescape(r[2]);
-	return null;
-}
-</script>
-
-
-
-
-
-
 	<script>
+		var $form = $("#regform");
+		$form.form();
+		$("#formSubmitBtn").on(
+				"click",
+				function() {
+					$form.validate(function(error) {
+						if (error) {
+						} else {
+							var account = $("#account").val();
+							var password = $("#password").val();
+							var clazzId = $("#clazz option:selected").val();
+							var openId = $("#openId").val();
+							$.ajax({
+								url : "toBinding",
+								type : "get",
+								data : "openId=" + openId + "&account="
+										+ account + "&password=" + password
+										+ "&clazzId=" + clazzId + "&code="
+										+ getQueryString("code"),
+								dataType : 'json',
+								success : function(data) {
+									if (data.status == 200) {
+										$.toptips(data.msg, 'ok');
+										window.location.href = "index";
+									} else {
+										$("#openId").val(data.data)
+										$.toptips(data.msg, 'warning');
+									}
+								},
+							});
+						}
+					});
+
+				});
+
+		function getQueryString(name) {
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+			var r = window.location.search.substr(1).match(reg);
+			if (r != null)
+				return unescape(r[2]);
+			return null;
+		}
+	</script>
+
+
+
+
+
+
+	<!-- <script>
 		function showmark() {
 			$('.weui_mask').addClass('weui_mask_visible');
 			$('.weui-custom-pop').addClass('weui-dialog-visible');
@@ -127,7 +140,7 @@ function getQueryString(name) {
 		}
 
 	
-	</script>
+	</script> -->
 
 </body>
 </html>

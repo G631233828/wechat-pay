@@ -21,14 +21,16 @@ public class ExecutorsQueue {
 
 	BlockingQueue<Runnable> queue = new ArrayBlockingQueue<Runnable>(20000);
 
-	ExecutorService executor = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(), 20, 20,
+	ExecutorService executor = new ThreadPoolExecutor(20, 100, 20,
 			TimeUnit.MINUTES, queue);
 
 	public void Executor(NewsMessage newsMessage,News news,String openId,String serverUrl,String contextpath,AccessToken at) {
 
 		log.info("当前队列大小：" + queue.size());
 
-		this.executor.execute(new Task( newsMessage, news, openId, serverUrl, contextpath, at));
+		this.executor.execute(new Task( newsMessage, news, openId, serverUrl, contextpath, at,queue));
+		
+		log.info("剩余队列大小："+queue.size());
 	}
 
 }
