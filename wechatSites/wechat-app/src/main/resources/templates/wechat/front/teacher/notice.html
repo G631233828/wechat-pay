@@ -11,7 +11,7 @@
 
 	<div class="page-hd">
 		<h1 class="page-hd-title">通知发送</h1>
-		<p class="page-hd-desc">[[${teacher.name}]]老师，您好！</p>
+		<p class="page-hd-desc" style="font-size: 15px;">[[${teacher.name}]]老师，您好！</p>
 	</div>
 
 	<form th:action="@{/teacher/notice}" id="noticeform" method="post">
@@ -24,58 +24,54 @@
 					<label class="weui_label">通知主题</label>
 				</div>
 				<div class="weui_cell_bd weui_cell_primary">
-					<input class="weui_input" type="text" th:value="${notice?.title}" name="title" id="title"
-						required placeholder="输入通知主题" emptyTips="请输入通知主题">
+					<input class="weui_input" type="text" th:value="${notice?.title}"
+						name="title" id="title" required placeholder="输入通知主题"
+						emptyTips="请输入通知主题">
 				</div>
 				<div class="weui_cell_ft">
 					<i class="weui_icon_warn"></i>
 				</div>
 			</div>
 
+
 			<div class="weui_cell">
 				<div class="weui_cell_hd">
 					<label class="weui_label">通知内容</label>
 				</div>
-				<div class="weui_cells weui_cells_form">
-					<div class="weui_cell">
-						<div class="weui_cell_bd weui_cell_primary">
-							<textarea th:maxlength="200" id="content" name="content"
-								class="weui_textarea" placeholder="请输入通知内容" rows="3"
-								 th:text="${notice?.content}"></textarea>
-							<div class="weui_textarea_counter">
-								<span id='count'>0</span>/<span id='count_max'>200</span>
-							</div>
+			</div>
+			<div class="weui_cells weui_cells_form" style="margin-top: 0px;">
+				<div class="weui_cell">
+					<div class="weui_cell_bd weui_cell_primary">
+						<textarea th:maxlength="200" id="content" name="content"
+							class="weui_textarea" placeholder="请输入通知内容" rows="3"
+							th:text="${notice?.content}"></textarea>
+						<div class="weui_textarea_counter">
+							<span id='count'>0</span>/<span id='count_max'>200</span>
 						</div>
-
-
-						<script type="text/javascript">
-							$(function() {
-								var max = $('#count_max').text();
-								$('#content')
-										.on(
-												'input',
-												function() {
-													var text = $(this).val();
-													var len = text.length;
-													$('#count').text(len);
-													if (len > max) {
-														$(this)
-																.closest(
-																		'.weui_cell')
-																.addClass(
-																		'weui_cell_warn');
-													} else {
-														$(this)
-																.closest(
-																		'.weui_cell')
-																.removeClass(
-																		'weui_cell_warn');
-													}
-												});
-							})
-						</script>
 					</div>
 				</div>
+
+
+
+				<script type="text/javascript">
+					$(function() {
+						var max = $('#count_max').text();
+						$('#content').on(
+								'input',
+								function() {
+									var text = $(this).val();
+									var len = text.length;
+									$('#count').text(len);
+									if (len > max) {
+										$(this).closest('.weui_cell').addClass(
+												'weui_cell_warn');
+									} else {
+										$(this).closest('.weui_cell')
+												.removeClass('weui_cell_warn');
+									}
+								});
+					})
+				</script>
 
 				<div class="weui_cell_ft">
 					<i class="weui_icon_warn"></i>
@@ -90,46 +86,35 @@
 	</form>
 
 	<script>
-	
-	
-	
 		var $form = $("#noticeform");
 		$form.form();
 		$("#formSubmitBtn").on("click", function() {
 			$form.validate(function(error) {
 				if (error) {
 				} else {
-					        $.confirm("您确定要发送此条通知吗?", "发送通知", function() {
-					        	var clazzId = $("#clazz option:selected").val();
-								$.toptips('正在发送', 'ok');
-								$.ajax({
-									url : "notice",
-									type : "post",
-									data : $("#noticeform").serialize(),
-									dataType : 'json',
-									success : function(data) {
-										alert(data.status)
-										
-										if (data.status == 200) {
-											  $.toast(data.msg);
-											window.location.href = "index";
-										} else {
-											  $.toast(data.msg);
-										}
-									},
-								});
-					        
-					        }, function() {
-					        	$.toast("您取消了发送！");
-					        });
-					
-					
-					
-					
-					
-					
-					
-				
+					$.confirm("您确定要发送此条通知吗?", "发送通知", function() {
+						$.toast("正在发送！");
+						var clazzId = $("#clazz option:selected").val();
+						$.toptips('正在发送', 'ok');
+						$.ajax({
+							url : "notice",
+							type : "post",
+							data : $("#noticeform").serialize(),
+							dataType : 'json',
+							success : function(data) {
+								if (data.status == 200) {
+									$.toast(data.msg);
+									window.location.href = "index";
+								} else {
+									$.toast(data.msg);
+								}
+							},
+						});
+
+					}, function() {
+						$.toast("您取消了发送！");
+					});
+
 				}
 			});
 

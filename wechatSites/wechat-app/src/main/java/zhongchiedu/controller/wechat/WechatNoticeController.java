@@ -41,7 +41,7 @@ public class WechatNoticeController {
 	 */
 	@RequestMapping("/teacher/tonotice")
 	public ModelAndView toNotice(String id) {
-		id="5bfceeee94fd73eb64e18b88";
+		//id="5c738d82be2eeb872061bc2c";
 		ModelAndView model = new ModelAndView();
 		if(Common.isNotEmpty(id)){
 			Teacher teacher = this.teacherService.findOneById(id, Teacher.class);  

@@ -1,6 +1,5 @@
 package zhongchiedu.controller.wechat;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,26 +9,22 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
+
 import zhongchiedu.common.utils.BasicDataResult;
 import zhongchiedu.common.utils.Common;
 import zhongchiedu.common.utils.Contents;
-import zhongchiedu.common.utils.ReadProperties;
 import zhongchiedu.school.pojo.HomeWork;
-import zhongchiedu.school.pojo.School;
-import zhongchiedu.school.pojo.Student;
 import zhongchiedu.school.pojo.WeChatbanding;
 import zhongchiedu.school.pojo.WeChatbandingStudent;
 import zhongchiedu.service.HomeWorkService;
-import zhongchiedu.service.SchoolService;
 import zhongchiedu.service.WeChatbandingService;
+import zhongchiedu.service.Impl.StudentServiceImpl;
 import zhongchiedu.wechat.oauto2.NSNUserInfo;
-import zhongchiedu.wechat.util.WeixinUtil;
 
 @RequestMapping("/wechat")
 @Controller
@@ -42,6 +37,9 @@ public class WechatBandingController {
 
 	@Autowired
 	private WeChatbandingService weChatbandingService;
+	
+	@Autowired
+	private StudentServiceImpl studentService;
 
 	/**
 	 * 微信授权验证
@@ -78,7 +76,12 @@ public class WechatBandingController {
 				String password = weChatbinding.getPassword();
 				// 使用帐号密码进行登录
 				String result = this.homeWorkService.checkLogin(account, password, null);
+				//更新绑定学生的信息
+				
+				
 				if (result.equals("error")) {
+					//密码过期，删除该用户2019年3月7日 13:41:57
+					this.weChatbandingService.remove(weChatbinding);
 					// 登录失败，跳转到登录界面
 					model.setViewName("redirect:toAuthor");
 					return model;
@@ -148,6 +151,7 @@ public class WechatBandingController {
 			return model;
 		}
 		model.addObject("wechatbinding", we);
+		model.addObject("clazz",we.getStudentAccount().substring(0, 4)+"年"+we.getStudentAccount().substring(5,6)+"班");
 		model.setViewName("wechat/front/index");
 		return model;
 	}
@@ -250,6 +254,7 @@ public class WechatBandingController {
 				//new
 				//获取openid,根据openid查看是否已经存在该openId
 				WeChatbanding wcb = this.weChatbandingService.findWeChatbandingByOpenId(nsn.getOpenid());
+				
 				if(Common.isNotEmpty(wcb)){
 					List<WeChatbandingStudent> bds = wcb.getListbandings();//获取绑定的学生
 					if(bds.size()>0){
@@ -266,6 +271,8 @@ public class WechatBandingController {
 					student.setStudentAccount(account);
 					student.setStudentName(homeWork.getStudentName());
 					student.setStudentClass(homeWork.getGradeName() + homeWork.getClassName());
+					//对学生列表中的该数据进行跟新
+					this.studentService.saveStudentByRegisterNum(student);
 					students.add(student);
 					wcb.setListbandings(students);
 					this.weChatbandingService.SaveOrUpdateWeChatbanding(wcb);
@@ -287,6 +294,8 @@ public class WechatBandingController {
 					banding.setStudentClass(homeWork.getGradeName() + homeWork.getClassName());
 					banding.setStudentName(homeWork.getStudentName());
 					banding.setListbandings(listbds);
+					//对学生列表中的该数据进行跟新
+					this.studentService.saveStudentByRegisterNum(student);
 					// 3.保存绑定信息
 					this.weChatbandingService.SaveOrUpdateWeChatbanding(banding);
 					return BasicDataResult.build(200, "用户绑定成功！", null);

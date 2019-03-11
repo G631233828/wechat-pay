@@ -25,11 +25,13 @@ import zhongchiedu.common.utils.Contents;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.school.pojo.Clazz;
 import zhongchiedu.school.pojo.Leave;
+import zhongchiedu.school.pojo.Student;
 import zhongchiedu.school.pojo.Teacher;
 import zhongchiedu.school.pojo.WeChatbanding;
 import zhongchiedu.school.pojo.WeChatbandingStudent;
 import zhongchiedu.service.ClazzService;
 import zhongchiedu.service.LeaveService;
+import zhongchiedu.service.StudentService;
 import zhongchiedu.service.TeacherService;
 import zhongchiedu.service.WeChatbandingService;
 import zhongchiedu.wechat.oauto2.NSNUserInfo;
@@ -51,6 +53,9 @@ public class TeacherWechatBindingController {
 	
 	@Autowired
 	private LeaveService leaveService;
+	
+	@Autowired
+	private StudentService studentService;
 
 	/**
 	 * 老师微信授权验证
@@ -168,11 +173,11 @@ public class TeacherWechatBindingController {
 	public BasicDataResult toBinding(String account, String password, String code,HttpServletRequest request,
 			String openId) {
 		log.info("正在绑定:account"+account+"code"+code);
+		log.info("openId"+openId);
 	
 		try{
 		//验证输入的信息是否为空
 		if(Common.isNotEmpty(account)&&Common.isNotEmpty(password)){
-			
 			
 			//通过用户的code获取到用户的信息
 			NSNUserInfo nsn = null;
@@ -200,23 +205,21 @@ public class TeacherWechatBindingController {
 			if(Common.isEmpty(openId)){
 				return BasicDataResult.build(400,"请使用微信客户端进行打开",openId);
 			}
-			
-			teacher.setNsnUserInfo(nsn);
-			teacher.setOpenId(nsn.getOpenid());
+			teacher.setNsnUserInfo(nsn!=null?nsn:teacher.getNsnUserInfo());
+			teacher.setOpenId(nsn!=null?nsn.getOpenid():teacher.getOpenId());
 			this.teacherService.save(teacher);
-			return BasicDataResult.build(200, "用户绑定成功", openId);
+			return BasicDataResult.build(nsn!=null?200:203, nsn!=null?"用户绑定成功":"页面code失效，正在刷新", openId);
 		}
 		}catch(Exception e){
 			e.printStackTrace();
 			// 验证输入的信息是否为空
 			return BasicDataResult.build(400, "绑定过程中出现未知异常，请联系管理员！", openId);
 		}
-		return BasicDataResult.build(400, "绑定过程中出现未知异常，请联系管理员！", openId);
+		return BasicDataResult.build(400, "账号或密码不能为空！", openId);
 	}
 	
 	
 	
-	//TODO
 	
 	 /*
 	 * 根据老师的id查询班级请假信息 默认是查询当天的请假
@@ -226,6 +229,7 @@ public class TeacherWechatBindingController {
 			@RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
 			@RequestParam(value = "serach", defaultValue = "")String serach) {
 		ModelAndView model = new ModelAndView();
+		//id="5bfceeee94fd73eb64e18b88";
 		Clazz clazz = this.clazzService.findHeadMaster(id);
 		log.info("老师id"+id+"当前班级信息"+clazz);
 		
@@ -241,6 +245,41 @@ public class TeacherWechatBindingController {
 		
 		model.setViewName("wechat/front/teacher/findLeave");
 		return model;
+	}
+	
+	
+	
+	/**
+	 * 通过学生id查看该学生的所有请假情况
+	 */
+	@RequestMapping("/studentleaves")
+	public ModelAndView studentleaves(String id){
+		ModelAndView model = new ModelAndView();
+		if(Common.isNotEmpty(id)){
+			//通过学生的id查看学生的信息
+			Student student  = this.studentService.findOneById(id, Student.class);
+			if(Common.isNotEmpty(student)){
+				model.addObject("student", student);
+			}
+		}
+		model.setViewName("wechat/front/teacher/leavehistory");
+		return model;
+	}
+	
+	
+	@RequestMapping("/getleave")
+	@ResponseBody
+	public BasicDataResult getleave(String page , String size ,String id) {
+		
+		if(Common.isNotEmpty(id)){
+			Student student  = this.studentService.findOneById(id, Student.class);
+			if(Common.isNotEmpty(student)){
+				//获取学生的请假信息
+				List<Leave> list = this.leaveService.findLeavesByStudentId(student,page,size);
+					return BasicDataResult.build(200, "查询成功", list);
+			}
+		}
+		return BasicDataResult.build(400, "查询失败", null);
 	}
 	
 	

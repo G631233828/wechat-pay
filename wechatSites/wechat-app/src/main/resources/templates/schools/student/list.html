@@ -61,13 +61,12 @@ canvas#canvas4 {
 						<div class="nest" id="tableStaticClose">
 							<div>
 								<div>
-									<shiro:hasPermission name="student:add">
+							<shiro:hasPermission name="student:add">
 										<button class="btn btn-default btn-sm"
 											th:onclick="|window.location.href='@{/student}'|">
 											<i class="glyphicon glyphicon-plus"> </i> 添加
 										</button>
 									</shiro:hasPermission>
-
 									<shiro:hasPermission name="student:edit">
 										<button class="btn btn-primary btn-sm"
 											onclick="return toeditPage('','student')">
@@ -89,11 +88,11 @@ canvas#canvas4 {
 									</shiro:hasPermission>
 									
 									
-									<!-- <shiro:hasPermission name="student:tongbu"> -->
+									 <shiro:hasPermission name="student:tongbu">
 										<button class="btn btn-info" onclick="return tongbu()">
 											<i class="entypo-upload-cloud"> </i>同步绑定
 										</button>
-									<!-- </shiro:hasPermission> -->
+									</shiro:hasPermission>
 									
 									
 									

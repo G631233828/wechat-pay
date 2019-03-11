@@ -93,14 +93,17 @@
 	</script>
 			</div>
 		</div>
-		
-		
-		<div class="weui_btn_area weui_btn_area_inline">
+		<div class="weui_btn_area weui_btn_area_inline" th:if="${flag == false}"  >
 			<a id="cancel" onclick="return cancel();" th:if="${leave}!=null"
 				class="weui_btn weui_btn_primary" >取消请假</a>
 			<a id="formSubmitBtn" href="javascript:"  
 				class="weui_btn weui_btn_primary" th:text="${leave==null}?'提交':'修改'"></a>
 		</div>
+		
+		<div class="weui_btn_area weui_btn_area_inline" th:if="|${flag == true && leave == null}|"  >
+		<a id="formSubmitBtn" href="javascript:" class="weui_btn weui_btn_primary" >提交</a>
+		</div>
+		
 	</form>
 
 	<!-- 	<div th:replace="/wechat/front/public/public::footer"></div>

@@ -10,10 +10,10 @@
 	<!-- 	<div th:replace="/wechat/front/public/public::footer"></div>
 	 -->
 	<div class="page-hd">
-		<h1 class="page-hd-title">[[${wechatbanding.clazzYear}]]年[[${wechatbanding.clazzNum}]]班[[${wechatbanding.studentName}]]请假记录</h1>
+		<h1 class="page-hd-title">[[${student.name}]]请假记录</h1>
 		<p class="page-hd-desc">以下信息是所有请假数据</p>
 	</div>
-	<input type="hidden" th:value="${openId}" id="openId">
+	<input type="hidden" th:value="${student.id}" id="studentId">
 	
   <div class="weui_panel weui_panel_access">
 	<div class="weui_panel_bd">
@@ -47,19 +47,19 @@
             $.ajax({
                 type: 'GET',
                 url:'getleave?page='+page+'&size='+size,
-                data:'openId='+$("#openId").val(),
+                data:'id='+$("#studentId").val(),
                 dataType: 'json',
                 success: function(data){
               
                 	var arrLen = data.data.length;
                 	  if(arrLen > 0){
           	$.each(data.data,function(k,v){
-          		var state = v.state == true?'已读':'未读';
-	 result+='<div class="weui-form-preview" onclick=edit('+"'"+v.id+"'"+');><div class="weui-form-preview-bd">'   
+	 result+='<div class="weui-form-preview"><div class="weui-form-preview-bd">'   
 			+'<p><label class="weui-form-preview-label">请假人（家长）</label><span class="weui-form-preview-value">'+v.nsnUserInfo.nickname+'</span></p>'  
 			+'<p><label class="weui-form-preview-label">请假日期</label><span class="weui-form-preview-value">'+v.startLeave+'</span></p>'  
 			+'<p><label class="weui-form-preview-label">请假原因</label><span class="weui-form-preview-value">'+v.reason+'</span></p>'  
- 			+'</div>'
+ 			+'<div class="weui-form-preview-ft">'
+ 			+'</div></div>'
  ;	
                    	})
                 	  }else{
@@ -99,22 +99,6 @@
         }
     });
 }); 
- 
- 
- function edit(o){
-	 var openId = $("#openId").val();
-	 //跳转到编辑页面
-	 window.location.href="toleave?openId="+openId+"&id="+o;
-	 
-	 
- }
- 
- 
- 
- 
- 
- 
- 
  
  
  

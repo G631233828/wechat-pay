@@ -1,5 +1,7 @@
 package zhongchiedu.service;
 
+import java.util.List;
+
 import zhongchiedu.framework.service.GeneralService;
 import zhongchiedu.school.pojo.WeChatbanding;
 import zhongchiedu.wechat.oauto2.NSNUserInfo;
@@ -15,7 +17,7 @@ public interface WeChatbandingService extends GeneralService<WeChatbanding>{
 	
 	public void updateStudentName(WeChatbanding we ,String newName);
 	
-	NSNUserInfo findnsnByStudentAccount(String account);
+	List<NSNUserInfo> findnsnByStudentAccount(String account);
 	
 	
 }

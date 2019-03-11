@@ -242,7 +242,7 @@ public class FileOperateUtil {
 				// 对上传文件进行重命名
 				rname = rname(fileName);
 				map.put(FileOperateUtil.RENAME, rname);
-				path = file + "/" + rname;// 存放位置\
+				path = file + "/" + rname+fileName;// 存放位置\
 				destFile = new File(path);
 			}
 

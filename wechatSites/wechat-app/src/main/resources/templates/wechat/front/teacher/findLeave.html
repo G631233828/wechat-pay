@@ -14,6 +14,7 @@
 		<p class="page-hd-desc">以下信息是所有请假数据</p>
 	</div>
 	<input type="hidden" th:value="${openId}" id="openId">
+	<input type="hidden" th:value="${clazz.id}" id="clazzId">
 
 	<div class="weui_search_bar">
 		<input type="search" class="search-input" id='search' th:value="${serach}"
@@ -32,10 +33,10 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr th:each="leave:${pageList.datas}" >
-				<td>[[${leave.student.name}]]</td>
-				<td>[[${leave.student.code}]]</td>
-				<td>[[${leave.startLeave}]]</td>
+			<tr th:each="leave:${pageList.datas}" th:onclick="|return findleaves('${leave?.student?.id}');|" >
+				<td>[[${leave?.student?.name}]]</td>
+				<td>[[${leave?.student?.code}]]</td>
+				<td>[[${leave?.startLeave}]]</td>
 			</tr>
 		</tbody>
 	</table>
@@ -68,6 +69,11 @@
 function serach(o){
 	var serach = $("#search").val();
 	window.location.href="findleave?id="+o+"&serach="+serach;
+}
+
+
+function findleaves(o){
+	window.location.href="studentleaves?id="+o; 
 }
 
 </script>

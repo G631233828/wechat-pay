@@ -84,7 +84,6 @@ function batchImput() {
 }
 
 function tongbu() {
-	alert(11);
 	$("#animationModal").modal('show');
 	$.ajax({
 		type : 'POST',

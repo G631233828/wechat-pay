@@ -107,8 +107,10 @@ public class HomeWorkServiceImpl implements HomeWorkService {
 	public static void main(String[] args) throws UnsupportedEncodingException {
 		HomeWorkServiceImpl a = new HomeWorkServiceImpl();
 		String aa = a.checkLogin("20170110", "Renqin771023", "2018-10-23");
-		System.out.println(aa);
-
+		HomeWork work = a.jsoupGetHomeWork(aa);
+		System.out.println(work.getClassName());
+		System.out.println(work.getGradeName());
+		
 	}
 
 }

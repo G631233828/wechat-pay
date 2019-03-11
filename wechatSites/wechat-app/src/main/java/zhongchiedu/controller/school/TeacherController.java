@@ -178,7 +178,7 @@ public class TeacherController {
 	 */
 	@SuppressWarnings({ "static-access", "unused" })
 	@RequestMapping(value = "/teacher/upload")
-	@SystemControllerLog(description = "批量导入企业信息")
+	@SystemControllerLog(description = "批量导入老师信息")
 	public ModelAndView upload(Teacher teacher, HttpServletRequest request, HttpSession session,
 			RedirectAttributes attr) {
 

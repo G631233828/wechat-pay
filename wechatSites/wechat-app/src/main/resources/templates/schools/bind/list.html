@@ -149,16 +149,16 @@ canvas#canvas4 {
 												<ul class="pagination pagination-split pull-right"
 													style="margin-top: 0px;">
 													<li th:class="${pageList.pageNo } eq 1 ?disabled:''"><a
-														th:href="${pageList.pageNo} eq 1?'javascript:void(0);':@{/bindinglist?pageNo=}+${pageList.upPage}">上一页</a>
+														th:href="${pageList.pageNo} eq 1?'javascript:void(0);':@{/bindings?pageNo=}+${pageList.upPage}">上一页</a>
 													</li>
 													<li th:each="page:${pageList.navigatepageNums}"
 														th:class="${page  == pageList.pageNo}?active:''"><a
-														th:href="${page eq pageList.pageNo}?'javascript:void(0)':@{/bindinglist?pageNo=}+${page}">[[${page}]]</a>
+														th:href="${page eq pageList.pageNo}?'javascript:void(0)':@{/bindings?pageNo=}+${page}">[[${page}]]</a>
 													</li>
 													<li
 														th:class="${pageList.pageNo eq pageList.totalPage}?disabled:''">
 														<a
-														th:href="${pageList.pageNo eq pageList.totalPage}?'javascript:void(0);':@{/bindinglist?pageNo=}+${pageList.nextPage}">下一页</a>
+														th:href="${pageList.pageNo eq pageList.totalPage}?'javascript:void(0);':@{/bindings?pageNo=}+${pageList.nextPage}">下一页</a>
 													</li>
 												</ul>
 											</div>

@@ -50,9 +50,10 @@ public class SwipingSchoolTemplate {
 		send.setData(scn);
 		
 		String jsontemplate = JSONObject.fromObject(send).toString();
-		log.info("返回结果："+jsontemplate);
+		log.info("发送数据："+jsontemplate);
 		JSONObject jsonObject = t.httpRequest(url, "POST", jsontemplate);
 		int errorCode = jsonObject.getInt("errcode");
+		log.info("返回结果"+jsonObject);
 		//如果错误代码是42001说明access_token过期
 		if(errorCode == 42001){
 			log.info("access_token过期");

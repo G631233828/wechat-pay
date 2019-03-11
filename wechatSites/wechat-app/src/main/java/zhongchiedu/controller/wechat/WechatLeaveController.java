@@ -1,5 +1,6 @@
 package zhongchiedu.controller.wechat;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -42,8 +43,9 @@ public class WechatLeaveController {
 	@RequestMapping("/toleave")
 	public ModelAndView toleave(String openId,String id) {
 		ModelAndView model = new ModelAndView();
+		Leave leave = null;
 		if(Common.isNotEmpty(id)){
-			Leave leave = this.leaveService.findOneById(id, Leave.class);
+			 leave = this.leaveService.findOneById(id, Leave.class);
 			if(Common.isNotEmpty(leave)){
 				model.addObject("leave", leave);
 			}
@@ -63,10 +65,18 @@ public class WechatLeaveController {
 		}
 		model.addObject("openId", openId);
 		model.setViewName("wechat/front/leave");
+		if(Common.isNotEmpty(leave)){
+			LocalDate today = LocalDate.now();
+			String leaveDay = leave.getStartLeave();
+			int i =Common.compare_date(today.toString(), leaveDay);
+			model.addObject("flag", i<0?true:false);
+		}else{
+			model.addObject("flag",false);
+		}
+		
 		return model;
 	}
 
-	
 	
 	
 	
@@ -175,6 +185,10 @@ public class WechatLeaveController {
 		}
 		//根据id获取请假信息
 	    Leave del = this.leaveService.findOneById(leave.getId(), Leave.class);
+	    //获取取消请假的日期 不能取消过去的请假
+	    //TODO 
+	    
+	    
 	    if(Common.isNotEmpty(del)){
 	    	this.leaveService.remove(del);
 	    	//发送通知通知老师取消请假的信息

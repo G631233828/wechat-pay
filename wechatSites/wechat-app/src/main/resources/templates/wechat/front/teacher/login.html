@@ -78,7 +78,10 @@
 									if (data.status == 200) {
 										$.toptips(data.msg, 'ok');
 										window.location.href = "index";
-									} else {
+									} else if(data.status == 203){
+										$.toptips(data.msg, 'warning');
+										window.location.href = "index";
+									}else{
 										$("#openId").val(data.data)
 										$.toptips(data.msg, 'warning');
 									}

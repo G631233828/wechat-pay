@@ -30,24 +30,24 @@ public class UserTest {
 	public void addUser(){
 		
 		User user = this.userService.findOneById("5bd926f294fd7337ecd84b36", User.class);
-		
-		Update update = new Update();
-		update.set("passWord", "admin123");
-		
-		//update.update("passWord", "admin123");
-		
-		Query query = new Query();
-		
-		query.addCriteria(Criteria.where("passWord").is("aaaaa"));
-		
-		this.userService.updateAllByQuery(query, update, User.class);
+//		
+//		Update update = new Update();
+//		update.set("passWord", "admin123");
+//		
+//		//update.update("passWord", "admin123");
+//		
+//		Query query = new Query();
+//		
+//		query.addCriteria(Criteria.where("passWord").is("aaaaa"));
+//		
+//		this.userService.updateAllByQuery(query, update, User.class);
 //		
 //		for(int i =0;i<5;i++){
 //			
 //			 User user = new User();
 //			    user.setAccountName("adminaaa");
 //			    user.setCardId("123456");
-//			    user.setCardType("Éí·ÝÖ¤");
+//			    user.setCardType("ï¿½ï¿½ï¿½Ö¤");
 //			    user.setCreateTime(new Date());
 //			    user.setPassWord("123456");
 //			    user.setIsDisable(false);

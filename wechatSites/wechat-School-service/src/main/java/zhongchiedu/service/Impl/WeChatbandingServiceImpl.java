@@ -33,16 +33,16 @@ public class WeChatbandingServiceImpl extends GeneralServiceImpl<WeChatbanding> 
 		if (Common.isNotEmpty(weChatbanding)) {
 			if (weChatbanding.getId() != null) {
 				WeChatbanding bd = this.findOneById(weChatbanding.getId(), WeChatbanding.class);
-				if(Common.isNotEmpty(bd)){
+				if (Common.isNotEmpty(bd)) {
 					BeanUtils.copyProperties(weChatbanding, bd);
 					this.save(bd);
-				}else{
+				} else {
 					WeChatbanding ed = new WeChatbanding();
 					BeanUtils.copyProperties(weChatbanding, ed);
 					// 执行添加操作
 					this.insert(ed);
 				}
-			}else{
+			} else {
 				WeChatbanding ed = new WeChatbanding();
 				BeanUtils.copyProperties(weChatbanding, ed);
 				// 执行添加操作
@@ -63,8 +63,6 @@ public class WeChatbandingServiceImpl extends GeneralServiceImpl<WeChatbanding> 
 		return weChatbanding != null ? weChatbanding : null;
 	}
 
-	
-	
 	@Override
 	public NSNUserInfo findWechatNsn(String code) {
 		NSNUserInfo nsn = WeixinUtil.baseWeChatLogin(Contents.APPID, Contents.APPSECRET, code);
@@ -79,39 +77,50 @@ public class WeChatbandingServiceImpl extends GeneralServiceImpl<WeChatbanding> 
 	public void updateStudentName(WeChatbanding we, String newName) {
 		Update update = new Update();
 		update.set("studentName", newName);
-//		update.set("listbandings.studentName", newName);
+		// update.set("listbandings.studentName", newName);
 		Query query = new Query();
 		query.addCriteria(Criteria.where("studentAccount").is(we.getStudentAccount()));
 		this.updateAllByQuery(query, update, WeChatbanding.class);
-		
+
 		List<WeChatbanding> bds = this.find(query, WeChatbanding.class);
-		
-		for(WeChatbanding wchat:bds){
+
+		for (WeChatbanding wchat : bds) {
 			List<WeChatbandingStudent> wlist = new ArrayList<>();
-			
-			for(WeChatbandingStudent stu:wchat.getListbandings()){
-				
-				if(stu.getStudentAccount().equals(we.getStudentAccount())){
+
+			for (WeChatbandingStudent stu : wchat.getListbandings()) {
+
+				if (stu.getStudentAccount().equals(we.getStudentAccount())) {
 					stu.setStudentName(newName);
 				}
-					wlist.add(stu);
+				wlist.add(stu);
 			}
-			
+
 			wchat.setListbandings(wlist);
-					this.save(wchat);
-			
+			this.save(wchat);
+
 		}
 	}
 
+	/*
+	 * @Override public NSNUserInfo findnsnByStudentAccount(String account) {
+	 * Query query = new Query();
+	 * query.addCriteria(Criteria.where("listbandings.studentAccount").is(
+	 * account)); WeChatbanding wb = this.findOneByQuery(query,
+	 * WeChatbanding.class); return
+	 * Common.isNotEmpty(wb)?wb.getNsnUserInfo():null; }
+	 */
+
 	@Override
-	public NSNUserInfo findnsnByStudentAccount(String account) {
+	public List<NSNUserInfo> findnsnByStudentAccount(String account) {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("listbandings.studentAccount").is(account));
-		WeChatbanding wb = this.findOneByQuery(query, WeChatbanding.class);
-		return Common.isNotEmpty(wb)?wb.getNsnUserInfo():null;
+		List<WeChatbanding> list = this.find(query, WeChatbanding.class);
+		List<NSNUserInfo> listInfo = new ArrayList<NSNUserInfo>();
+		list.forEach(aa -> {
+			listInfo.add(aa.getNsnUserInfo());
+		});
+		return listInfo;
 	}
-	
-	
-	
+
 
 }

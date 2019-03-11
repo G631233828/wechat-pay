@@ -1,6 +1,8 @@
 package zhongchiedu.service.Impl;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,9 +18,9 @@ import zhongchiedu.school.pojo.Student;
 import zhongchiedu.service.NoticeService;
 import zhongchiedu.service.StudentService;
 import zhongchiedu.service.WeChatbandingService;
+import zhongchiedu.service.executor.ExecutorsWechatNotice;
 import zhongchiedu.wechat.oauto2.NSNUserInfo;
 import zhongchiedu.wechat.templates.schoolnotifcation.SchoolTemplateMessage;
-import zhongchiedu.wechat.templates.schoolnotifcation.SwipingSchoolTemplate;
 import zhongchiedu.wechat.util.accessToken.AccessToken;
 import zhongchiedu.wechat.util.token.WeChatToken;
 
@@ -32,6 +34,8 @@ public class NoticeServiceImpl extends GeneralServiceImpl<Notice> implements Not
 	@Autowired
 	private WeChatbandingService weChatbandingService;
 	
+	@Autowired
+	private ExecutorsWechatNotice executorsWechatNotice;
 	
 	@Override
 	public void SaveOrUpdateClazz(Notice notice, Clazz clazz) {
@@ -54,40 +58,37 @@ public class NoticeServiceImpl extends GeneralServiceImpl<Notice> implements Not
 		log.info("发送数据保存成功！"+ed);
 		//通过班级获取所有的学生
 		List<Student> list = this.studentService.findStudentByClazz(clazz);
+		HashSet<String> set = new HashSet<>();
 		if(list.size()>0){
 			list.forEach(student->{
-				NSNUserInfo nsnUserInfo = this.weChatbandingService.findnsnByStudentAccount(student.getAccount());
-				if(Common.isNotEmpty(nsnUserInfo)){
-					//添加完成，执行发布操作
-					SchoolTemplateMessage school = new SchoolTemplateMessage();
-					school.setTitle(notice.getTitle());
-					school.setContent(notice.getContent());
-					school.setNotifications(clazz.getHeadMaster().getName());
-					school.setSchool("上海福山外国语小学");
-					AccessToken at= WeChatToken.getInstance().getAccessToken();
-					//ooiMKvywAoyhK1gF29qrq1tllE6I
-					//ooiMKv7cqR-2EgkeC9LdATpr-mbY
-					SwipingSchoolTemplate.swipingSchoolNotifcation(nsnUserInfo.getOpenid(),at.getToken(),school);
+				List<NSNUserInfo> listnsnUserInfo = this.weChatbandingService.findnsnByStudentAccount(student.getAccount());
+				if(listnsnUserInfo.size()>0){
+					listnsnUserInfo.forEach(nsn->{
+						set.add(nsn.getOpenid());
+					});
 				}
-					
 			});
 		}
+		
+		set.forEach(s->{
+			//添加完成，执行发布操作
+			SchoolTemplateMessage school = new SchoolTemplateMessage();
+			school.setTitle(notice.getTitle());
+			school.setContent(notice.getContent());
+			school.setNotifications(clazz.getHeadMaster().getName());
+			school.setSchool("上海福山外国语小学");
+			AccessToken at= WeChatToken.getInstance().getAccessToken();
+			//SwipingSchoolTemplate te = new SwipingSchoolTemplate();
+			//ooiMKvywAoyhK1gF29qrq1tllE6I
+			//ooiMKv7cqR-2EgkeC9LdATpr-mbY
+			this.executorsWechatNotice.Executor(s, at.getToken(), school);
+			//te.swipingSchoolNotifcation(nsn.getOpenid(),at.getToken(),school);
+		});
 	
-		
-		
-		
-		
-	
-		
-	 
-		
-		
-		
-		
-		
 		
 		
 
 	}
+	
 
 }

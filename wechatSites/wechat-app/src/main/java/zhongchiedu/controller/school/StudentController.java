@@ -128,7 +128,7 @@ public class StudentController {
 	@PostMapping("/student")
 	@RequiresPermissions(value = "student:add")
 	@SystemControllerLog(description = "添加学生")
-	public String addclazz(HttpServletRequest request, @Valid Student student) {
+	public String addclazz(HttpServletRequest request, @ModelAttribute("student") Student student) {
 		this.studentService.SaveOrUpdateStudent(student);
 		return "redirect:students";
 	}
