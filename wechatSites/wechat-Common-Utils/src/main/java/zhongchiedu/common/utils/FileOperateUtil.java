@@ -261,7 +261,21 @@ public class FileOperateUtil {
    
    
    
-   
+
+public static void main(String[] args) {
+	String aa="H:/project/InventoryManagementSystem/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/InventoryWebApp/WEB-INF/FileUpload/category/类目管理模版.xlsx";
+		File f = new File(aa);
+		
+		String[][] resultexcel;
+		try {
+			resultexcel = ExcelReadUtil.readExcel(f, 1);
+			System.out.println(resultexcel);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+}
    
    
    

@@ -136,7 +136,6 @@ public class LeaveServiceImpl extends GeneralServiceImpl<Leave> implements Leave
 		// 通过班级id查询学生
 		Query query = new Query();
 		if (Common.isNotEmpty(serach)) {
-
 			// 根据班级id去查下匹配的学生
 			Query stu = new Query();
 			Criteria cr = new Criteria();
@@ -160,7 +159,6 @@ public class LeaveServiceImpl extends GeneralServiceImpl<Leave> implements Leave
 			ca4 = Criteria.where("student.$id").in(listids);
 			query.addCriteria(cr1.orOperator(ca3, ca4));
 		}
-
 		query.with(new Sort(new Order(Direction.DESC, "startLeave")));
 		query.addCriteria(Criteria.where("clazz.$id").is(new ObjectId(clazz.getId())));
 		return this.findPaginationByQuery(query, pageNo, pageSize, Leave.class);
