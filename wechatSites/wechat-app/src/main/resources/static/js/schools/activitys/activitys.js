@@ -21,22 +21,42 @@ $.validator.setDefaults({
 
 $().ready(function() {
 			var a = "<i class='fa fa-times-circle'></i> ";
-			$("#activitysForm").validate({
+			$("#clazzForm").validate({
 				rules : {
-					activityName : {
-						required : true,		
+					clazzYear : {
+						required : true,
+						digits:true,
+						minlength:4,
+						maxlength:4,
 					},	
-
+					clazzNum : {
+						required : true,
+						digits:true,
+					},
 				},
 				messages : {
-					activityName : {
-						required : a + "请输入活动名称",
+					clazzYear : {
+						required : a + "请输入班级年份",
+						digits   : a + "请输入有效数字",
+						minlength: a + "请输入有效的年份",
+						maxlength: a + "请输入有效的年份",
 					},
-					
+					clazzNum : {
+						required : a + "请输入班级号",
+						digits  : a + "请输入有效数字",
+					},
 
 				}
 			});
 
 		});
+
+
+function batch(){
+	
+	$("#mybatch").modal('show');
+	
+	
+}
 	
 	

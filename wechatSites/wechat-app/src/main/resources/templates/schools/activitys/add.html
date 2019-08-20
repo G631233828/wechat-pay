@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="public/public_css::pub_css"></head>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style type="text/css">
+canvas#canvas4 {
+	position: relative;
+	top: 20px;
+}
+</style>
+</head>
+
+<body>
+	<!-- Preloader -->
+	<div id="preloader">
+		<div id="status">&nbsp;</div>
+	</div>
+	<!-- TOP NAVBAR -->
+	<div th:replace="public/public::top"></div>
+	<!-- /END OF TOP NAVBAR -->
+
+	<!-- SIDE MENU -->
+	<div th:replace="public/public::left(activeUri='school')"></div>
+	<!-- END OF SIDE MENU -->
+
+	<!--  PAPER WRAP -->
+	<div class="wrap-fluid">
+		<div class="container-fluid paper-wrap bevel tlbr">
+
+
+			<!-- CONTENT -->
+			<!--TITLE -->
+			<div th:replace="public/public::title"></div>
+			<!--/ TITLE -->
+
+			<!-- BREADCRUMB -->
+			<div th:replace="public/public::menu"></div>
+			<!-- END OF BREADCRUMB -->
+
+			<div class="content-wrap">
+				<div class="row">
+
+
+					<div class="col-sm-12">
+						<!-- BLANK PAGE-->
+
+						<div style="margin: -20px 15px;" class="nest" id="Blank_PageClose">
+							<div class="title-alt">
+								<h6>活动信息</h6>
+								<div class="titleClose">
+									<a class="gone" href="#Blank_PageClose"> <span
+										class="entypo-cancel"></span>
+									</a>
+								</div>
+								<div class="titleToggle">
+									<a class="nav-toggle-alt" href="#Blank_Page_Content"> <span
+										class="entypo-up-open"></span>
+									</a>
+								</div>
+
+							</div>
+
+
+							<div class="body-nest" id="Blank_Page_Content">
+
+								<div class="row">
+
+									<!-- edit form column -->
+									<div class="col-md-12 personal-info">
+
+										<form class="form-horizontal" id="activitysForm"
+											th:action="@{/activitys}" method="post">
+											<input type="hidden" name="_method" value="put"
+												th:if="${activitys!=null}" /> <input type="hidden" name="id"
+												th:if="${activitys!=null}" th:value="${activitys.id}">
+
+											<div class="form-group ">
+												<label class="col-lg-1 control-label">活动名称:</label>
+												<div class="col-lg-6">
+													<input class="form-control" id="activityName"
+														placeholder="请输入活动名称" name="activityName"
+														th:value="${activitys!=null}?${activitys.activityName}"
+														required="required">
+												</div>
+											</div>
+
+											<div class="form-group ">
+												<label class="col-lg-1 control-label">创建人:</label>
+												<div class="col-lg-6">
+													<input class="form-control" id="author"
+														placeholder="请输入创建人" name="author"
+														th:value="${activitys!=null}?${activitys.author}" >
+												</div>
+											</div>
+
+
+											<div class="form-group">
+												<label class="col-lg-1 control-label">描述：</label>
+												<div class="col-lg-6">
+
+													<textarea rows="5" id="description" class="col-lg-12"
+														name="description" placeholder="描述"
+														th:text="${activitys!=null}?${activitys.description }">
+													</textarea>
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label class="col-md-1 control-label"></label>
+												<div class="col-md-8">
+													<button type="submit" class="btn btn-success"
+														th:text="${activitys!=null?'修改':'添加'}"></button>
+													<span></span> <input th:if="${activitys} eq null"
+														class="btn btn-default" value="重置" type="reset">
+												</div>
+											</div>
+										</form>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- END OF BLANK PAGE -->
+
+				</div>
+			</div>
+
+			<!--/row-->
+
+
+		</div>
+	</div>
+	<!--  END OF PAPER WRAP -->
+	<!-- 右侧隐藏菜单start -->
+	<div th:replace="public/public::right"></div>
+	<!-- 右侧隐藏菜单end-->
+	<!-- 底部js -->
+	<div th:replace="public/public_js::pub_js"></div>
+	<div th:replace="public/public_js::public_script"></div>
+	<div th:replace="public/public::footer"></div>
+	<!-- Jquery Validate -->
+	<script type="text/javascript"
+		th:src="@{/plugs/validate/jquery.validate.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/plugs/validate/messages_zh.min.js}"></script>
+	<!-- 引入activitys.js -->
+	<script type="text/javascript" th:inline="javascript"
+		th:src="@{/js/schools/activitys/activitys.js}"></script>
+
+
+
+</body>
+
+</html>

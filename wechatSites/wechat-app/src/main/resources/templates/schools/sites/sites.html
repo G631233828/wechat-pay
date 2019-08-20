@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head th:include="public/public_css::pub_css"></head>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/js/progress-bar/number-pb.css}">
+<link th:href="@{/plugs/sweetalert/sweetalert.css}" rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/assets/js/tree/treetable/stylesheets/jquery.treetable.css}">
+    <link rel="stylesheet" th:href="@{/assets/js/tree/treetable/stylesheets/jquery.treetable.theme.default.css}">
+
+<style type="text/css">
+canvas#canvas4 {
+	position: relative;
+	top: 20px;
+}
+</style>
+</head>
+
+<body>
+	<!-- Preloader -->
+	<div id="preloader">
+		<div id="status">&nbsp;</div>
+	</div>
+	<!-- TOP NAVBAR -->
+	<div th:replace="public/public::top"></div>
+	<!-- /END OF TOP NAVBAR -->
+
+	<!-- SIDE MENU -->
+	<div th:replace="public/public::left(activeUri='school')"></div>
+	<!-- END OF SIDE MENU -->
+
+	<!--  PAPER WRAP -->
+	<div class="wrap-fluid">
+		<div class="container-fluid paper-wrap bevel tlbr">
+
+
+			<!-- CONTENT -->
+			<!--TITLE -->
+			<div th:replace="public/public::title"></div>
+			<!--/ TITLE -->
+
+			<!-- BREADCRUMB -->
+			<div th:replace="public/public::menu"></div>
+			<!-- END OF BREADCRUMB -->
+
+			
+            <div class="content-wrap">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <div class="nest" id="tabletreeClose">
+                            <div class="title-alt">
+                                <h6>
+                                    Complex Tree With Drag and Drop</h6>
+                                <div class="titleClose">
+                                    <a class="gone" href="#tabletreeClose">
+                                        <span class="entypo-cancel"></span>
+                                    </a>
+                                </div>
+                                <div class="titleToggle">
+                                    <a class="nav-toggle-alt" href="#tabletree">
+                                        <span class="entypo-up-open"></span>
+                                    </a>
+                                </div>
+
+                            </div>
+
+                            <div class="body-nest" id="tabletree">
+
+                                <a style="margin:0 0 10px; 0" href="#" class="pull-right btn btn-info" onClick="jQuery('#example-advanced').treetable('expandAll'); return false;">Expand all</a>
+                                <a style="margin:0 10px 10px; 0;" href="#" class="pull-right btn btn-info" onClick="jQuery('#example-advanced').treetable('collapseAll'); return false;">Collapse all</a>
+
+                                <table id="example-advanced" class="table-striped">
+
+
+
+                                    <thead>
+                                        <tr>
+                                            <th>地点</th>
+                                            <th>距离（公里）</th>
+                                            <th>x坐标</th>
+                                            <th>y坐标</th>
+                                            <th>编辑</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr data-tt-id='1'>
+                                            <td>
+                                                <span class='file'>上海</span>
+                                            </td>
+                                            <td>0</td>
+                                            <td>100.10</td>
+                                            <td>480.95</td>
+                                            <td>修改</td>
+                                        </tr>
+                                        <tr data-tt-id='1-1' data-tt-parent-id='1'>
+                                            <td>
+                                                <span class='file'>北京</span>
+                                            </td>
+                                            <td>100</td>
+                                            <td>111</td>
+                                            <td>222</td>
+                                            <td>修改</td>
+                                        </tr>
+                                       
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
+	<!--  END OF PAPER WRAP -->
+	<!-- 右侧隐藏菜单start -->
+	<div th:replace="public/public::right"></div>
+	<!-- 右侧隐藏菜单end-->
+	<!-- 底部js -->
+	s
+	<div th:replace="public/public_js::pub_js"></div>
+	<div th:replace="public/public_js::public_script"></div>
+	<div th:replace="public/public::deleteModal"></div>
+	<div th:replace="public/public::footer"></div>
+	<!-- Sweet alert -->
+	<script th:src="@{/plugs/sweetalert/sweetalert.min.js}"></script>
+
+
+    <script th:src="@{/assets/js/tree/treetable/vendor/jquery-ui.js}"></script>
+    <script th:src="@{/assets/js/tree/treetable/javascripts/src/jquery.treetable.js}"></script>
+
+  <script>
+
+
+    $("#example-advanced").treetable({
+        expandable: true
+    });
+
+    // Highlight selected row
+    $("#example-advanced tbody").on("mousedown", "tr", function() {
+        $(".selected").not(this).removeClass("selected");
+        $(this).toggleClass("selected");
+    });
+
+    // Drag & Drop Example Code
+    $("#example-advanced .file, #example-advanced .folder").draggable({
+        helper: "clone",
+        opacity: .75,
+        refreshPositions: true, // Performance?
+        revert: "invalid",
+        revertDuration: 300,
+        expandable: true,
+        scroll: true
+    });
+
+    $("#example-advanced .folder").each(function() {
+        $(this).parents("#example-advanced tr").droppable({
+            accept: ".file, .folder",
+            drop: function(e, ui) {
+                var droppedEl = ui.draggable.parents("tr");
+                $("#example-advanced").treetable("move", droppedEl.data("ttId"), $(this).data("ttId"));
+            },
+            hoverClass: "accept",
+            over: function(e, ui) {
+                var droppedEl = ui.draggable.parents("tr");
+                if (this != droppedEl[0] && !$(this).is(".expanded")) {
+                    $("#example-advanced").treetable("expandNode", $(this).data("ttId"));
+                }
+            }
+        });
+    });
+
+  
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="public/public_css::pub_css"></head>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style type="text/css">
+canvas#canvas4 {
+	position: relative;
+	top: 20px;
+}
+</style>
+</head>
+
+<body>
+	<!-- Preloader -->
+	<div id="preloader">
+		<div id="status">&nbsp;</div>
+	</div>
+	<!-- TOP NAVBAR -->
+	<div th:replace="public/public::top"></div>
+	<!-- /END OF TOP NAVBAR -->
+
+	<!-- SIDE MENU -->
+	<div th:replace="public/public::left(activeUri='school')"></div>
+	<!-- END OF SIDE MENU -->
+
+	<!--  PAPER WRAP -->
+	<div class="wrap-fluid">
+		<div class="container-fluid paper-wrap bevel tlbr">
+
+
+			<!-- CONTENT -->
+			<!--TITLE -->
+			<div th:replace="public/public::title"></div>
+			<!--/ TITLE -->
+
+			<!-- BREADCRUMB -->
+			<div th:replace="public/public::menu"></div>
+			<!-- END OF BREADCRUMB -->
+
+			<div class="content-wrap">
+				<div class="row">
+
+
+					<div class="col-sm-12">
+						<!-- BLANK PAGE-->
+
+						<div style="margin: -20px 15px;" class="nest" id="Blank_PageClose">
+							<div class="title-alt">
+								<h6>活动信息</h6>
+								<div class="titleClose">
+									<a class="gone" href="#Blank_PageClose"> <span
+										class="entypo-cancel"></span>
+									</a>
+								</div>
+								<div class="titleToggle">
+									<a class="nav-toggle-alt" href="#Blank_Page_Content"> <span
+										class="entypo-up-open"></span>
+									</a>
+								</div>
+
+							</div>
+
+
+							<div class="body-nest" id="Blank_Page_Content">
+
+								<div class="row">
+
+									<!-- edit form column -->
+									<div class="col-md-12 personal-info">
+
+										<form class="form-horizontal" id="sitesForm"
+											th:action="@{/sites}" method="post">
+											<input type="hidden" name="_method" value="put"
+												th:if="${sites!=null}" /> <input type="hidden" name="id"
+												th:if="${sites!=null}" th:value="${sites.id}">
+
+											<div class="form-group ">
+												<label class="col-lg-1 control-label">站点名称:</label>
+												<div class="col-lg-6">
+													<input class="form-control" id="siteName"
+														placeholder="请输入站点名称" name="siteName"
+														th:value="${sites!=null}?${sites.activityName}"
+														required="required">
+												</div>
+											</div>
+											
+													<div class="form-group">
+												<label class="col-lg-1 control-label">所属活动：</label>
+												<div class="col-lg-6">
+													<div class="ui-select">
+														<select id="activitys" name="activitys.id" required="required"
+															class="form-control">
+															<option value="">---请所属活动---</option>
+															<option th:if="${activitys!=null}" th:value="${activity.id}"
+																th:text="${activity.activityName}"
+																th:selected="${sites!=null&&sites.activity!=null}?${sites.activity.activityName}==${activity.activityName}"
+																th:each="activity:${activitys}">
+														</select>
+													</div>
+												</div>
+											</div>
+											
+
+											<div class="form-group ">
+												<label class="col-lg-1 control-label">距离上一站:</label>
+												<div class="col-lg-6">
+													<input class="form-control" id="distance"
+														placeholder="请输入与上一站距离" name="distance"
+														th:value="${sites!=null}?${sites.distance}" >
+												</div>
+											</div>
+
+											<div class="form-group ">
+												<label class="col-lg-1 control-label">x坐标:</label>
+												<div class="col-lg-6">
+													<input class="form-control" id="x"
+														placeholder="请输入x坐标" name="x"
+														th:value="${sites!=null}?${sites.x}" >
+												</div>
+											</div>
+
+											<div class="form-group ">
+												<label class="col-lg-1 control-label">y坐标:</label>
+												<div class="col-lg-6">
+													<input class="form-control" id="y"
+														placeholder="请输入y坐标" name="y"
+														th:value="${sites!=null}?${sites.y}" >
+												</div>
+											</div>
+
+
+											<div class="form-group">
+												<label class="col-md-1 control-label"></label>
+												<div class="col-md-8">
+													<button type="submit" class="btn btn-success"
+														th:text="${sites!=null?'修改':'添加'}"></button>
+													<span></span> <input th:if="${sites} eq null"
+														class="btn btn-default" value="重置" type="reset">
+												</div>
+											</div>
+										</form>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- END OF BLANK PAGE -->
+
+				</div>
+			</div>
+
+			<!--/row-->
+
+
+		</div>
+	</div>
+	<!--  END OF PAPER WRAP -->
+	<!-- 右侧隐藏菜单start -->
+	<div th:replace="public/public::right"></div>
+	<!-- 右侧隐藏菜单end-->
+	<!-- 底部js -->
+	<div th:replace="public/public_js::pub_js"></div>
+	<div th:replace="public/public_js::public_script"></div>
+	<div th:replace="public/public::footer"></div>
+	<!-- Jquery Validate -->
+	<script type="text/javascript"
+		th:src="@{/plugs/validate/jquery.validate.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/plugs/validate/messages_zh.min.js}"></script>
+	<!-- 引入sites.js -->
+	<script type="text/javascript" th:inline="javascript"
+		th:src="@{/js/schools/sites/sites.js}"></script>
+
+
+
+</body>
+
+</html>
