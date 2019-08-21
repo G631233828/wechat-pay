@@ -1,5 +1,7 @@
 package zhongchiedu.school.pojo;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -8,25 +10,36 @@ import lombok.ToString;
 import zhongchiedu.framework.pojo.GeneralBean;
 
 /**
- * 站点    与上海之间的距离 
+ * 行程类
  * @author fliay
- * x, y 坐标值  使用 http://api.map.baidu.com/lbsapi/createmap/index.html
+ *
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode(callSuper=false)
-public class Sites extends GeneralBean<Sites> {
+public class Trips extends GeneralBean<Trips> {
 	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 7248358740597274059L;
+	private static final long serialVersionUID = 8402632545596888540L;
+	@DBRef
+	private Activitys activitys;
+	@DBRef
+	private Sites sites;
+	private double distance;//与上一站距离
+	private int sorts;//排序
 	
-	private String siteName;//站点名称
-	private float  x;//x坐标
-	private float  y;//y坐标
-
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

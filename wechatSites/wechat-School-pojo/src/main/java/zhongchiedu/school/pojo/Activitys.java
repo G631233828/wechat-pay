@@ -1,5 +1,7 @@
 package zhongchiedu.school.pojo;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,6 +27,7 @@ public class Activitys extends GeneralBean<Activitys> {
 	private static final long serialVersionUID = 8611510320920045417L;
 	private String activityName;//活动名称（例如：响应改革开发70周年）
 	private String author;//活动创建者
+	private List<Trips> trips;
 	
 	
 }

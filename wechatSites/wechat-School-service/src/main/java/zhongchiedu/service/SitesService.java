@@ -17,5 +17,8 @@ public interface SitesService extends GeneralService<Sites>{
 	BasicDataResult sitesDisable(String id); //禁用站点
 
 	List<Sites> findsitesByisDisable(); //查询在使用状态下的班级
+	
+	
+
 
 }

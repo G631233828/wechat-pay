@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import zhongchiedu.common.utils.BasicDataResult;
+import zhongchiedu.common.utils.Common;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.log.annotation.SystemControllerLog;
 import zhongchiedu.school.pojo.Activitys;
@@ -43,15 +44,9 @@ public class SitesController {
 
 	@Autowired
 	private SitesService sitesService;
-	
+
 	private @Autowired ActivitysService activitysService;
 
-	@GetMapping("/test")
-	public String test() {
-
-		return "schools/sites/sites";
-
-	}
 
 	@GetMapping("/sitess")
 	@RequiresPermissions(value = "sites:list")
@@ -65,7 +60,6 @@ public class SitesController {
 			Query query = new Query();
 			List<Order> listsort = new ArrayList();
 			listsort.add(new Order(Direction.DESC, "createDate"));
-			query.addCriteria(Criteria.where("parendId").is("0"));
 			query.with(new Sort(listsort));
 			pagination = this.sitesService.findPaginationByQuery(query, pageNo, pageSize, Sites.class);
 			if (pagination == null)
@@ -87,7 +81,6 @@ public class SitesController {
 
 		this.sitesService.SaveOrUpdateSites(sites);
 
-		
 		return "redirect:sitess";
 	}
 
@@ -117,10 +110,10 @@ public class SitesController {
 	public String toeditPage(@PathVariable String id, Model model) {
 		Sites sites = this.sitesService.findOneById(id, Sites.class);
 		model.addAttribute("sites", sites);
-		
-		//获取所有活动
+
+		// 获取所有活动
 		List<Activitys> list = this.activitysService.findActivitysByisDisable();
-		
+
 		model.addAttribute("activitys", list);
 		return "schools/sites/add";
 
@@ -146,5 +139,19 @@ public class SitesController {
 		return this.sitesService.sitesDisable(id);
 
 	}
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

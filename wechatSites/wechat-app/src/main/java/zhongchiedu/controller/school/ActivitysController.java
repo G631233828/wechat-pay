@@ -32,6 +32,7 @@ import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.log.annotation.SystemControllerLog;
 import zhongchiedu.school.pojo.Activitys;
 import zhongchiedu.service.ActivitysService;
+import zhongchiedu.service.TripsService;
 
 @Controller
 public class ActivitysController {
@@ -67,6 +68,16 @@ public class ActivitysController {
 		return "schools/activitys/list";
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@PostMapping("/activitys")
 	@RequiresPermissions(value = "activitys:add")
 	@SystemControllerLog(description = "添加活动")
@@ -128,5 +139,18 @@ public class ActivitysController {
 		return this.activitysService.activitysDisable(id);
 
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

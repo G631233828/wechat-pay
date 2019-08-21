@@ -70,73 +70,49 @@ canvas#canvas4 {
 									<!-- edit form column -->
 									<div class="col-md-12 personal-info">
 
-										<form class="form-horizontal" id="sitesForm"
-											th:action="@{/sites}" method="post">
+										<form class="form-horizontal" id="activitysForm"
+											th:action="@{/activitys}" method="post">
 											<input type="hidden" name="_method" value="put"
-												th:if="${sites!=null}" /> <input type="hidden" name="id"
-												th:if="${sites!=null}" th:value="${sites.id}">
+												th:if="${activitys!=null}" /> <input type="hidden" name="id"
+												th:if="${activitys!=null}" th:value="${activitys.id}">
 
 											<div class="form-group ">
-												<label class="col-lg-1 control-label">站点名称:</label>
+												<label class="col-lg-1 control-label">活动名称:</label>
 												<div class="col-lg-6">
-													<input class="form-control" id="siteName"
-														placeholder="请输入站点名称" name="siteName"
-														th:value="${sites!=null}?${sites.activityName}"
+													<input class="form-control" id="activityName"
+														placeholder="请输入活动名称" name="activityName"
+														th:value="${activitys!=null}?${activitys.activityName}"
 														required="required">
 												</div>
 											</div>
-											
-										<!-- 	<div class="form-group">
-												<label class="col-lg-1 control-label">所属活动：</label>
-												<div class="col-lg-6">
-													<div class="ui-select">
-														<select id="activitys" name="activitys.id" required="required"
-															class="form-control">
-															<option value="">---请所属活动---</option>
-															<option th:if="${activitys!=null}" th:value="${activity.id}"
-																th:text="${activity.activityName}"
-																th:selected="${sites!=null&&sites.activity!=null}?${sites.activity.activityName}==${activity.activityName}"
-																th:each="activity:${activitys}">
-														</select>
-													</div>
-												</div>
-											</div> -->
-											
-
-										<!-- 	<div class="form-group ">
-												<label class="col-lg-1 control-label">距离上一站:</label>
-												<div class="col-lg-6">
-													<input class="form-control" id="distance"
-														placeholder="请输入与上一站距离" name="distance"
-														th:value="${sites!=null}?${sites.distance}" >
-												</div>
-											</div>
- -->
-											<div class="form-group ">
-												<label class="col-lg-1 control-label">x坐标:</label>
-												<div class="col-lg-6">
-													<input class="form-control" id="x"
-														placeholder="请输入x坐标" name="x"
-														th:value="${sites!=null}?${sites.x}" >
-												</div>
-											</div>
 
 											<div class="form-group ">
-												<label class="col-lg-1 control-label">y坐标:</label>
+												<label class="col-lg-1 control-label">创建人:</label>
 												<div class="col-lg-6">
-													<input class="form-control" id="y"
-														placeholder="请输入y坐标" name="y"
-														th:value="${sites!=null}?${sites.y}" >
+													<input class="form-control" id="author"
+														placeholder="请输入创建人" name="author"
+														th:value="${activitys!=null}?${activitys.author}" >
 												</div>
 											</div>
 
 
 											<div class="form-group">
+												<label class="col-lg-1 control-label">描述：</label>
+												<div class="col-lg-6">
+
+													<textarea rows="5" id="description" class="col-lg-12"
+														name="description" placeholder="描述"
+														th:text="${activitys!=null}?${activitys.description }">
+													</textarea>
+												</div>
+											</div>
+
+											<div class="form-group">
 												<label class="col-md-1 control-label"></label>
 												<div class="col-md-8">
 													<button type="submit" class="btn btn-success"
-														th:text="${sites!=null?'修改':'添加'}"></button>
-													<span></span> <input th:if="${sites} eq null"
+														th:text="${activitys!=null?'修改':'添加'}"></button>
+													<span></span> <input th:if="${activitys} eq null"
 														class="btn btn-default" value="重置" type="reset">
 												</div>
 											</div>
@@ -170,9 +146,9 @@ canvas#canvas4 {
 		th:src="@{/plugs/validate/jquery.validate.min.js}"></script>
 	<script type="text/javascript"
 		th:src="@{/plugs/validate/messages_zh.min.js}"></script>
-	<!-- 引入sites.js -->
+	<!-- 引入activitys.js -->
 	<script type="text/javascript" th:inline="javascript"
-		th:src="@{/js/schools/sites/sites.js}"></script>
+		th:src="@{/js/schools/activitys/activitys.js}"></script>
 
 
 

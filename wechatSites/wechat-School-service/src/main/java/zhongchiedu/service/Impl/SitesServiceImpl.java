@@ -33,10 +33,6 @@ public class SitesServiceImpl extends GeneralServiceImpl<Sites> implements Sites
 				this.save(ed);
 			} else {
 				Sites ed = new Sites();
-				sites.setNextId(null);//下个地点ID
-				sites.setParendId("0");//上个地点ID
-				sites.setSitesId(null);//出发地ID
-				sites.setDistance(0.0);//上一站距离
 				BeanUtils.copyProperties(sites, ed);
 				// 执行添加操作
 				this.insert(ed);
@@ -44,6 +40,10 @@ public class SitesServiceImpl extends GeneralServiceImpl<Sites> implements Sites
 		}
 
 	}
+	
+	
+	
+	
 
 	@Override
 	public BasicDataResult sitesDisable(String id) {
@@ -72,5 +72,16 @@ public class SitesServiceImpl extends GeneralServiceImpl<Sites> implements Sites
 		List<Sites> list = this.find(query, Sites.class);
 		return list.size() > 0 ? list : null;
 	}
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
 
 }

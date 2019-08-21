@@ -139,7 +139,14 @@ canvas#canvas4 {
 															th:onclick="|return del('@{/activitys/}${activitys.id}')|">
 															<i class="fa fa-trash-o"> </i>删除
 														</button>
-													</shiro:hasPermission></td>
+													</shiro:hasPermission>
+													<button class="btn btn-info btn-xs"
+														th:onclick="|return toeditPage('${activitys.id}','triplist')|">
+															<i class="maki-school"> </i>查看行程
+														</button>
+													
+													
+													</td>
 											</tr>
 
 

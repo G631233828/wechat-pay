@@ -86,24 +86,23 @@ canvas#canvas4 {
 												</div>
 											</div>
 											
-										<!-- 	<div class="form-group">
-												<label class="col-lg-1 control-label">所属活动：</label>
+											<div class="form-group ">
+												<label class="col-lg-1 control-label">上一站:</label>
 												<div class="col-lg-6">
-													<div class="ui-select">
-														<select id="activitys" name="activitys.id" required="required"
+													<select id="lastStop" name="lastStop" required="required"
 															class="form-control">
-															<option value="">---请所属活动---</option>
-															<option th:if="${activitys!=null}" th:value="${activity.id}"
-																th:text="${activity.activityName}"
-																th:selected="${sites!=null&&sites.activity!=null}?${sites.activity.activityName}==${activity.activityName}"
-																th:each="activity:${activitys}">
+															<option value="">---请选择上一站---</option>
+															<option th:if="${roleList!=null}" th:value="${role.id}"
+																th:text="${role.roleName}"
+																th:selected="${user!=null&&user.role!=null}?${user.role.roleName}==${role.roleName}"
+																th:each="role:${roleList}">
 														</select>
-													</div>
 												</div>
-											</div> -->
+											</div>
 											
 
-										<!-- 	<div class="form-group ">
+
+											<div class="form-group ">
 												<label class="col-lg-1 control-label">距离上一站:</label>
 												<div class="col-lg-6">
 													<input class="form-control" id="distance"
@@ -111,7 +110,7 @@ canvas#canvas4 {
 														th:value="${sites!=null}?${sites.distance}" >
 												</div>
 											</div>
- -->
+
 											<div class="form-group ">
 												<label class="col-lg-1 control-label">x坐标:</label>
 												<div class="col-lg-6">
