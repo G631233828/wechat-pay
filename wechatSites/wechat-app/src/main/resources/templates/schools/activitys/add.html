@@ -81,7 +81,7 @@ canvas#canvas4 {
 												<div class="col-lg-6">
 													<input class="form-control" id="activityName"
 														placeholder="请输入活动名称" name="activityName"
-														th:value="${activitys!=null}?${activitys.activityName}"
+														th:value="${activitys?.activityName}"
 														required="required">
 												</div>
 											</div>
@@ -91,7 +91,15 @@ canvas#canvas4 {
 												<div class="col-lg-6">
 													<input class="form-control" id="author"
 														placeholder="请输入创建人" name="author"
-														th:value="${activitys!=null}?${activitys.author}" >
+														th:value="${activitys?.author}" >
+												</div>
+											</div>
+											<div class="form-group ">
+												<label class="col-lg-1 control-label">每日上限(km):</label>
+												<div class="col-lg-6">
+													<input class="form-control" id="upperLimit"
+														placeholder="请输入创建人" name="upperLimit"
+														th:value="${activitys?.upperLimit}" >
 												</div>
 											</div>
 

@@ -53,18 +53,19 @@ canvas#canvas4 {
 						<div class="nest" id="tableStaticClose">
 							<div class="title-alt">
 								<div>
-										<button class="btn btn-default btn-sm"
-											th:onclick="|window.location.href='@{/trips}${activityId}'|">
-											<i class="glyphicon glyphicon-plus"> </i> 添加
-										</button>
-										<button class="btn btn-primary btn-sm"
-											onclick="return toeditPage('','trips')">
-											<i class="fa fa-edit"> </i>编辑
-										</button>
+									<button class="btn btn-default btn-sm"
+										th:onclick="|window.location.href='@{/trips}${activityId}'|">
+										<i class="glyphicon glyphicon-plus"> </i> 添加
+									</button>
+									<button class="btn btn-primary btn-sm"
+										onclick="return toeditPage('','trips')">
+										<i class="fa fa-edit"> </i>编辑
+									</button>
 
-										<button class="btn btn-danger btn-sm" th:onclick="|return del('','@{/trips/}')|">
-											<i class="fa fa-trash-o"> </i>删除
-										</button>
+									<button class="btn btn-danger btn-sm"
+										th:onclick="|return del('','@{/trips/}')|">
+										<i class="fa fa-trash-o"> </i>删除
+									</button>
 
 								</div>
 
@@ -95,7 +96,7 @@ canvas#canvas4 {
 													</div>
 												</th>
 												<th class="numeric">站点</th>
-												<th class="numeric">距离</th>
+												<th class="numeric">距离(km)</th>
 												<th class="numeric">排序</th>
 												<th class="numeric">操作</th>
 											</tr>
@@ -111,25 +112,27 @@ canvas#canvas4 {
 															th:for="${trips.id}"></label>
 													</div>
 												</td>
-												<td class="numeric"
-													th:text="${trips.sites.siteName}"></td>
-												<td class="numeric"
-													th:text="${trips.distance}"></td>
-												<td class="numeric"
-													th:text="${trips.sorts}"></td>
-												<td class="numeric"><shiro:hasPermission
-														name="trips:edit">
-														<button class="btn btn-primary btn-xs"
-															th:onclick="|return toeditPage('${trips.id}','trips')|">
-															<i class="fa fa-edit"> </i>编辑
-														</button>
-														<button class="btn btn-danger btn-xs"
-															th:onclick="|return del('@{/trips/}${trips.id}')|">
-															<i class="fa fa-trash-o"> </i>删除
-														</button>
+												<td class="numeric" th:text="${trips.sites.siteName}"></td>
+												<td class="numeric"><input type="text" th:id="|${trips.id}_distance|"
+													th:onblur="|return editDistance('${trips.id}')|"
+													style="width: 80px" th:value="${trips.distance}"
+													class="form-control"></td>
+												<td class="numeric"><input type="text" th:id="|${trips.id}_sorts|"
+													th:onblur="|return toSort('${trips.id}')|"
+													style="width: 50px" th:value="${trips.sorts}"
+													class="form-control"></td>
+												<td class="numeric">
+													<button class="btn btn-primary btn-xs"
+														th:onclick="|return toeditPage('${trips.id}','trips')|">
+														<i class="fa fa-edit"> </i>编辑
+													</button>
+													<button class="btn btn-danger btn-xs"
+														th:onclick="|return del('@{/trips/}${trips.id}')|">
+														<i class="fa fa-trash-o"> </i>删除
+													</button>
 
-													
-													</td>
+
+												</td>
 											</tr>
 
 
@@ -168,7 +171,9 @@ canvas#canvas4 {
 	<div th:replace="public/public::footer"></div>
 	<!-- Sweet alert -->
 	<script th:src="@{/plugs/sweetalert/sweetalert.min.js}"></script>
-
+	<!-- 引入trips.js -->
+	<script type="text/javascript" th:inline="javascript"
+		th:src="@{/js/schools/trips/trips.js}"></script>
 
 
 

@@ -70,28 +70,48 @@ canvas#canvas4 {
 									<!-- edit form column -->
 									<div class="col-md-12 personal-info">
 
-										<form class="form-horizontal" id="activitysForm"
-											th:action="@{/activitys}" method="post">
+										<form class="form-horizontal" id="tripsForm"
+											th:action="@{/trips}" method="post">
 											<input type="hidden" name="_method" value="put"
-												th:if="${activitys!=null}" /> <input type="hidden" name="id"
-												th:if="${activitys!=null}" th:value="${activitys.id}">
+												th:if="${trips!=null}" /> <input type="hidden" name="id"
+												th:if="${trips!=null}" th:value="${trips.id}">
 
 											<div class="form-group ">
 												<label class="col-lg-1 control-label">活动名称:</label>
 												<div class="col-lg-6">
-													<input class="form-control" id="activityName"
-														placeholder="请输入活动名称" name="activityName"
-														th:value="${activitys!=null}?${activitys.activityName}"
-														required="required">
+													<div class="ui-select">
+														<select id="sites" name="sites.id" required="required"
+															class="form-control">
+															<option value="">---请选择站点---</option>
+															<option th:if="${sites!=null}" th:value="${site.id}"
+																th:text="${site.siteName}"
+																th:selected="${trips!=null&&trips.sites!=null}?${trips.sites.siteName}==${site.siteName}"
+																th:each="site:${sites}">
+														</select>
+													</div>
 												</div>
 											</div>
 
 											<div class="form-group ">
-												<label class="col-lg-1 control-label">创建人:</label>
+												<label class="col-lg-1 control-label">与上一站距离:</label>
 												<div class="col-lg-6">
-													<input class="form-control" id="author"
-														placeholder="请输入创建人" name="author"
-														th:value="${activitys!=null}?${activitys.author}" >
+													<input class="form-control" id="distance"
+														placeholder="请输入与上一站距离" name="distance"
+														th:value="${trips?.distance}" >
+												</div>
+											</div>
+											
+											<input class="form-control" id="activitysId"
+														 name="activitys.id" type="hidden"
+														th:value="${activitysId}" >
+											
+											
+											<div class="form-group ">
+												<label class="col-lg-1 control-label">排序:</label>
+												<div class="col-lg-6">
+													<input class="form-control" id="sorts"
+														placeholder="请输入排序" name="sorts"
+														th:value="${trips?.sorts}" >
 												</div>
 											</div>
 
@@ -102,7 +122,7 @@ canvas#canvas4 {
 
 													<textarea rows="5" id="description" class="col-lg-12"
 														name="description" placeholder="描述"
-														th:text="${activitys!=null}?${activitys.description }">
+														th:text="${trips!=null}?${trips.description }">
 													</textarea>
 												</div>
 											</div>
@@ -111,8 +131,8 @@ canvas#canvas4 {
 												<label class="col-md-1 control-label"></label>
 												<div class="col-md-8">
 													<button type="submit" class="btn btn-success"
-														th:text="${activitys!=null?'修改':'添加'}"></button>
-													<span></span> <input th:if="${activitys} eq null"
+														th:text="${trips!=null?'修改':'添加'}"></button>
+													<span></span> <input th:if="${trips} eq null"
 														class="btn btn-default" value="重置" type="reset">
 												</div>
 											</div>
@@ -146,9 +166,9 @@ canvas#canvas4 {
 		th:src="@{/plugs/validate/jquery.validate.min.js}"></script>
 	<script type="text/javascript"
 		th:src="@{/plugs/validate/messages_zh.min.js}"></script>
-	<!-- 引入activitys.js -->
+	<!-- 引入trips.js -->
 	<script type="text/javascript" th:inline="javascript"
-		th:src="@{/js/schools/activitys/activitys.js}"></script>
+		th:src="@{/js/schools/trips/trips.js}"></script>
 
 
 

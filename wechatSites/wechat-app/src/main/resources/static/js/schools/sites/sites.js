@@ -21,29 +21,31 @@ $.validator.setDefaults({
 
 $().ready(function() {
 			var a = "<i class='fa fa-times-circle'></i> ";
-			$("#clazzForm").validate({
+			$("#sitesForm").validate({
 				rules : {
-					clazzYear : {
+					siteName : {
 						required : true,
-						digits:true,
-						minlength:4,
-						maxlength:4,
 					},	
-					clazzNum : {
+					x : {
 						required : true,
-						digits:true,
+						number:true,
+					},
+					y : {
+						required : true,
+						number:true,
 					},
 				},
 				messages : {
-					clazzYear : {
-						required : a + "请输入班级年份",
-						digits   : a + "请输入有效数字",
-						minlength: a + "请输入有效的年份",
-						maxlength: a + "请输入有效的年份",
+					siteName : {
+						required : a + "请输入站点名称",
 					},
-					clazzNum : {
-						required : a + "请输入班级号",
-						digits  : a + "请输入有效数字",
+					x : {
+						required : a + "请输入x坐标",
+						number  : a + "请输入一个有效的x坐标",
+					},
+					y : {
+						required : a + "请输入y坐标",
+						number  : a + "请输入一个有效的y坐标",
 					},
 
 				}

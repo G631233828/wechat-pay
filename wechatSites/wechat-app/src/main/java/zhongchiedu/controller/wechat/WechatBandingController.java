@@ -128,31 +128,45 @@ public class WechatBandingController {
 	 */
 	@RequestMapping("/index")
 	public ModelAndView index(HttpSession session, HttpServletRequest request) {
+//		ModelAndView model = new ModelAndView();
+//		String code = request.getParameter("code");
+//		if (Common.isEmpty(code)) {
+//			String redirect_uri = Contents.URL + "/wechat-app/wechat/index";
+//			// 登录失败，用户名或者密码错误（已经发生了更改）
+//			return new ModelAndView(new RedirectView(
+//					"https://open.weixin.qq.com/connect/oauth2/authorize?" + "appid=" + Contents.APPID + "&redirect_uri="
+//							+ redirect_uri + "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"));
+//		}
+//		
+//		NSNUserInfo nsn = this.weChatbandingService.findWechatNsn(code);
+//		if (Common.isEmpty(nsn)) {
+//			// 授权信息为空重定向到登陆页面
+//			model.setViewName("redirect:weChatAuth");
+//			return model;
+//		}
+//		
+//		WeChatbanding we = this.weChatbandingService.findWeChatbandingByOpenId(nsn.getOpenid());
+//		if(Common.isEmpty(we)){
+//			model.setViewName("redirect:toAuthor");
+//			return model;
+//		}
+//		model.addObject("wechatbinding", we);
+//		model.addObject("clazz",we.getStudentAccount().substring(0, 4)+"年"+we.getStudentAccount().substring(5,6)+"班");
+//		model.setViewName("wechat/front/index");
+		
+	//Test 	
+		
+		
+		
 		ModelAndView model = new ModelAndView();
-		String code = request.getParameter("code");
-		if (Common.isEmpty(code)) {
-			String redirect_uri = Contents.URL + "/wechat-app/wechat/index";
-			// 登录失败，用户名或者密码错误（已经发生了更改）
-			return new ModelAndView(new RedirectView(
-					"https://open.weixin.qq.com/connect/oauth2/authorize?" + "appid=" + Contents.APPID + "&redirect_uri="
-							+ redirect_uri + "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"));
-		}
-		
-		NSNUserInfo nsn = this.weChatbandingService.findWechatNsn(code);
-		if (Common.isEmpty(nsn)) {
-			// 授权信息为空重定向到登陆页面
-			model.setViewName("redirect:weChatAuth");
-			return model;
-		}
-		
-		WeChatbanding we = this.weChatbandingService.findWeChatbandingByOpenId(nsn.getOpenid());
+		WeChatbanding we = this.weChatbandingService.findWeChatbandingByOpenId("ooiMKv1-3Ibrcw1Y9GV6CagesV0g");
 		if(Common.isEmpty(we)){
 			model.setViewName("redirect:toAuthor");
 			return model;
 		}
 		model.addObject("wechatbinding", we);
 		model.addObject("clazz",we.getStudentAccount().substring(0, 4)+"年"+we.getStudentAccount().substring(5,6)+"班");
-		model.setViewName("wechat/front/index");
+		model.setViewName("wechat/front/index");	
 		return model;
 	}
 

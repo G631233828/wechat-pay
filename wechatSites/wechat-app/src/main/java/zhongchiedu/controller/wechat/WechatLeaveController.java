@@ -22,6 +22,11 @@ import zhongchiedu.service.LeaveService;
 import zhongchiedu.service.StudentService;
 import zhongchiedu.service.WeChatbandingService;
 
+/**
+ * 请假
+ * @author fliay
+ *
+ */
 @RequestMapping("/wechat")
 @Controller
 public class WechatLeaveController {

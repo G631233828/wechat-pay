@@ -104,6 +104,7 @@ canvas#canvas4 {
 												<th class="numeric">活动名称</th>
 												<th class="numeric">创建者</th>
 												<th class="numeric">创建时间</th>
+												<th class="numeric">上限设定</th>
 												<th class="numeric">使用状态</th>
 												<th class="numeric">操作</th>
 											</tr>
@@ -125,6 +126,8 @@ canvas#canvas4 {
 													th:text="${activitys.author}"></td>
 												<td class="numeric"
 													th:text="${#dates.format(activitys.createTime, 'yyyy-MM-dd')}"></td>
+												<td class="numeric"
+													th:text="${activitys.upperLimit}"></td>
 												<td class="numeric" th:id="disBtn+${activitys.id}"
 													th:utext="${activitys.isDisable eq true }?|<button type='button' onclick=toDisable('${activitys.id}','activitys') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${activitys.id}','activitys') class='btn btn-success'>启用</button>|"></td>
 												<td class="numeric"><shiro:hasPermission

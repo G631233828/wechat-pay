@@ -48,12 +48,13 @@ canvas#canvas4 {
 
 						<div style="margin: -20px 15px;" class="nest" id="Blank_PageClose">
 							<div class="title-alt">
-								<h6>活动信息</h6>
+								<h6>活动信息</h6><br/>
 								<div class="titleClose">
 									<a class="gone" href="#Blank_PageClose"> <span
 										class="entypo-cancel"></span>
 									</a>
 								</div>
+								
 								<div class="titleToggle">
 									<a class="nav-toggle-alt" href="#Blank_Page_Content"> <span
 										class="entypo-up-open"></span>
@@ -66,7 +67,7 @@ canvas#canvas4 {
 							<div class="body-nest" id="Blank_Page_Content">
 
 								<div class="row">
-
+							
 									<!-- edit form column -->
 									<div class="col-md-12 personal-info">
 
@@ -84,6 +85,12 @@ canvas#canvas4 {
 														th:value="${sites!=null}?${sites.activityName}"
 														required="required">
 												</div>
+											</div>
+											<div class="form-group ">
+												<label class="col-lg-4 control-label"> <font
+													color="red">(注：坐标可通过http://api.map.baidu.com/lbsapi/createmap/index.html
+														进行查看)</font>
+												</label>
 											</div>
 											
 										<!-- 	<div class="form-group">

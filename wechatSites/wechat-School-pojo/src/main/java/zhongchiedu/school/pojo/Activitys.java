@@ -28,6 +28,7 @@ public class Activitys extends GeneralBean<Activitys> {
 	private String activityName;//活动名称（例如：响应改革开发70周年）
 	private String author;//活动创建者
 	private List<Trips> trips;
+	private double upperLimit;//每日上限
 	
 	
 }

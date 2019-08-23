@@ -32,7 +32,16 @@
 				<img th:src="@{/assets/weChatPage/images/homework.png}" alt="">
 			</div>
 			<p class="weui_grid_label">作业</p>
-		</a> 
+		</a>
+		
+		<a th:href="@{/wechat/tosports}" class="weui_grid js_grid">
+			<div class="weui_grid_icon">
+				<img th:src="@{/assets/weChatPage/images/run.png}" alt="">
+			</div>
+			<p class="weui_grid_label">运动打卡</p>
+		</a>
+		
+		 
 		 <a th:href="|@{/wechat/toleave?openId=}${wechatbinding.openId}|" class="weui_grid js_grid" >
 			<div class="weui_grid_icon">
 				<img th:src="@{/assets/weChatPage/images/icon_nav_panel.png}" alt="">

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+</head>
+<head th:include="wechat/front/public/public_css::pub_css"></head>
+
+
+<body ontouchstart class="page-bg">
+
+	<div th:replace="/wechat/front/public/public::top"></div>
+
+
+	<form id="form" th:action="@{/wechat/leave}" method="post">
+
+		<input type="hidden" th:value="${openId}" th:name="openId"> <input
+			type="hidden" th:value="${sportsCarding?.id}"
+			th:name="${sportsCarding!=null}?'id':''">
+
+		<div class="weui_cells weui_cells_form ">
+			<div class="weui_cell">
+				<div class="weui_cell_hd">
+					<label class="weui_label">姓名：</label>
+				</div>
+				<div class="weui_cell_bd weui_cell_primary">
+					<input class="weui_input" type="text"
+						th:value="${wechatbanding?.studentName}" disabled="disabled" />
+				</div>
+			</div>
+
+			<div class="weui_cell">
+				<div class="weui_cell_hd">
+					<label class="weui_label">班级：</label>
+				</div>
+				<div class="weui_cell_bd weui_cell_primary">
+					<input class="weui_input" type="text" disabled="disabled"
+						th:value="|${wechatbanding?.clazzYear}年${wechatbanding?.clazzNum}班|" />
+				</div>
+			</div>
+
+
+			<div class="weui_cell">
+				<div class="weui_cell_hd">
+					<label for="" class="weui_label">打卡日期:</label>
+				</div>
+				<div class="weui_cell_bd weui_cell_primary">
+					<input class="weui_input" type="text" disabled="disabled"
+						readonly="readonly" th:value="${today}" />
+				</div>
+			</div>
+
+			<div class="weui_cell">
+				<div class="weui_cell_hd">
+					<label class="weui_label">今日运动量：</label>
+				</div>
+				<div class="weui_cell_bd weui_cell_primary">
+					<input class="weui_input" type="number" pattern="[0-9]*"
+						name="distance" th:value="${sportsCarding?.distance}" placeholder="请输入今日运动量" />
+				</div>
+				<div class="weui_cell_ft">
+					<i class="weui_icon_warn"></i> <label class="weui-vcode-btn">km</label>
+				</div>
+			</div>
+		</div>
+		<div class="weui_btn_area weui_btn_area_inline">
+			<a id="formSubmitBtn" href="javascript:"
+				class="weui_btn weui_btn_primary">打卡</a>
+		</div>
+
+	</form>
+
+	<!-- 	<div th:replace="/wechat/front/public/public::footer"></div>
+	
+	 -->
+	<script>
+		var $form = $("#form");
+		$form.form();
+		$("#formSubmitBtn").on("click", function() {
+			$form.validate(function(error) {
+				if (error) {
+
+				} else {
+					$.toptips('验证通过提交', 'ok');
+					//$("#form").submit();
+
+					$.ajax({
+						url : 'sports',
+						type : 'post',
+						data : $("#form").serialize(),
+						success : function(data) {
+							if (data.status == 200) {
+								setTimeout(function() {
+									window.location.href = "index";
+								}, 300)
+								$.toptips(data.msg, 'success');
+							} else {
+								$.toptips(data.msg, 'warning');
+							}
+						}
+
+					});
+				}
+			});
+
+		});
+	</script>
+
+
+
+</body>
+</html>
