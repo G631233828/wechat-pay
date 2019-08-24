@@ -14,8 +14,7 @@
 	<form id="form" th:action="@{/wechat/leave}" method="post">
 
 		<input type="hidden" th:value="${openId}" th:name="openId"> <input
-			type="hidden" th:value="${sportsCarding?.id}"
-			th:name="${sportsCarding!=null}?'id':''">
+			type="text" th:value="${sportsCarding?.id}" th:name="${sportsCarding!=null}?'id':''">
 
 		<div class="weui_cells weui_cells_form ">
 			<div class="weui_cell">

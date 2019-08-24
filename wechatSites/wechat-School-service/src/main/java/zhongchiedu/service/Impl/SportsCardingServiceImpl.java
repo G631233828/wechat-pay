@@ -45,6 +45,7 @@ public class SportsCardingServiceImpl extends GeneralServiceImpl<SportsCarding> 
 				sportsCarding.setStudent(Common.isNotEmpty(student) ? student : null);
 			}
 		}
+		sportsCarding.setSportsDate(LocalDate.now().toString());
 		SportsCarding ed = null;
 		if (Common.isNotEmpty(sportsCarding)) {
 			if (Common.isNotEmpty(sportsCarding.getId())) {
@@ -55,7 +56,6 @@ public class SportsCardingServiceImpl extends GeneralServiceImpl<SportsCarding> 
 				this.save(ed);
 			} else {
 				ed = new SportsCarding();
-				sportsCarding.setSportsDate(LocalDate.now().toString());
 				BeanUtils.copyProperties(sportsCarding, ed);
 				this.insert(ed);
 			}
