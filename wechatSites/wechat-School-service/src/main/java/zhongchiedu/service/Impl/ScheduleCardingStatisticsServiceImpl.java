@@ -59,6 +59,8 @@ public class ScheduleCardingStatisticsServiceImpl extends GeneralServiceImpl<Car
 	public void autoStatistics() {
 		// 1.获取到所有的非禁用的活动
 		List<Activitys> activitys = this.activitysService.findActivitysByisDisable();
+		
+		//TODO 如果获得为空会报空指针
 		// 遍历活动
 		activitys.forEach(activity -> {
 			List<Clazz> clazzs = this.clazzService.findClazzsWhereInSchool(Common.findInSchoolYear());

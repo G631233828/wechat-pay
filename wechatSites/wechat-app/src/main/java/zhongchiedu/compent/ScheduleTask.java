@@ -19,6 +19,7 @@ public class ScheduleTask  {
 	@Scheduled(cron = "0/2 * * * * ?")
 	//@Scheduled(cron = "00 59 23 * * ?")
 	public void todoSchedule() {
+		System.out.println(scheduleCardingStatisticsService);
 		scheduleCardingStatisticsService.autoStatistics();
 	}
 
