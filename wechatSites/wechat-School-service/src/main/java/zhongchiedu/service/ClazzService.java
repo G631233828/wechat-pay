@@ -11,6 +11,7 @@ import zhongchiedu.school.pojo.Clazz;
 public interface ClazzService extends GeneralService<Clazz>{
 
 	void SaveOrUpdateClazz(Clazz clazz);//添加或修改班级
+	
 
 	BasicDataResult clazzDisable(String id); //禁用班级
 
@@ -21,4 +22,8 @@ public interface ClazzService extends GeneralService<Clazz>{
 	 Clazz findClazzByYearNum(int year, int num);
 	 
 	 Clazz findHeadMaster(String id);
+	 
+	 List<Clazz> findClazzsWhereInSchool(List<Integer> inschool);
+	 
+	 
 }

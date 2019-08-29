@@ -1,9 +1,8 @@
 package zhongchiedu.service.Impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.BeanUtils;
@@ -120,5 +119,30 @@ public class ClazzServiceImpl extends GeneralServiceImpl<Clazz> implements Clazz
 		Clazz clazz = this.findOneByQuery(query, Clazz.class);
 		return clazz;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see zhongchiedu.service.ClazzService#findClazzsWhereInSchool(java.util.List)
+	 * 获取所有在校的班级
+	 */
+	@Override
+	public List<Clazz> findClazzsWhereInSchool(List<Integer> inschool) {
+		Query query = new Query();
+		List<Order> listsort = new ArrayList();
+		listsort.add(new Order(Direction.ASC, "clazzYear"));
+		listsort.add(new Order(Direction.ASC, "clazzNum"));
+		query.with(new Sort(listsort));
+		query.addCriteria(Criteria.where("isDisable").is(false));
+		query.addCriteria(Criteria.where("clazzYear").in(inschool));
+		List<Clazz> list = this.find(query, Clazz.class);
+		return list.size() > 0 ? list : null;
+	}
+
+
+	
+	
+	
+	
+	
 
 }

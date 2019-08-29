@@ -15,6 +15,6 @@ public interface ActivitysService extends GeneralService<Activitys>{
 
 	BasicDataResult activitysDisable(String id); //禁用活动
 
-	List<Activitys> findActivitysByisDisable(); //查询在使用状态下的班级
+	List<Activitys> findActivitysByisDisable(); //查询在使用状态的活动
 
 }

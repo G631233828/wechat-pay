@@ -966,6 +966,35 @@ public class Common {
     	
 
 	}
+    
+    
+	
+	/*获取目前所有在校班级的年份
+	 * 
+	 */
+	public static List<Integer> findInSchoolYear(){
+		List<Integer> list = new ArrayList<Integer>();
+		int year = getYear();
+		for(int i=4;i>=0;i--){
+			list.add(year-i);
+		}
+		return list;
+	}
+	
+	
+	public static int getYear(){
+		Calendar cal = Calendar.getInstance(); 
+		int year=cal.get(Calendar.YEAR);
+		int month=cal.get(Calendar.MONTH)+1;
+		if(month<9){
+			//获取到的月份如果<9则表明没有开学，只能获取上学期的数据
+			year=year-1;
+		}
+    	return year;
+    }
+    
+	
+    
 	
 //	public static void main(String[] args) {
 //		String a ="1,2,3,4,5,6,7,8,7,8,4,3";

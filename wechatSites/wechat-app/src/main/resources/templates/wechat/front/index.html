@@ -34,11 +34,31 @@
 			<p class="weui_grid_label">作业</p>
 		</a>
 		
-		<a th:href="@{/wechat/tosports}" class="weui_grid js_grid">
+		<a th:href="@{/wechat/tosports?openId=}${wechatbinding.openId}|" class="weui_grid js_grid"> <!-- 需要openid //TODO -->
 			<div class="weui_grid_icon">
 				<img th:src="@{/assets/weChatPage/images/run.png}" alt="">
 			</div>
 			<p class="weui_grid_label">运动打卡</p>
+		</a>
+		
+		<a th:href="@{/wechat/findsportsCarding?openId=}${wechatbinding.openId}|" class="weui_grid js_grid"><!-- 需要openid //TODO -->
+			<div class="weui_grid_icon">
+				<img th:src="@{/assets/weChatPage/images/run.png}" alt="">
+			</div>
+			<p class="weui_grid_label">打卡记录</p>
+		</a>
+		<a th:href="@{/wechat/findClassSportsCarding?openId=}${wechatbinding.openId}|" class="weui_grid js_grid"><!-- 需要openid //TODO -->
+			<div class="weui_grid_icon">
+				<img th:src="@{/assets/weChatPage/images/run.png}" alt="">
+			</div>
+			<p class="weui_grid_label">班级打卡记录</p>
+		</a>
+		
+		<a th:href="@{/wechat/findByMap?openId=}${wechatbinding.openId}|" class="weui_grid js_grid"><!-- 需要openid //TODO -->
+			<div class="weui_grid_icon">
+				<img th:src="@{/assets/weChatPage/images/run.png}" alt="">
+			</div>
+			<p class="weui_grid_label">行程轨迹</p>
 		</a>
 		
 		 
