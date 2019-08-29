@@ -20,7 +20,7 @@
 		<div class="weui_cells weui_cells_form ">
 			<div class="weui_cell">
 				<div class="weui_cell_hd">
-					<label class="weui_label">姓名：</label>
+					<label class="weui_label">姓名:</label>
 				</div>
 				<div class="weui_cell_bd weui_cell_primary">
 					<input class="weui_input" type="text"
@@ -30,7 +30,7 @@
 
 			<div class="weui_cell">
 				<div class="weui_cell_hd">
-					<label class="weui_label">班级：</label>
+					<label class="weui_label">班级:</label>
 				</div>
 				<div class="weui_cell_bd weui_cell_primary">
 					<input class="weui_input" type="text" disabled="disabled"
@@ -49,13 +49,34 @@
 				</div>
 			</div>
 
+			<div class="weui_cell weui_cell_select weui_select_after">
+				<div class="weui_cell_hd">
+					<label for="" class="weui_label">活动:</label>
+				</div>
+				<div class="weui_cell_bd weui_cell_primary"> 
+					 <select id="activityId" name="activitys.id" required="required" emptyTips="请选择活动进行打卡"
+						class="weui_select">
+						<option th:if="${activitys!=null}" th:value="${activity.id}"
+							th:text="${activity.activityName}"
+							th:selected="${sportsCarding!=null&&sportsCarding?.activitys!=null}?${sportsCarding?.activitys?.activityName}==${activity?.activityName}"
+							th:each="activity:${activitys}">
+					</select>
+				</div>
+			</div>
+
+
+
+
+
+
 			<div class="weui_cell">
 				<div class="weui_cell_hd">
-					<label class="weui_label">今日运动量：</label>
+					<label class="weui_label">今日运动量:</label>
 				</div>
 				<div class="weui_cell_bd weui_cell_primary">
 					<input class="weui_input" type="number" pattern="[0-9]*"
-						name="distance" th:value="${sportsCarding?.distance}" placeholder="请输入今日运动量" />
+						name="distance" th:value="${sportsCarding?.distance}"
+						placeholder="请输入今日运动量" />
 				</div>
 				<div class="weui_cell_ft">
 					<i class="weui_icon_warn"></i> <label class="weui-vcode-btn">km</label>

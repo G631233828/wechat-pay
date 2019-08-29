@@ -32,9 +32,12 @@ public class SportsCarding extends GeneralBean<SportsCarding>{
 	private Student student;
 	@DBRef
 	private Clazz clazz;
+	@DBRef
+	private Activitys activitys;//所属活动
 	private NSNUserInfo nsnUserInfo; //绑定微信用户信息
 	private Double distance;//运动距离
 	private String sportsDate;
+	private Double allDistance;//总运动距离
 	
 	
 	

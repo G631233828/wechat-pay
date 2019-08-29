@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+</head>
+<head th:include="wechat/front/public/public_css::pub_css"></head>
+<body ontouchstart class="page-bg">
+
+	<div th:replace="/wechat/front/public/public::top"></div>
+	<!-- 	<div th:replace="/wechat/front/public/public::footer"></div>
+	 -->
+	<div class="page-hd">
+		<h1 class="page-hd-title">[[${wechatbanding.clazzYear}]]年[[${wechatbanding.clazzNum}]]班&nbsp;&nbsp;的运动打卡记录</h1>
+		<p class="page-hd-desc">以下信息是所有打卡数据</p>
+	</div>
+	<input type="hidden" th:value="${openId}" id="openId">
+
+	<table class="weui-table weui-border-tb weui-table-2n">
+		<thead>
+			<tr>
+				<th>姓名</th>
+				<th>运动量(km)</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="sportsCarding:${cardingStatistics.studentSportsCarding}" >
+				<td>[[${sportsCarding?.student?.name}]]</td>
+				<td>[[${sportsCarding?.allDistance}]]</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<br>
+
+
+
+
+</body>
+</html>

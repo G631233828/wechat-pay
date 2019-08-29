@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+</head>
+<head th:include="wechat/front/public/public_css::pub_css"></head>
+<body ontouchstart class="page-bg">
+
+	<div th:replace="/wechat/front/public/public::top"></div>
+	<!-- 	<div th:replace="/wechat/front/public/public::footer"></div>
+	 -->
+	<div class="page-hd">
+		<h1 class="page-hd-title">[[${wechatbanding.clazzYear}]]年[[${wechatbanding.clazzNum}]]班&nbsp;&nbsp;[[${wechatbanding.studentName}]]&nbsp;&nbsp;的运动打卡记录</h1>
+		<p class="page-hd-desc">以下信息是所有打卡数据</p>
+	</div>
+	<input type="hidden" th:value="${openId}" id="openId">
+
+	<table class="weui-table weui-border-tb weui-table-2n">
+		<thead>
+			<tr>
+				<th>姓名</th>
+				<th>运动时间</th>
+				<th>运动量(km)</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="sportsCarding:${pageList.datas}" >
+				<td>[[${sportsCarding?.student?.name}]]</td>
+				<td>[[${sportsCarding?.sportsDate}]]</td>
+				<td>[[${sportsCarding?.distance}]]</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<br>
+
+
+	<div class='pager'>
+		<div class="pager-left">
+			<div class="pager-first">
+				<a class="pager-nav" th:href="|@{/wechat/findsportsCarding(openId=${openId})}|" >首页</a>
+			</div>
+			<div  th:class="${pageList.pageNo } eq 1 ?'pager-pre disabled':'pager-pre'">
+				<a class="pager-nav" th:href="${pageList.pageNo eq 1}?'javascript:void(0);':|@{/wechat/findsportsCarding(pageNo=${pageList.upPage},openId=${openId})}|">上一页</a>
+			</div>
+		</div>													   
+		<div class="pager-cen">[[${pageList.pageNo}]]/[[${pageList.totalPage}]]</div>
+		<div class="pager-right">
+			<div  th:class="${pageList.pageNo eq pageList.totalPage}?'pager-next disabled':'pager-next'">
+				<a class="pager-nav" th:href="${pageList.pageNo eq pageList.totalPage}?'javascript:void(0);':|@{/wechat/findsportsCarding(pageNo=${pageList.nextPage},openId=${openId})}|">下一页</a>
+			</div>
+			<div class="pager-end">
+				<a class="pager-nav" th:href="|@{/wechat/findsportsCarding(pageNo=${pageList.totalPage},openId=${openId})}|">尾页</a>
+			</div>
+		</div>
+	</div>
+
+<script type="text/javascript">
+
+function serach(o){
+	var serach = $("#search").val();
+	window.location.href="findleave?id="+o+"&serach="+serach;
+}
+
+
+function findleaves(o){
+	window.location.href="studentleaves?id="+o; 
+}
+
+</script>
+
+
+</body>
+</html>

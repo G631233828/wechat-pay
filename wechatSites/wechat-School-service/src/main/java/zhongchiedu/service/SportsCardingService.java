@@ -1,6 +1,11 @@
 package zhongchiedu.service;
 
+import java.util.List;
+
+import zhongchiedu.common.utils.BasicDataResult;
+import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.framework.service.GeneralService;
+import zhongchiedu.school.pojo.Clazz;
 import zhongchiedu.school.pojo.SportsCarding;
 
 public interface SportsCardingService extends GeneralService<SportsCarding> {
@@ -9,7 +14,15 @@ public interface SportsCardingService extends GeneralService<SportsCarding> {
 
 	SportsCarding findSportsCardingToday(String openId);
 
-
+	Pagination<SportsCarding>  findSportsCardings(Clazz clazz,Integer pageNo,Integer pageSize);
+	
+	BasicDataResult findMap(String activityId, String openId);
+	
+	List<SportsCarding> findSportsCardingByActivityIdAndClazzId(String clazzId,String activityId);
+	
+	List<SportsCarding> findSportsCardingByActivityIdAndStudentId(String activityId,String studentId);
+	
+	int findTodaySportsCardings(String clazzId,String activityId,String date);
 	
 
 } 

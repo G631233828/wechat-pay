@@ -47,7 +47,10 @@ public class TripsServiceImpl extends GeneralServiceImpl<Trips> implements Trips
 		Query query = new Query();
 
 		query.addCriteria(Criteria.where("activitys.$id").is(new ObjectId(activityId)));
+		
 		query.with(new Sort(new Order(Direction.ASC, "sorts")));
+		
+		query.addCriteria(Criteria.where("isDisable").is(false));
 		
 		List<Trips>  list = this.find(query, Trips.class);
 		

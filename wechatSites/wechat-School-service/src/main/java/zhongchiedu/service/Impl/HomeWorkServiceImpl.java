@@ -39,6 +39,8 @@ public class HomeWorkServiceImpl implements HomeWorkService {
 		try {
 			page = ReptilianTool.checkLogin(LOGIN_URL, HOMEWORK_URL, usernameId, username, passwordId, password,
 					loginBtnId, checkLoginId,date);
+			
+			
 		} catch (FailingHttpStatusCodeException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -110,6 +112,7 @@ public class HomeWorkServiceImpl implements HomeWorkService {
 		HomeWork work = a.jsoupGetHomeWork(aa);
 		System.out.println(work.getClassName());
 		System.out.println(work.getGradeName());
+		System.out.println(work.getStudentName());
 		
 	}
 
