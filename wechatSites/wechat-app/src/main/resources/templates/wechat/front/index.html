@@ -9,16 +9,15 @@
 	<div th:replace="wechat/front/public/public::top"></div>
 
 	<div class="weui-weixin-info" style="margin-top: 10px;">
-		<span class="weui-weixin-em">您当前查看的是：</span>
-		<em class="weui-weixin-em">[[${clazz}]]&nbsp;&nbsp;[[${wechatbinding.studentName}]] </em> 
-		
-		
-		  <a style="float: right;" class="weui-weixin-a weui-weixin-nickname" th:href="@{/wechat/unbinding}">解除绑定</a>
- 
+		<span class="weui-weixin-em">您当前查看的是：</span> <em
+			class="weui-weixin-em">[[${clazz}]]&nbsp;&nbsp;[[${wechatbinding.studentName}]]
+		</em> <a style="float: right;" class="weui-weixin-a weui-weixin-nickname"
+			th:href="@{/wechat/unbinding}">解除绑定</a>
+
 	</div>
 	<div class="weui_grids" style="margin-top: 20px;">
 
- 		<!-- <a href="javascript:;" class="weui_grid js_grid"
+		<!-- <a href="javascript:;" class="weui_grid js_grid"
 			onclick="return tongzhi();">
 			<div class="weui_grid_icon">
 				<img th:src="@{/assets/weChatPage/images/icon_nav_article.png}"
@@ -26,77 +25,72 @@
 			</div>
 			<p class="weui_grid_label">通知</p>
 		</a>  -->
-		
+
 		<a th:href="@{/wechat/homework}" class="weui_grid js_grid">
 			<div class="weui_grid_icon">
 				<img th:src="@{/assets/weChatPage/images/homework.png}" alt="">
 			</div>
 			<p class="weui_grid_label">作业</p>
-		</a>
-		
-		<a th:href="@{/wechat/tosports?openId=}${wechatbinding.openId}|" class="weui_grid js_grid"> <!-- 需要openid //TODO -->
+		</a> <a th:href="|@{/wechat/tosports?openId=}${wechatbinding.openId}|"
+			class="weui_grid js_grid"> <!-- 需要openid //TODO -->
 			<div class="weui_grid_icon">
 				<img th:src="@{/assets/weChatPage/images/run.png}" alt="">
 			</div>
 			<p class="weui_grid_label">运动打卡</p>
-		</a>
-		
-		<a th:href="@{/wechat/findsportsCarding?openId=}${wechatbinding.openId}|" class="weui_grid js_grid"><!-- 需要openid //TODO -->
+		</a> <a
+			th:href="|@{/wechat/findsportsCarding?openId=}${wechatbinding.openId}|"
+			class="weui_grid js_grid">
+			<!-- 需要openid //TODO -->
 			<div class="weui_grid_icon">
-				<img th:src="@{/assets/weChatPage/images/run.png}" alt="">
+				<img th:src="@{/assets/weChatPage/images/cards.png}" alt="">
 			</div>
 			<p class="weui_grid_label">打卡记录</p>
-		</a>
-		<a th:href="@{/wechat/findClassSportsCarding?openId=}${wechatbinding.openId}|" class="weui_grid js_grid"><!-- 需要openid //TODO -->
+		</a>  <a
+			th:href="|@{/wechat/findClassSportsCarding?openId=}${wechatbinding.openId}|"
+			class="weui_grid js_grid">
+			<!-- 需要openid //TODO -->
 			<div class="weui_grid_icon">
-				<img th:src="@{/assets/weChatPage/images/run.png}" alt="">
+				<img th:src="@{/assets/weChatPage/images/cards.png}" alt="">
 			</div>
 			<p class="weui_grid_label">班级打卡记录</p>
-		</a>
-		
-		<a th:href="@{/wechat/findByMap?openId=}${wechatbinding.openId}|" class="weui_grid js_grid"><!-- 需要openid //TODO -->
+		</a> <a th:href="|@{/wechat/findByMap?openId=}${wechatbinding.openId}|"
+			class="weui_grid js_grid">
+			<!-- 需要openid //TODO -->
 			<div class="weui_grid_icon">
-				<img th:src="@{/assets/weChatPage/images/run.png}" alt="">
+				<img th:src="@{/assets/weChatPage/images/map.png}" alt="">
 			</div>
 			<p class="weui_grid_label">行程轨迹</p>
-		</a>
-		
-		 
-		 <a th:href="|@{/wechat/toleave?openId=}${wechatbinding.openId}|" class="weui_grid js_grid" >
+		</a> <a th:href="|@{/wechat/toleave?openId=}${wechatbinding.openId}|"
+			class="weui_grid js_grid">
 			<div class="weui_grid_icon">
 				<img th:src="@{/assets/weChatPage/images/icon_nav_panel.png}" alt="">
 			</div>
 			<p class="weui_grid_label">请假</p>
-		</a> 
-		<a th:href="|@{/wechat/leavehistory?openId=}${wechatbinding.openId}|" class="weui_grid js_grid" >
+		</a> <a th:href="|@{/wechat/leavehistory?openId=}${wechatbinding.openId}|"
+			class="weui_grid js_grid">
 			<div class="weui_grid_icon">
 				<img th:src="@{/assets/weChatPage/images/icon_nav_panel.png}" alt="">
 			</div>
 			<p class="weui_grid_label">请假记录</p>
-		</a>  
-		
-		<a th:href="|@{/wechat/bindManagement?openId=}${wechatbinding.openId}|" class="weui_grid js_grid"
-			>
+		</a> <a
+			th:href="|@{/wechat/bindManagement?openId=}${wechatbinding.openId}|"
+			class="weui_grid js_grid">
 			<div class="weui_grid_icon">
 				<img th:src="@{/assets/weChatPage/images/icon_nav_panel.png}" alt="">
 			</div>
 			<p class="weui_grid_label">绑定管理</p>
-		</a> 
-		
-		
-		
-		<a th:href="@{/wechat/editpage}" class="weui_grid js_grid">
+		</a> <a th:href="@{/wechat/editpage}" class="weui_grid js_grid">
 			<div class="weui_grid_icon">
 				<img th:src="@{/assets/weChatPage/images/icon_nav_panel.png}" alt="">
 			</div>
 			<p class="weui_grid_label">修改学生信息</p>
 		</a>
 
+		
 	</div>
 
 
 
-	<div th:replace="wechat/front/public/public::footer"></div>
 
 </body>
 </html>

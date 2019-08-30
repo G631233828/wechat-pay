@@ -14,7 +14,7 @@
 	<form id="form" th:action="@{/wechat/leave}" method="post">
 
 		<input type="hidden" th:value="${openId}" th:name="openId"> <input
-			type="text" th:value="${sportsCarding?.id}" th:name="${sportsCarding!=null}?'id':''">
+			type="hidden" th:value="${sportsCarding?.id}" th:name="${sportsCarding!=null}?'id':''">
 
 		<div class="weui_cells weui_cells_form ">
 			<div class="weui_cell">
@@ -73,7 +73,7 @@
 					<label class="weui_label">今日运动量:</label>
 				</div>
 				<div class="weui_cell_bd weui_cell_primary">
-					<input class="weui_input" type="number" pattern="[0-9]*"
+					<input class="weui_input" type="number" min="0.0" step="0.1" onkeyup="value=value.replace(/[^\-?\d.]/g,'')" 
 						name="distance" th:value="${sportsCarding?.distance}"
 						placeholder="请输入今日运动量" />
 				</div>

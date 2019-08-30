@@ -97,12 +97,16 @@ public class SportsCardingServiceImpl extends GeneralServiceImpl<SportsCarding> 
 	}
 
 	@Override
-	public Pagination<SportsCarding> findSportsCardings(Clazz clazz, Integer pageNo, Integer pageSize) {
-
+	public Pagination<SportsCarding> findSportsCardings(String account,Clazz clazz, Integer pageNo, Integer pageSize) {
 		Query query = new Query();
-		query.addCriteria(Criteria.where("clazz.$id").is(new ObjectId(clazz.getId())));
-		query.with(new Sort(new Order(Direction.DESC, "sportsDate")));
-		Pagination<SportsCarding> list = this.findPaginationByQuery(query, pageNo, pageSize, SportsCarding.class);
+		Pagination<SportsCarding> list = null;
+		Student student = this.studentService.findStudentByRegisterNum2(account);
+		if(Common.isNotEmpty(student)){
+			query.addCriteria(Criteria.where("clazz.$id").is(new ObjectId(clazz.getId())));
+			query.addCriteria(Criteria.where("student.$id").is(new ObjectId(student.getId())));
+			query.with(new Sort(new Order(Direction.DESC, "sportsDate")));
+			list = this.findPaginationByQuery(query, pageNo, pageSize, SportsCarding.class);
+		}
 		return list;
 	}
 

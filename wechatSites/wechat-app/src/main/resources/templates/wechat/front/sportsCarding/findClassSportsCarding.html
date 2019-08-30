@@ -23,7 +23,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr th:each="sportsCarding:${cardingStatistics.studentSportsCarding}" >
+			<tr th:each="sportsCarding:${cardingStatistics?.studentSportsCarding}" >
 				<td>[[${sportsCarding?.student?.name}]]</td>
 				<td>[[${sportsCarding?.allDistance}]]</td>
 			</tr>

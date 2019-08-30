@@ -1,6 +1,7 @@
 package zhongchiedu.compent;
 
-import org.quartz.Job;
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -16,11 +17,12 @@ public class ScheduleTask  {
 	@Autowired
 	private ScheduleCardingStatisticsService scheduleCardingStatisticsService;
 	
-	@Scheduled(cron = "0/2 * * * * ?")
-	//@Scheduled(cron = "00 59 23 * * ?")
+	//@Scheduled(cron = "0/20 * * * * ?")
+	@Scheduled(cron = "0 50 23 * * ?")
 	public void todoSchedule() {
-		System.out.println(scheduleCardingStatisticsService);
+		log.info("开始统计数据" +LocalDate.now().toString());
 		scheduleCardingStatisticsService.autoStatistics();
+		log.info("统计完成");
 	}
 
 

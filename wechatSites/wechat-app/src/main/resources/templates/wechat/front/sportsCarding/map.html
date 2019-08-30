@@ -42,17 +42,10 @@ body, html, #allmap {
 				</select>
 			</div>
 		</div>
-
-
-		<div id="map">
-			<h4>行程轨迹</h4>
-			<div class="weui-img-box">
-				<div class="weui-img" id="allmap"></div>
-			</div>
-		</div>
-
-
 	</div>
+
+
+	<div id="allmap"></div>
 
 </body>
 </html>
@@ -64,25 +57,25 @@ body, html, #allmap {
 		$.ajax({
 			type : 'POST',
 			url : "findMap",
-			data : "activityId=" + id+"&openId="+openId,
+			data : "activityId=" + id + "&openId=" + openId,
 			dataType : "json",
 			success : function(data) {
-				if(data.status == 200 ){
-					
+				if (data.status == 200) {
+
 					var map = new BMap.Map("allmap");
 					var arr = new Array();
 					var nowSite = null;
 					var siteNum = null;
 					$.each(data.data.sites, function(index, item) {
-						
+
 						arr[index] = new BMap.Point(item.x, item.y);
-						
-						if(data.data.site.id == item.id){
+
+						if (data.data.site.id == item.id) {
 							siteNum = index;
 							nowSite = arr[index];
 						}
 					});
-					
+
 					var ways = arr.slice(0);//拷贝数组
 					ways.pop(); //删除第一个
 					ways.shift();//删除最后一个
@@ -111,10 +104,11 @@ body, html, #allmap {
 					var marker = new BMap.Marker(nowSite); // 创建标注
 					map.addOverlay(marker); // 将标注添加到地图中
 					marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画 
-					var label = new BMap.Label("通过大家的努力，我们已经到达了<b>"+data.data.site.siteName+"</b>！", {
+					var label = new BMap.Label("通过大家的努力，我们已经到达了<b>"
+							+ data.data.site.siteName + "</b>！", {
 						offset : new BMap.Size(20, -10)
 					});
-					marker.setLabel(label); 
+					marker.setLabel(label);
 					marker.setTop(true);
 
 					var driving = new BMap.DrivingRoute(map, {
@@ -124,16 +118,20 @@ body, html, #allmap {
 						}
 					});
 
-					 driving.setSearchCompleteCallback(function(){
-					 var plan = driving.getResults().getPlan(0);
-					 for(var i=0;i<siteNum;i++){
-					 var pts =plan.getRoute(i).getPath();
-					 //重点在这   这个地方是关于修改颜色的
-					 var polyline = new BMap.Polyline(pts,{ strokeColor: "GREEN", strokeWeight: 5, strokeOpacity: 1 });
-					 map.addOverlay(polyline);
-					 }
-					 })
-					 
+					driving.setSearchCompleteCallback(function() {
+						var plan = driving.getResults().getPlan(0);
+						for (var i = 0; i < siteNum; i++) {
+							var pts = plan.getRoute(i).getPath();
+							//重点在这   这个地方是关于修改颜色的
+							var polyline = new BMap.Polyline(pts, {
+								strokeColor : "GREEN",
+								strokeWeight : 5,
+								strokeOpacity : 1
+							});
+							map.addOverlay(polyline);
+						}
+					})
+
 					driving.search(arr[0], arr[arr.length - 1], {
 						waypoints : ways
 					});//waypoints表示途经点
@@ -147,18 +145,12 @@ body, html, #allmap {
 					/* $.each(data.data, function(index, item) {
 						 $(":checkbox[id='"+item.id+"']").prop("checked",true);
 					}); */
-					
-					
-					
-					
-					
-					
-					
-				}else{
+
+				} else {
 					alert(data.msg);
 					return;
 				}
-			
+
 			}
 		});
 

@@ -144,7 +144,7 @@ public class SportsCardingController {
 			}
 			// 通过班级年份班级号获取班级
 			Clazz clazz = this.clazzService.findClazzByYearNum(bd.getClazzYear(), bd.getClazzNum());
-			Pagination<SportsCarding> pagination = this.sportsCardingService.findSportsCardings(clazz, pageNo,
+			Pagination<SportsCarding> pagination = this.sportsCardingService.findSportsCardings(bd.getStudentAccount(),clazz, pageNo,
 					pageSize);
 			model.addObject("pageList", pagination);
 		}

@@ -14,7 +14,7 @@ public interface SportsCardingService extends GeneralService<SportsCarding> {
 
 	SportsCarding findSportsCardingToday(String openId);
 
-	Pagination<SportsCarding>  findSportsCardings(Clazz clazz,Integer pageNo,Integer pageSize);
+	Pagination<SportsCarding>  findSportsCardings(String account,Clazz clazz,Integer pageNo,Integer pageSize);
 	
 	BasicDataResult findMap(String activityId, String openId);
 	

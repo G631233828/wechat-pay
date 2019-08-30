@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
 import zhongchiedu.common.utils.Common;
 import zhongchiedu.framework.service.GeneralServiceImpl;
 import zhongchiedu.school.pojo.Activitys;
@@ -31,6 +32,7 @@ import zhongchiedu.service.TripsService;
  * 统计班级打卡以及当前站点信息
  */
 @Service
+@Slf4j
 public class ScheduleCardingStatisticsServiceImpl extends GeneralServiceImpl<CardingStatistics>
 		implements ScheduleCardingStatisticsService {
 
@@ -59,16 +61,28 @@ public class ScheduleCardingStatisticsServiceImpl extends GeneralServiceImpl<Car
 	public void autoStatistics() {
 		// 1.获取到所有的非禁用的活动
 		List<Activitys> activitys = this.activitysService.findActivitysByisDisable();
-		
-		//TODO 如果获得为空会报空指针
+		//如果活动为空，那么直接返回
+		if(Common.isEmpty(activitys)){
+			log.error("没有创建活动，直接返回不做统计数据");
+			return ;
+		}
 		// 遍历活动
 		activitys.forEach(activity -> {
 			List<Clazz> clazzs = this.clazzService.findClazzsWhereInSchool(Common.findInSchoolYear());
+			if(Common.isEmpty(clazzs)){
+				log.error("没有找到班级，直接返回不做统计数据");
+				return;
+			}
 			// 遍历班级
 			clazzs.forEach(clazz -> {
 				// 通过活动id跟班级id获取所有运动打卡记录
 				List<SportsCarding> sports = this.sportsCardingService
 						.findSportsCardingByActivityIdAndClazzId(clazz.getId(), activity.getId());
+				if(Common.isEmpty(sports)){
+					log.error("没有找到打卡数据，直接返回不做统计数据");
+					return;
+				}
+				
 				Double allMileage = 0.0;// 统计班级学生总里程
 				for (SportsCarding sport : sports) {
 					allMileage += sport.getDistance();
@@ -77,6 +91,11 @@ public class ScheduleCardingStatisticsServiceImpl extends GeneralServiceImpl<Car
 				Double totalMileage = 0.0;// 总里程
 				// 通过活动id查看所有站点信息 用来统计当前已经到哪个站点了
 				List<Trips> trips = this.tripsService.findTripsByActivityId(activity.getId());
+				if(trips.size()==0){
+					log.error("活动未设置站点，无法进行统计！");
+					return;
+				}
+				
 				// 默认站点为出发站
 				getSite = trips.get(0).getSites();
 				for (Trips trip : trips) {
