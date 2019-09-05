@@ -51,43 +51,41 @@ canvas#canvas4 {
 					<div class="col-sm-12">
 
 						<div class="nest" id="tableStaticClose">
-							<div class="title-alt">
-								<div>
-									<shiro:hasPermission name="sites:add">
-										<button class="btn btn-default btn-sm"
-											th:onclick="|window.location.href='@{/sites}'|">
-											<i class="glyphicon glyphicon-plus"> </i> 添加
-										</button>
-									</shiro:hasPermission>
 
-									<shiro:hasPermission name="sites:edit">
-										<button class="btn btn-primary btn-sm"
-											onclick="return toeditPage('','sites')">
-											<i class="fa fa-edit"> </i>编辑
-										</button>
-									</shiro:hasPermission>
-
-									<shiro:hasPermission name="sites:delete">
-										<button class="btn btn-danger btn-sm" th:onclick="|return del('','@{/sites/}')|">
-											<i class="fa fa-trash-o"> </i>删除
-										</button>
-									</shiro:hasPermission>
-
-								</div>
-
-								<div class="titleClose">
-									<a class="gone" href="#tableStaticClose"> <span
-										class="entypo-cancel"></span>
-									</a>
-								</div>
-								<div class="titleToggle">
-									<a class="nav-toggle-alt" href="#tableStatic"> <span
-										class="entypo-up-open"></span>
-									</a>
-								</div>
-
-							</div>
 							<div class="body-nest" id="tableStatic">
+
+								<div class="row" style="margin-bottom: 10px;">
+									<div class="col-sm-8 form-inline">
+										<select class="filter-status form-control" id="activity"
+											onchange="return searchVal()">
+											<option value="">选择活动
+											<option th:value="${activity.id}"
+												th:text="${activity.activityName}"
+												th:selected="${activity.id}== ${selectActivity}"
+												th:each="activity:${activitys}">
+										</select> <select class="filter-status form-control" id="grade"
+											onchange="return searchGrade()" >
+											<option value="">查询年级组
+											<option th:value="${grade}" th:text="|${grade}届|"
+												th:selected="${grade}==${selectGrade}" th:each="grade:${grades}">
+										</select> 
+										<select class="filter-status form-control" id="clazz"
+											onchange="return search()">
+											<option value="">选择班级
+											<option th:value="${clazz.id}"
+												th:text="|${clazz.clazzYear}年${clazz.clazzNum}班|"
+												th:selected="${clazz.id}==${selectClazz}"
+												th:each="clazz:${clazzs}">
+										</select>
+
+									
+
+										<button class="btn btn-default" onclick="return toExport()">
+											<i class="entypo-export"> </i>导出统计报表
+										</button>
+
+									</div>
+								</div>
 
 								<section id="flip-scroll">
 
@@ -101,48 +99,47 @@ canvas#canvas4 {
 															for="checkall"></label>
 													</div>
 												</th>
-												<th class="numeric">站点</th>
-												<th class="numeric">x坐标</th>
-												<th class="numeric">y坐标</th>
-												<th class="numeric">使用状态</th>
+												<th class="numeric">班级</th>
+												<th class="numeric">活动名称</th>
+												<th class="numeric">总里程（km）</th>
+												<th class="numeric">完成里程（km）</th>
+												<th class="numeric">当前站点</th>
+												<th class="numeric">参与人数</th>
 												<th class="numeric">操作</th>
 											</tr>
 										</thead>
 										<tbody>
-											<tr th:each="sites:${pageList.datas}">
+											<tr th:each="cardingStatistics:${pageList.datas}">
 												<td class="numeric">
 													<div class="checkbox checkbox-inline"
 														style="margin-top: 0px;">
-														<input type="checkbox" name="ids" th:id="${sites.id}"
-															style="margin-top: 0px;" class="numeric"
-															th:value="${sites.id}"> <label
-															th:for="${sites.id}"></label>
+														<input type="checkbox" name="ids"
+															th:id="${cardingStatistics.id}" style="margin-top: 0px;"
+															class="numeric" th:value="${cardingStatistics.id}">
+														<label th:for="${cardingStatistics.id}"></label>
 													</div>
 												</td>
 												<td class="numeric"
-													th:text="${sites?.siteName}"></td>
+													th:text="|${cardingStatistics?.clazz?.clazzYear}年${cardingStatistics?.clazz?.clazzNum}班|"></td>
 												<td class="numeric"
-													th:text="${sites?.x}"></td>
+													th:text="${cardingStatistics?.activitys?.activityName}"></td>
 												<td class="numeric"
-													th:text="${sites?.y}"></td>
-											<td class="numeric" th:id="disBtn+${sites.id}"
-													th:utext="${sites.isDisable eq true }?|<button type='button' onclick=toDisable('${sites.id}','sites') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${sites.id}','sites') class='btn btn-success'>启用</button>|"></td>
-												<td class="numeric"><shiro:hasPermission
-														name="sites:edit">
-														<button class="btn btn-primary btn-xs"
-															th:onclick="|return toeditPage('${sites.id}','sites')|">
-															<i class="fa fa-edit"> </i>编辑
+													th:text="${cardingStatistics?.totalMileage}"></td>
+												<td class="numeric"
+													th:text="${cardingStatistics?.allMileage}"></td>
+												<td class="numeric"
+													th:text="${cardingStatistics?.site?.siteName}"></td>
+												<td class="numeric"
+													th:text="${cardingStatistics?.studentSportsCarding?.size()}"></td>
+
+												<td class="numeric">
+													<button class="btn btn-info btn-xs"
+														th:onclick="|return toeditPage('${cardingStatistics?.id}','sportsCardStudents')|">
+															<i class="maki-school"> </i>查看详细
 														</button>
 
-													</shiro:hasPermission> 
-													<shiro:hasPermission name="sites:delete">
-														<button class="btn btn-danger btn-xs"
-															th:onclick="|return del('@{/sites/}${sites.id}')|">
-															<i class="fa fa-trash-o"> </i>删除
-														</button>
-													</shiro:hasPermission>
-													
-													</td>
+
+												</td>
 											</tr>
 
 
@@ -153,8 +150,6 @@ canvas#canvas4 {
 									<form method="post" id="deleteForm">
 										<input name="_method" value="delete" type="hidden">
 									</form>
-
-
 									<div class="row">
 
 										<div class="col-md-12">
@@ -168,16 +163,16 @@ canvas#canvas4 {
 												<ul class="pagination pagination-split pull-right"
 													style="margin-top: 0px;">
 													<li th:class="${pageList.pageNo } eq 1 ?disabled:''"><a
-														th:href="${pageList.pageNo} eq 1?'javascript:void(0);':@{/sitess(pageNo=${pageList.upPage})}">上一页</a>
+														th:href="${pageList.pageNo} eq 1?'javascript:void(0);':@{/sportsCard(pageNo=${pageList.upPage})}">上一页</a>
 													</li>
 													<li th:each="page:${pageList.navigatepageNums}"
 														th:class="${page  == pageList.pageNo}?active:''"><a
-														th:href="${page eq pageList.pageNo}?'javascript:void(0)':@{/sitess(pageNo=${page})}">[[${page}]]</a>
+														th:href="${page eq pageList.pageNo}?'javascript:void(0)':@{/sportsCard(pageNo=${page})}">[[${page}]]</a>
 													</li>
 													<li
 														th:class="${pageList.pageNo eq pageList.totalPage}?disabled:''">
 														<a
-														th:href="${pageList.pageNo eq pageList.totalPage}?'javascript:void(0);':@{/sitess(pageNo=${pageList.nextPage})}">下一页</a>
+														th:href="${pageList.pageNo eq pageList.totalPage}?'javascript:void(0);':@{/sportsCard(pageNo=${pageList.nextPage})}">下一页</a>
 													</li>
 												</ul>
 											</div>
@@ -186,7 +181,9 @@ canvas#canvas4 {
 										<!-- 分页结束 -->
 									</div>
 
+
 								</section>
+
 
 							</div>
 
@@ -213,7 +210,8 @@ canvas#canvas4 {
 	<!-- Sweet alert -->
 	<script th:src="@{/plugs/sweetalert/sweetalert.min.js}"></script>
 
-
+	<script type="text/javascript" th:inline="javascript"
+		th:src="@{/js/schools/sportsCard/sportsCard.js}"></script>
 
 
 </body>

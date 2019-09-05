@@ -95,6 +95,9 @@ public class SportsCardingController {
 	@RequestMapping("/sports")
 	@ResponseBody
 	public BasicDataResult sports(String openId, SportsCarding sportsCarding) {
+		if(Common.isEmpty(sportsCarding.getDistance())){
+			return BasicDataResult.build(400, "打卡数据不能为空", null);
+		}
 
 		if (Common.isNotEmpty(sportsCarding.getId())) {
 			// 能够获取到今日运动的id则进行修改

@@ -196,6 +196,16 @@ public class SportsCardingServiceImpl extends GeneralServiceImpl<SportsCarding> 
 		return this.find(query, SportsCarding.class);
 	}
 
+	@Override
+	public SportsCarding findSportsCarding(String studentId, String activityId, String date) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("activitys.$id").is(new ObjectId(activityId)))
+				.addCriteria(Criteria.where("student.$id").is(new ObjectId(studentId)))
+				.addCriteria(Criteria.where("sportsDate").is(date)) ;
+		
+		return this.findOneByQuery(query, SportsCarding.class);
+	}
+
 	
 
 }

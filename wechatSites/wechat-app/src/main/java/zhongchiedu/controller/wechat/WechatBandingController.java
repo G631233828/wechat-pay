@@ -278,7 +278,11 @@ public class WechatBandingController {
 				Clazz clazz = new Clazz();
 				clazz.setClazzYear(Integer.valueOf(clazzYear));
 				clazz.setClazzNum(Integer.valueOf(clazzNum));
-				this.clazzService.SaveOrUpdateClazz(clazz);
+				Clazz getclazz = this.clazzService.findClazzByYearNum(clazz.getClazzYear(), clazz.getClazzNum());
+				if(Common.isEmpty(getclazz)){
+					this.clazzService.SaveOrUpdateClazz(clazz);
+				}
+				
 
 				
 				// new

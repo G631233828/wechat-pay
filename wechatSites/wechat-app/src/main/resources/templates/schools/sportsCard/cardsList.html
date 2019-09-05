@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head th:include="public/public_css::pub_css"></head>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/js/progress-bar/number-pb.css}">
+<link th:href="@{/plugs/sweetalert/sweetalert.css}" rel="stylesheet">
+
+<style type="text/css">
+canvas#canvas4 {
+	position: relative;
+	top: 20px;
+}
+</style>
+</head>
+
+<body>
+	<!-- Preloader -->
+	<div id="preloader">
+		<div id="status">&nbsp;</div>
+	</div>
+	<!-- TOP NAVBAR -->
+	<div th:replace="public/public::top"></div>
+	<!-- /END OF TOP NAVBAR -->
+
+	<!-- SIDE MENU -->
+	<div th:replace="public/public::left(activeUri='school')"></div>
+	<!-- END OF SIDE MENU -->
+
+	<!--  PAPER WRAP -->
+	<div class="wrap-fluid">
+		<div class="container-fluid paper-wrap bevel tlbr">
+
+
+			<!-- CONTENT -->
+			<!--TITLE -->
+			<div th:replace="public/public::title"></div>
+			<!--/ TITLE -->
+
+			<!-- BREADCRUMB -->
+			<div th:replace="public/public::menu"></div>
+			<!-- END OF BREADCRUMB -->
+
+			<div class="content-wrap">
+				<div class="row">
+
+
+					<div class="col-sm-12">
+
+						<div class="nest" id="tableStaticClose">
+
+							<div class="body-nest" id="tableStatic">
+
+
+								<section id="flip-scroll">
+
+									<table class="table table-bordered table-striped cf">
+										<thead class="cf">
+											<tr>
+												<th class="numeric" style="width: 20px;">
+													<div class="checkbox checkbox-inline"
+														style="margin-top: 0px;">
+														<input type="checkbox" id="checkall" name="checkall" /> <label
+															for="checkall"></label>
+													</div>
+												</th>
+												<th class="numeric">姓名</th>
+												<th class="numeric">班级</th>
+												<th class="numeric">昨日里程（km）</th>
+												<th class="numeric">完成里程（km）</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="student:${students}">
+												<td class="numeric">
+													<div class="checkbox checkbox-inline"
+														style="margin-top: 0px;">
+														<input type="checkbox" name="ids"
+															th:id="${student.id}" style="margin-top: 0px;"
+															class="numeric" th:value="${student.id}">
+														<label th:for="${student.id}"></label>
+													</div>
+												</td>
+												<td class="numeric"
+													th:text="${student?.student?.name}"></td>
+												<td class="numeric"
+														th:text="|${student?.clazz?.clazzYear}年${student?.clazz?.clazzNum}班|"></td>
+												<td class="numeric"
+													th:text="${student?.distance}"></td>
+												<td class="numeric"
+													th:text="${student?.allDistance}"></td>
+
+											</tr>
+
+
+
+										</tbody>
+									</table>
+
+									<form method="post" id="deleteForm">
+										<input name="_method" value="delete" type="hidden">
+									</form>
+
+								</section>
+
+
+							</div>
+
+						</div>
+
+
+					</div>
+
+				</div>
+			</div>
+			<div th:replace="public/public::myModal"></div>
+		</div>
+	</div>
+	<!--  END OF PAPER WRAP -->
+	<!-- 右侧隐藏菜单start -->
+	<div th:replace="public/public::right"></div>
+	<!-- 右侧隐藏菜单end-->
+	<!-- 底部js -->
+	s
+	<div th:replace="public/public_js::pub_js"></div>
+	<div th:replace="public/public_js::public_script"></div>
+	<div th:replace="public/public::deleteModal"></div>
+	<div th:replace="public/public::footer"></div>
+	<!-- Sweet alert -->
+	<script th:src="@{/plugs/sweetalert/sweetalert.min.js}"></script>
+
+	<script type="text/javascript" th:inline="javascript"
+		th:src="@{/js/schools/sportsCard/sportsCard.js}"></script>
+
+
+</body>
+
+</html>

@@ -24,5 +24,7 @@ public interface SportsCardingService extends GeneralService<SportsCarding> {
 	
 	int findTodaySportsCardings(String clazzId,String activityId,String date);
 	
+	SportsCarding findSportsCarding(String studentId,String activityId ,String date);
+	
 
 } 

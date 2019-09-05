@@ -61,15 +61,15 @@ public class ScheduleCardingStatisticsServiceImpl extends GeneralServiceImpl<Car
 	public void autoStatistics() {
 		// 1.获取到所有的非禁用的活动
 		List<Activitys> activitys = this.activitysService.findActivitysByisDisable();
-		//如果活动为空，那么直接返回
-		if(Common.isEmpty(activitys)){
+		// 如果活动为空，那么直接返回
+		if (Common.isEmpty(activitys)) {
 			log.error("没有创建活动，直接返回不做统计数据");
-			return ;
+			return;
 		}
 		// 遍历活动
 		activitys.forEach(activity -> {
 			List<Clazz> clazzs = this.clazzService.findClazzsWhereInSchool(Common.findInSchoolYear());
-			if(Common.isEmpty(clazzs)){
+			if (Common.isEmpty(clazzs)) {
 				log.error("没有找到班级，直接返回不做统计数据");
 				return;
 			}
@@ -78,11 +78,11 @@ public class ScheduleCardingStatisticsServiceImpl extends GeneralServiceImpl<Car
 				// 通过活动id跟班级id获取所有运动打卡记录
 				List<SportsCarding> sports = this.sportsCardingService
 						.findSportsCardingByActivityIdAndClazzId(clazz.getId(), activity.getId());
-				if(Common.isEmpty(sports)){
+				if (Common.isEmpty(sports)) {
 					log.error("没有找到打卡数据，直接返回不做统计数据");
 					return;
 				}
-				
+
 				Double allMileage = 0.0;// 统计班级学生总里程
 				for (SportsCarding sport : sports) {
 					allMileage += sport.getDistance();
@@ -91,11 +91,11 @@ public class ScheduleCardingStatisticsServiceImpl extends GeneralServiceImpl<Car
 				Double totalMileage = 0.0;// 总里程
 				// 通过活动id查看所有站点信息 用来统计当前已经到哪个站点了
 				List<Trips> trips = this.tripsService.findTripsByActivityId(activity.getId());
-				if(trips.size()==0){
+				if (trips.size() == 0) {
 					log.error("活动未设置站点，无法进行统计！");
 					return;
 				}
-				
+
 				// 默认站点为出发站
 				getSite = trips.get(0).getSites();
 				for (Trips trip : trips) {
@@ -108,13 +108,13 @@ public class ScheduleCardingStatisticsServiceImpl extends GeneralServiceImpl<Car
 				// 根据班级获取所有学生
 				List<Student> students = this.studentService.findStudentByClazz(clazz);
 				// 根据班级，活动 学生 id获取每个学生的打卡情况
-
 				List<SportsCarding> studentSportsCarding = new ArrayList<>();
 
 				students.forEach(student -> {
 					// 获取一个学生的所有打卡记录，并且统计运动量
 					List<SportsCarding> lists = this.sportsCardingService
 							.findSportsCardingByActivityIdAndStudentId(activity.getId(), student.getId());
+					SportsCarding spc = this.sportsCardingService.findSportsCarding(student.getId(), activity.getId(), LocalDate.now().toString());
 					// 统计运动量
 					double allDistance = 0.0;// 个人总运动量
 					for (SportsCarding sportsCarding : lists) {
@@ -126,13 +126,12 @@ public class ScheduleCardingStatisticsServiceImpl extends GeneralServiceImpl<Car
 					sc.setActivitys(activity);
 					sc.setSportsDate(LocalDate.now().toString());
 					sc.setAllDistance(allDistance);
+					sc.setDistance(Common.isNotEmpty(spc)?Common.isNotEmpty(spc.getDistance())?spc.getDistance():0:0);
 					studentSportsCarding.add(sc);
 				});
 
 				List<SportsCarding> ls = this.toSort(studentSportsCarding);
-				
-				
-				
+
 				// 保存每个活动每个班级的数据，通过活动ID跟班级ID区分
 				CardingStatistics cardingStatistics = this.cardingStatisticsService
 						.findByClazzIdAndActivityId(clazz.getId(), activity.getId());
@@ -172,26 +171,24 @@ public class ScheduleCardingStatisticsServiceImpl extends GeneralServiceImpl<Car
 
 	}
 
-	public  List<SportsCarding> toSort(List<SportsCarding> list) {
+	public List<SportsCarding> toSort(List<SportsCarding> list) {
 		Collections.sort(list, new Comparator<SportsCarding>() {
 			@Override
 			public int compare(SportsCarding o1, SportsCarding o2) {
-				if (o1.getAllDistance() > o2.getAllDistance()) {
-					return -1;
-				} else if (o1.getAllDistance() == o2.getAllDistance()) {
-					return 0;
-				} else {
-					return 1;
+				if (o1.getAllDistance() > 0 || o2.getAllDistance() > 0) {
+
+					if (o1.getAllDistance() > o2.getAllDistance()) {
+						return -1;
+					} else if (o1.getAllDistance() == o2.getAllDistance()) {
+						return 0;
+					} else {
+						return 1;
+					}
 				}
+				return 0;
 			}
 		});
 		return list;
 	}
 
-
-	
-	
-	
-	
-	
 }

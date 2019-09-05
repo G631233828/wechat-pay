@@ -28,8 +28,8 @@ public class CardingStatistics extends GeneralBean<CardingStatistics> {
 	 * 
 	 */
 	private static final long serialVersionUID = -438679435457964152L;
-	private double totalMileage;//班级总里程
-	private double allMileage;//总里程
+	private double totalMileage;//总里程
+	private double allMileage;//班级总里程
 	@DBRef
 	private Clazz clazz;//班级
 	@DBRef
