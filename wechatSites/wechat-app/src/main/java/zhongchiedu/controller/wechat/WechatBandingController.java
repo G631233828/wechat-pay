@@ -156,7 +156,7 @@ public class WechatBandingController {
 		}
 		model.addObject("wechatbinding", we);
 		model.addObject("clazz",
-				we.getStudentAccount().substring(0, 4) + "年" + we.getStudentAccount().substring(5, 6) + "班");
+				we.getStudentAccount().substring(0, 4) + "年" + we.getStudentAccount().substring(4, 6) + "班");
 		model.setViewName("wechat/front/index");
 
 		// Test
@@ -175,6 +175,12 @@ public class WechatBandingController {
 		return model;
 	}
 
+	
+	
+	
+	
+	
+	
 	/**
 	 * 作业
 	 * 

@@ -18,6 +18,7 @@ import zhongchiedu.common.utils.BasicDataResult;
 import zhongchiedu.common.utils.Common;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.framework.service.GeneralServiceImpl;
+import zhongchiedu.school.pojo.Activitys;
 import zhongchiedu.school.pojo.CardingStatistics;
 import zhongchiedu.school.pojo.Clazz;
 import zhongchiedu.school.pojo.Sites;
@@ -25,6 +26,7 @@ import zhongchiedu.school.pojo.SportsCarding;
 import zhongchiedu.school.pojo.Student;
 import zhongchiedu.school.pojo.Trips;
 import zhongchiedu.school.pojo.WeChatbanding;
+import zhongchiedu.service.ActivitysService;
 import zhongchiedu.service.CardingStatisticsService;
 import zhongchiedu.service.ClazzService;
 import zhongchiedu.service.SportsCardingService;
@@ -44,6 +46,9 @@ public class SportsCardingServiceImpl extends GeneralServiceImpl<SportsCarding> 
 	private TripsService tripsService;// 活动行程
 	@Autowired
 	private CardingStatisticsService cardingStatisticsService;
+	@Autowired
+	private ActivitysService activitysService;// 活动
+
 
 	@Override
 	public void SaveOrUpdateSportsCarding(SportsCarding sportsCarding, String openId) {
@@ -104,6 +109,14 @@ public class SportsCardingServiceImpl extends GeneralServiceImpl<SportsCarding> 
 		if(Common.isNotEmpty(student)){
 			query.addCriteria(Criteria.where("clazz.$id").is(new ObjectId(clazz.getId())));
 			query.addCriteria(Criteria.where("student.$id").is(new ObjectId(student.getId())));
+			
+			List<Activitys> listac = this.activitysService.findActivitysByisDisable();
+			List<Object> ids = new ArrayList<>();
+			for (int i = 0; i < listac.size(); i++) {
+				ids.add(new ObjectId(listac.get(i).getId()));
+			}
+			query.addCriteria(Criteria.where("activitys.$id").in(ids));
+			
 			query.with(new Sort(new Order(Direction.DESC, "sportsDate")));
 			list = this.findPaginationByQuery(query, pageNo, pageSize, SportsCarding.class);
 		}

@@ -61,8 +61,10 @@ public class SportsCardStatisticsController {
 		//获取所有活动
 		List<Activitys> activitys = this.activitysService.findActivitysByisDisable();
 		model.addAttribute("activitys", activitys);
+		
 		List<Clazz> clazzs = this.clazzService.findClazzsWhereInSchool(Common.findInSchoolYear());
 		model.addAttribute("clazzs", clazzs);
+		
 		List<Integer> grades = Common.findInSchoolYear();
 		model.addAttribute("grades", grades);
 		model.addAttribute("selectActivity", Common.isNotEmpty(activity)?activity:"");

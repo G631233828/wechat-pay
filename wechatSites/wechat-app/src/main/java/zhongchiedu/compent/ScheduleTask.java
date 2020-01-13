@@ -18,7 +18,7 @@ public class ScheduleTask  {
 	private ScheduleCardingStatisticsService scheduleCardingStatisticsService;
 	
 	//@Scheduled(cron = "0/20 * * * * ?")
-	@Scheduled(cron = "0 50 23 * * ?")
+@Scheduled(cron = "0 50 23 * * ?")
 	public void todoSchedule() {
 		log.info("开始统计数据" +LocalDate.now().toString());
 		scheduleCardingStatisticsService.autoStatistics();

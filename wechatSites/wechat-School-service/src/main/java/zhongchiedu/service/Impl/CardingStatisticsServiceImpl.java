@@ -24,9 +24,11 @@ import org.springframework.stereotype.Service;
 import zhongchiedu.common.utils.Common;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.framework.service.GeneralServiceImpl;
+import zhongchiedu.school.pojo.Activitys;
 import zhongchiedu.school.pojo.CardingStatistics;
 import zhongchiedu.school.pojo.Clazz;
 import zhongchiedu.school.pojo.SportsCarding;
+import zhongchiedu.service.ActivitysService;
 import zhongchiedu.service.CardingStatisticsService;
 import zhongchiedu.service.ClazzService;
 
@@ -39,6 +41,9 @@ public class CardingStatisticsServiceImpl extends GeneralServiceImpl<CardingStat
 
 	@Autowired
 	private ClazzService clazzService;
+	
+	@Autowired
+	private ActivitysService activitysService;
 
 	@Override
 	public CardingStatistics findByClazzIdAndActivityId(String clazzId, String activityId) {
@@ -53,6 +58,12 @@ public class CardingStatisticsServiceImpl extends GeneralServiceImpl<CardingStat
 	public CardingStatistics findByClazzId(String clazzId) {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("clazz.$id").is(new ObjectId(clazzId)));
+		List<Activitys> listac = this.activitysService.findActivitysByisDisable();
+		List<Object> ids = new ArrayList<>();
+		for (int i = 0; i < listac.size(); i++) {
+			ids.add(new ObjectId(listac.get(i).getId()));
+		}
+		query.addCriteria(Criteria.where("activitys.$id").in(ids));
 		return this.findOneByQuery(query, CardingStatistics.class);
 	}
 
@@ -64,8 +75,14 @@ public class CardingStatisticsServiceImpl extends GeneralServiceImpl<CardingStat
 		Query query = new Query();
 		if (Common.isNotEmpty(activity)) {
 			query.addCriteria(Criteria.where("activitys.$id").is(new ObjectId(activity)));
+		}else {
+			List<Activitys> list = this.activitysService.findActivitysByisDisable();
+			List<Object> ids = new ArrayList<>();
+			for (int i = 0; i < list.size(); i++) {
+				ids.add(new ObjectId(list.get(i).getId()));
+			}
+			query.addCriteria(Criteria.where("activitys.$id").in(ids));
 		}
-
 		query.with(new Sort(new Order(Direction.DESC, "allMileage")));
 		query.addCriteria(Criteria.where("clazz.$id").in(clazzIds));
 		Pagination<CardingStatistics> pagination = this.findPaginationByQuery(query, pageNo, pageSize,

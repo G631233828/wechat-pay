@@ -90,21 +90,22 @@ public class ScheduleCardingStatisticsServiceImpl extends GeneralServiceImpl<Car
 				Sites getSite = null;
 				Double totalMileage = 0.0;// 总里程
 				// 通过活动id查看所有站点信息 用来统计当前已经到哪个站点了
+				
 				List<Trips> trips = this.tripsService.findTripsByActivityId(activity.getId());
-				if (trips.size() == 0) {
-					log.error("活动未设置站点，无法进行统计！");
-					return;
-				}
-
-				// 默认站点为出发站
-				getSite = trips.get(0).getSites();
-				for (Trips trip : trips) {
-					totalMileage += trip.getDistance();// 每个站点的距离
-					// 如果班级里的行程已经大于站点直接的行程，那么已经到了下一站
-					if (allMileage > totalMileage) {
-						getSite = trip.getSites();
+				if (trips.size() >0) {
+					log.error("活动有站点，进行统计站点！");
+					// 默认站点为出发站
+					getSite = trips.get(0).getSites();
+					for (Trips trip : trips) {
+						totalMileage += trip.getDistance();// 每个站点的距离
+						// 如果班级里的行程已经大于站点直接的行程，那么已经到了下一站
+						if (allMileage > totalMileage) {
+							getSite = trip.getSites();
+						}
 					}
 				}
+
+				
 				// 根据班级获取所有学生
 				List<Student> students = this.studentService.findStudentByClazz(clazz);
 				// 根据班级，活动 学生 id获取每个学生的打卡情况

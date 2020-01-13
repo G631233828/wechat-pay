@@ -38,6 +38,8 @@ public class SportsCarding extends GeneralBean<SportsCarding>{
 	private Double distance;//运动距离
 	private String sportsDate;
 	private Double allDistance;//总运动距离
+//	private String sportEvent;//运动项目
+//	private String 
 	
 	
 	

@@ -8,12 +8,13 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,7 +38,6 @@ import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.log.annotation.SystemControllerLog;
 import zhongchiedu.school.pojo.Clazz;
 import zhongchiedu.school.pojo.Student;
-import zhongchiedu.school.pojo.Teacher;
 import zhongchiedu.school.pojo.WeChatbanding;
 import zhongchiedu.school.pojo.WeChatbandingStudent;
 import zhongchiedu.service.Impl.ClazzServiceImpl;
@@ -312,5 +312,41 @@ public class StudentController {
 			return BasicDataResult.build(400, "同步过程中出现异常", null);
 		}
 	}
+	
+	
+	
+	/**
+	 * 用于修复班级出现的问题
+	 */
+	@RequestMapping("/student/repair")
+	@ResponseBody
+	public BasicDataResult repairClazz(@RequestParam(value = "newclazz", defaultValue = "") String newclazz,@RequestParam(value = "oldclazz", defaultValue = "") String oldclazz) {
+		
+		Clazz old_clazz = this.clazzService.findOneById(oldclazz, Clazz.class);
+		Clazz new_clazz = this.clazzService.findOneById(newclazz, Clazz.class);
+		
+		Query query1 = new Query();
+		query1.addCriteria(Criteria.where("clazz.$id").is(new ObjectId(oldclazz)));
+		List<Student> list = this.studentService.find(query1, Student.class);
+		
+		for(Student student:list) {
+			student.setClazz(new_clazz);
+			this.studentService.save(student);
+		}
+		
+		this.clazzService.remove(old_clazz);
+		return BasicDataResult.ok();
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
