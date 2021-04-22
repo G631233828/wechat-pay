@@ -10,7 +10,7 @@
 	<properties>
 		<springboot.version>2.0.3.RELEASE</springboot.version>
 		<project.version>0.0.1-SNAPSHOT</project.version>
-		<shiro-core>1.2.3</shiro-core>
+		<shiro-core>1.7.1</shiro-core>
 	</properties>
 
 	<dependencyManagement>
